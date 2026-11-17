@@ -26,12 +26,13 @@ import sys
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent          # src/ — the sources
+SITE = ROOT.parent                              # repository root — published as-is
 DATA = ROOT / "data"
 TEMPLATES = ROOT / "templates"
 PAGES = TEMPLATES / "pages"
 STATIC = ROOT / "static"
-OUT = ROOT / "docs"
+OUT = SITE
 KST = timezone(timedelta(hours=9))
 
 # path (relative to docs/) -> fragment name -> nav key
@@ -45,8 +46,8 @@ PAGE_LIST = [
 
 # Journals checked out next to this repo; --sync reads their post front matter.
 SIBLINGS = {
-    "kr": ROOT.parent / "blog-omong-kr",
-    "en": ROOT.parent / "blog-omong-studio",
+    "kr": SITE.parent / "blog-omong-kr",
+    "en": SITE.parent / "blog-omong-studio",
 }
 
 
@@ -224,9 +225,16 @@ def build() -> int:
     year = datetime.now(KST).year
     updated = feed.get("updated", datetime.now(KST).strftime("%Y-%m-%d"))
 
-    if OUT.exists():
-        shutil.rmtree(OUT)
-    OUT.mkdir(parents=True)
+    # GitHub Pages serves the repository root, so the sources sit in src/ and only the
+    # generated outputs are replaced here — never the directory itself.
+    for stale in ("index.html", "404.html", "sitemap.xml", "robots.txt", "ads.txt",
+                  ".nojekyll", "assets", "about", "privacy", "contact", "disclosure"):
+        target = OUT / stale
+        if target.is_dir():
+            shutil.rmtree(target)
+        elif target.exists():
+            target.unlink()
+    OUT.mkdir(parents=True, exist_ok=True)
     (OUT / ".nojekyll").write_text("", encoding="utf-8")
 
     client = (site.get("adsense_client") or "").strip()
@@ -440,7 +448,7 @@ def build() -> int:
             if not (OUT / name).exists():
                 problems.append(f"missing {name}")
         for page in OUT.rglob("*.html"):
-            if page.name == "404.html":
+            if page.name == "404.html" or {".git", "src"} & set(page.relative_to(OUT).parts):
                 continue
             text = page.read_text(encoding="utf-8")
             words = len(re.findall(r"[가-힣]{2,}|[A-Za-z]{3,}", re.sub(r"<[^>]+>", " ", text)))

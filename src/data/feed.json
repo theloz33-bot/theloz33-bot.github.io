@@ -11,6 +11,13 @@
       "blurb_en": "A Korean-language journal on household decisions, one-person production and AI video commissions, written from work actually done.",
       "posts": [
         {
+          "title": "AI로 주 3.7시간 아꼈는데, 생산성은 그대로인 이유",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/ai-saves-hours-productivity-gap/",
+          "date": "2026-11-18",
+          "category": "webtoon",
+          "excerpt": "한국은행 조사에서 직장인 3명 중 2명이 AI를 쓴다고 답했다. 아낀 시간은 주 3.7시간. 그런데 그 시간의 63%는 다시 일이 되어 돌아왔다."
+        },
+        {
           "title": "수능장 와이파이 차단, AI 커닝은 정말 막힐까",
           "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/exam-wifi-block-ai-cheating/",
           "date": "2026-11-18",
@@ -60,7 +67,7 @@
           "excerpt": "난방을 켜면 방 안 습도는 조용히 30% 아래로 떨어진다. 40~60%를 지키는 방법, 가습기 세 방식의 차이, 핫팩을 쓸 때 지켜야 할 선을 정리했다."
         }
       ],
-      "count": 7,
+      "count": 8,
       "categories": [
         "생활 정보",
         "크리에이터 장비",

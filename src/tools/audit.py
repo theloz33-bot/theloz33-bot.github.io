@@ -22,8 +22,8 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlparse
 
-ROOT = Path(__file__).resolve().parent.parent
-DOCS = ROOT / "docs"
+ROOT = Path(__file__).resolve().parent.parent      # src/
+DOCS = ROOT.parent                                 # repository root, published by Pages
 DOMAIN = "https://theloz33-bot.github.io"
 
 VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link",
@@ -117,7 +117,8 @@ def main() -> int:
     if not DOCS.exists():
         sys.exit("docs/ missing — run python3 build.py first")
 
-    pages = sorted(DOCS.rglob("*.html"))
+    pages = sorted(p for p in DOCS.rglob("*.html")
+                   if not {".git", "src"} & set(p.relative_to(DOCS).parts))
     if not pages:
         failures.append("no HTML output")
 
