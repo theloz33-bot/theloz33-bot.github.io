@@ -255,7 +255,7 @@ def build() -> int:
 
     start_picks_kr = [
         f"{kr.get('url', '')}posts/brand-video-longform-or-shortform-first/",
-        f"{kr.get('url', '')}posts/smartphone-light-mic/",
+        f"{kr.get('url', '')}posts/smartphone-light-and-mic-setup/",
     ]
     start_picks_en = [
         f"{en.get('url', '')}posts/consistent-ai-characters-9-16-short-form/",
