@@ -78,6 +78,34 @@
       "blurb_ko": "AI 숏폼 시리즈와 뮤직비디오 파이프라인, 음성 오디오, 단일 파일 도구에 대한 영문 실무 기록.",
       "posts": [
         {
+          "title": "Editing 9:16 Shorts for Retention: the Hook Frame, Caption Rhythm and the Loop Point",
+          "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/9-16-short-form-retention-editing/",
+          "date": "2026-11-18",
+          "category": "Short-Form Production",
+          "excerpt": "A vertical short is lost or kept in the first 1.5 seconds and at the last 1.5. Everything between them is caption rhythm and cut cadence — three things you can set before the first render."
+        },
+        {
+          "title": "AI Talking Heads That Don't Slip: Lip-Sync Timing, Jaw Artifacts and Three Failure Modes",
+          "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/ai-talking-head-lip-sync/",
+          "date": "2026-11-18",
+          "category": "Short-Form Production",
+          "excerpt": "Lip-sync does not fail all at once. It drifts four frames over eight seconds, or the jaw walks through the teeth on the first plosive. Both are fixable before the render."
+        },
+        {
+          "title": "Thirty Vertical Videos a Month From One Spreadsheet: a Batch Pipeline That Survives Week Three",
+          "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/batch-vertical-video-pipeline/",
+          "date": "2026-11-18",
+          "category": "Automation",
+          "excerpt": "Daily uploads do not fail on day one. They fail on day nineteen, when the script, the voice file and the shot folder stop matching. One spreadsheet column fixes that."
+        },
+        {
+          "title": "Packaging a Digital Kit for Gumroad: File Structure, a Price Ladder and Delivery That Refunds Itself",
+          "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/gumroad-digital-kit-packaging/",
+          "date": "2026-11-18",
+          "category": "Product",
+          "excerpt": "A prompt pack is not a product until a stranger can open the ZIP and know what to do in ninety seconds. The structure, the price steps and the listing copy that does the selling."
+        },
+        {
           "title": "Mastering Audio for Faceless YouTube and AI Podcasts: LUFS Targets, Chain Order and a Per-Line Voiceover Workflow",
           "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/faceless-podcast-audio-mastering-lufs/",
           "date": "2026-11-17",
@@ -106,8 +134,11 @@
           "excerpt": "One HTML file, no build step, no server, no login. For a solo creator selling small tools, that constraint is not a limitation — it is the whole product advantage."
         }
       ],
-      "count": 4,
+      "count": 8,
       "categories": [
+        "Short-Form Production",
+        "Automation",
+        "Product",
         "Audio",
         "Music Video",
         "Character Consistency",

@@ -39,8 +39,8 @@ CONTRADICTIONS = [
     r"쿠키를\s*사용하지\s*않",
     r"쿠키를\s*쓰지\s*않",
     r"쿠키가\s*없",
-    r"\bno cookies\b",
-    r"\bno cookie\b",
+    r"\bno cookies\b(?! of its own)",
+    r"\bno cookie\b(?! of its own)",
     r"does not use cookies",
     r"never sets? (?:a )?cookies?",
 ]
