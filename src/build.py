@@ -133,13 +133,16 @@ def sync_feed() -> dict:
                     "excerpt": meta.get("excerpt") or meta.get("description", ""),
                 }
             )
+        site_local = load_json(path / "data" / "site.json")
+        labels = {c["key"]: c["label"] for c in site_local.get("categories", [])}
+        for post in posts:
+            post["category"] = labels.get(post["category"], post["category"])
         posts.sort(key=lambda p: p["date"], reverse=True)
         journal = dict(site["journals"][key])
         journal["posts"] = posts
         journal["count"] = len(posts)
         if key == "kr":
-            site_kr = load_json(path / "data" / "site.json")
-            journal["categories"] = [c["label"] for c in site_kr.get("categories", [])]
+            journal["categories"] = [c["label"] for c in site_local.get("categories", [])]
         else:
             seen: list[str] = []
             for post in posts:
