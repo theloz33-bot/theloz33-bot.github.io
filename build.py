@@ -286,6 +286,47 @@ def build() -> int:
         ),
     }
 
+    def structured_data(key: str, title: str, description: str, canonical: str) -> str:
+        """One JSON-LD block per page; the home page also declares the two journals."""
+        if key == "index":
+            data = {
+                "@context": "https://schema.org",
+                "@graph": [
+                    {
+                        "@type": "Organization",
+                        "@id": f"{site['base_url'].rstrip('/')}/#studio",
+                        "name": site["brand"],
+                        "alternateName": site["brand_ko"],
+                        "url": f"{site['base_url'].rstrip('/')}/",
+                        "description": site["description"],
+                        "sameAs": [
+                            kr.get("url", ""),
+                            en.get("url", ""),
+                            "https://lozzy36.gumroad.com/",
+                        ],
+                    },
+                    {
+                        "@type": "WebSite",
+                        "@id": f"{site['base_url'].rstrip('/')}/#site",
+                        "name": site["brand"],
+                        "url": f"{site['base_url'].rstrip('/')}/",
+                        "inLanguage": ["ko-KR", "en"],
+                        "publisher": {"@id": f"{site['base_url'].rstrip('/')}/#studio"},
+                    },
+                ],
+            }
+        else:
+            data = {
+                "@context": "https://schema.org",
+                "@type": "WebPage",
+                "name": title,
+                "description": description,
+                "url": canonical,
+                "inLanguage": site["language"],
+                "isPartOf": {"@id": f"{site['base_url'].rstrip('/')}/#site"},
+            }
+        return '<script type="application/ld+json">' + json.dumps(data, ensure_ascii=False) + "</script>"
+
     def page_block(key: str, title: str, description: str, path: str) -> str:
         fragment = (PAGES / f"{key}.html").read_text(encoding="utf-8")
         content = render(
@@ -328,6 +369,7 @@ def build() -> int:
                 "nav": nav_html(key),
                 "content": content,
                 "year": year,
+                "jsonld": structured_data(key, title, description, canonical),
                 "adsense": adsense,
             },
         )
@@ -358,6 +400,7 @@ def build() -> int:
                 "nav": nav_html(""),
                 "content": notfound,
                 "year": year,
+                "jsonld": "",
                 "adsense": adsense,
             },
         ),
