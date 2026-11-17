@@ -22,6 +22,7 @@ import html
 import json
 import re
 import shutil
+import subprocess
 import sys
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -73,6 +74,20 @@ def esc(value: str) -> str:
     return html.escape(str(value), quote=False)
 
 
+def tracked_files(repo: Path, subdir: str) -> set[str] | None:
+    """Files git knows about under repo/subdir, or None when git or the repo is unavailable."""
+    try:
+        out = subprocess.run(
+            ["git", "-C", str(repo), "ls-files", subdir],
+            capture_output=True, text=True, timeout=20,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if out.returncode != 0:
+        return None
+    return {line.strip() for line in out.stdout.splitlines() if line.strip()}
+
+
 def parse_front_matter(text: str) -> dict:
     if not text.startswith("---"):
         return {}
@@ -118,11 +133,18 @@ def sync_feed() -> dict:
                 feed["journals"][key] = previous
             continue
         posts = []
+        # A post counts as published once its file is committed in the journal repository —
+        # that commit is what Pages deploys. A working copy written but not yet committed
+        # would otherwise become a dead link from this hub.
+        committed = tracked_files(path, "posts")
         for md in sorted(posts_dir.glob("*.md")):
             if md.name.startswith("_"):
                 continue
             meta = parse_front_matter(md.read_text(encoding="utf-8"))
             if not meta.get("slug") or not meta.get("title"):
+                continue
+            if committed is not None and f"posts/{md.name}" not in committed:
+                print(f"  skip uncommitted {key}: {md.name}")
                 continue
             posts.append(
                 {
