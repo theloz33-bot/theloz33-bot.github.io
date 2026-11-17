@@ -1,0 +1,31 @@
+{
+  "brand": "Omong Studio",
+  "brand_ko": "오몽 스튜디오",
+  "tagline": "AI short-form, music videos and small tools — plus the notes on how they get made.",
+  "tagline_ko": "AI 숏폼과 뮤직비디오, 작은 도구 — 그리고 그것을 만드는 과정의 기록.",
+  "description": "The official hub of Omong Studio. One creator working with AI tools: the Korean journal on everyday gear and production, the English journal on AI video pipelines, and where to commission or write in.",
+  "language": "ko",
+  "locale": "ko_KR",
+  "base_url": "https://theloz33-bot.github.io",
+  "adsense_client": "",
+  "journals": {
+    "kr": {
+      "name": "오몽 라이프 & AI 연구소",
+      "name_en": "Omong Life & AI Lab",
+      "url": "https://theloz33-bot.github.io/omong-kr-lab/",
+      "rss": "https://theloz33-bot.github.io/omong-kr-lab/rss.xml",
+      "language": "ko",
+      "blurb": "생활 정보와 1인 제작, AI 영상 외주를 직접 해보고 남긴 기록. 겨울철 습도처럼 계절마다 반복되는 질문과, 스마트폰 하나로 찍고 편집하는 순서를 숫자와 기준으로 정리합니다.",
+      "blurb_en": "A Korean-language journal on household decisions, one-person production and AI video commissions, written from work actually done."
+    },
+    "en": {
+      "name": "Omong Studio Journal",
+      "name_en": "Omong Studio Journal",
+      "url": "https://theloz33-bot.github.io/omong-studio-journal/",
+      "rss": "https://theloz33-bot.github.io/omong-studio-journal/rss.xml",
+      "language": "en",
+      "blurb": "Field notes on AI short-form series, music-video pipelines, speech audio and single-file tools. The order of operations, the levels in dB, and the stage that broke first.",
+      "blurb_ko": "AI 숏폼 시리즈와 뮤직비디오 파이프라인, 음성 오디오, 단일 파일 도구에 대한 영문 실무 기록."
+    }
+  }
+}

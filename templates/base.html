@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="{{lang}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}}</title>
+<meta name="description" content="{{description}}">
+<link rel="canonical" href="{{canonical}}">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:site_name" content="{{brand}}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{title}}">
+<meta property="og:description" content="{{description}}">
+<meta property="og:url" content="{{canonical}}">
+<meta property="og:locale" content="{{locale}}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{title}}">
+<meta name="twitter:description" content="{{description}}">
+<meta name="theme-color" content="#141310">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="alternate" type="application/rss+xml" title="오몽 라이프 &amp; AI 연구소" href="https://theloz33-bot.github.io/omong-kr-lab/rss.xml">
+<link rel="alternate" type="application/rss+xml" title="Omong Studio Journal" href="https://theloz33-bot.github.io/omong-studio-journal/rss.xml">
+<link rel="stylesheet" href="/assets/style.css">
+{{adsense}}
+</head>
+<body>
+<a class="skip" href="#main">본문으로 건너뛰기 / Skip to content</a>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="/" aria-label="{{brand}} 홈">
+      <span class="brand-mark" aria-hidden="true">◎</span>
+      <span class="brand-text"><strong>{{brand}}</strong><em>{{brand_ko}}</em></span>
+    </a>
+    <nav class="site-nav" aria-label="주요 메뉴 / Main">{{nav}}</nav>
+  </div>
+</header>
+<main id="main" class="wrap">
+{{content}}
+</main>
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p class="footer-brand">{{brand}} · {{brand_ko}}</p>
+    <p class="footer-note">{{tagline}}</p>
+    <p class="footer-links">
+      <a href="/about/">스튜디오 소개</a> ·
+      <a href="/privacy/">개인정보처리방침</a> ·
+      <a href="/contact/">문의</a> ·
+      <a href="/disclosure/">제휴·광고 고지</a> ·
+      <a href="https://theloz33-bot.github.io/omong-kr-lab/rss.xml">RSS (KO)</a> ·
+      <a href="https://theloz33-bot.github.io/omong-studio-journal/rss.xml">RSS (EN)</a>
+    </p>
+    <p class="footer-copy">&copy; {{year}} {{brand}}. 모든 글은 직접 확인한 내용만 씁니다. · Written from work actually done.</p>
+  </div>
+</footer>
+</body>
+</html>

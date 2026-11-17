@@ -1,0 +1,118 @@
+{
+  "updated": "2026-11-18",
+  "journals": {
+    "kr": {
+      "name": "오몽 라이프 & AI 연구소",
+      "name_en": "Omong Life & AI Lab",
+      "url": "https://theloz33-bot.github.io/omong-kr-lab/",
+      "rss": "https://theloz33-bot.github.io/omong-kr-lab/rss.xml",
+      "language": "ko",
+      "blurb": "생활 정보와 1인 제작, AI 영상 외주를 직접 해보고 남긴 기록. 겨울철 습도처럼 계절마다 반복되는 질문과, 스마트폰 하나로 찍고 편집하는 순서를 숫자와 기준으로 정리합니다.",
+      "blurb_en": "A Korean-language journal on household decisions, one-person production and AI video commissions, written from work actually done.",
+      "posts": [
+        {
+          "title": "수능장 와이파이 차단, AI 커닝은 정말 막힐까",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/exam-wifi-block-ai-cheating/",
+          "date": "2026-11-18",
+          "category": "webtoon",
+          "excerpt": "수능 전날, 정부는 시험장 공공 와이파이를 끄겠다고 했다. 끄면 사라지는 건 공용 인터넷 한 줄이고, 개인 통신으로 붙는 길은 그대로 남는다."
+        },
+        {
+          "title": "홍보영상, 롱폼과 숏폼 중 무엇을 먼저 만들어야 할까",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/brand-video-longform-or-shortform-first/",
+          "date": "2026-11-17",
+          "category": "ai-production",
+          "excerpt": "예산이 한정된 브랜드가 가장 먼저 부딪히는 질문입니다. 도달이 목적이면 숏폼, 신뢰가 목적이면 롱폼이 먼저입니다. 순서를 잘못 잡으면 같은 돈으로 두 배를 다시 쓰게 됩니다."
+        },
+        {
+          "title": "자취 고정비 줄이는 생필품 루틴 — 화장지·생수·세제·제로음료 단가로 계산하기",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/essentials-unit-price-routine/",
+          "date": "2026-11-17",
+          "category": "living",
+          "excerpt": "매달 나가는 생활비는 아껴서 줄이는 게 아니라 한 번 정해서 반복하면 줄어든다. 화장지·생수·세제·제로음료 네 품목을 단가와 재구매 주기로 계산했다."
+        },
+        {
+          "title": "이사·입주청소·타이어렌탈·장기렌트, 상담 전에 확인할 것들",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/move-clean-rental-checklist/",
+          "date": "2026-11-17",
+          "category": "living",
+          "excerpt": "무료 견적이 무료로 끝나지 않는 이유는 대부분 같은 네 가지 항목입니다. 평수, 날짜, 추가 작업, 약정 조건을 먼저 숫자로 만들어 두면 견적이 흔들리지 않습니다."
+        },
+        {
+          "title": "AI 숏폼·뮤직비디오 외주, 맡기기 전에 확인할 다섯 가지",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/ai-video-outsourcing-checklist/",
+          "date": "2026-11-16",
+          "category": "ai-production",
+          "excerpt": "같은 'AI 뮤비'라도 결과는 견적서에 적힌 항목에서 갈린다. 음원 권리, 캐릭터 일관성 기준, 납품 규격, 수정 범위, 2차 활용권까지 계약 전에 확인할 다섯 줄."
+        },
+        {
+          "title": "스마트폰 촬영, 조명과 마이크만 바꿔도 달라지는 것 — 1인 세팅 30분",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/smartphone-light-and-mic-setup/",
+          "date": "2026-11-16",
+          "category": "creator",
+          "excerpt": "카메라를 바꾸는 것보다 빛과 소리를 먼저 잡는 편이 빠르다. 창가 자연광 쓰는 법부터 링라이트 각도, 무선 마이크 음량 기준까지 30분 순서로 정리했다."
+        },
+        {
+          "title": "겨울철 실내 습도 40~60%, 가습기 고르는 기준과 방한 준비",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/winter-indoor-humidity-humidifier-guide/",
+          "date": "2026-11-16",
+          "category": "living",
+          "excerpt": "난방을 켜면 방 안 습도는 조용히 30% 아래로 떨어진다. 40~60%를 지키는 방법, 가습기 세 방식의 차이, 핫팩을 쓸 때 지켜야 할 선을 정리했다."
+        }
+      ],
+      "count": 7,
+      "categories": [
+        "생활 정보",
+        "크리에이터 장비",
+        "AI 제작",
+        "시사 4컷"
+      ]
+    },
+    "en": {
+      "name": "Omong Studio Journal",
+      "name_en": "Omong Studio Journal",
+      "url": "https://theloz33-bot.github.io/omong-studio-journal/",
+      "rss": "https://theloz33-bot.github.io/omong-studio-journal/rss.xml",
+      "language": "en",
+      "blurb": "Field notes on AI short-form series, music-video pipelines, speech audio and single-file tools. The order of operations, the levels in dB, and the stage that broke first.",
+      "blurb_ko": "AI 숏폼 시리즈와 뮤직비디오 파이프라인, 음성 오디오, 단일 파일 도구에 대한 영문 실무 기록.",
+      "posts": [
+        {
+          "title": "Mastering Audio for Faceless YouTube and AI Podcasts: LUFS Targets, Chain Order and a Per-Line Voiceover Workflow",
+          "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/faceless-podcast-audio-mastering-lufs/",
+          "date": "2026-11-17",
+          "category": "Audio",
+          "excerpt": "A faceless channel is an audio product with pictures attached. Four numbers keep forty episodes at the same level, and one chain order keeps the voice sounding like the same show."
+        },
+        {
+          "title": "Building a Cinematic AI Music Video Pipeline in 2026: Audio, Visuals & Voiceover Timing",
+          "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/cinematic-ai-music-video-pipeline/",
+          "date": "2026-11-16",
+          "category": "Music Video",
+          "excerpt": "Most AI music videos are cut to a storyboard that has nothing to do with the song. Start from the timecode map instead, and every other stage gets shorter."
+        },
+        {
+          "title": "How to Keep AI Characters Consistent Across 9:16 Short-Form Episodes (3-View Sheets & Motion Transfer)",
+          "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/consistent-ai-characters-9-16-short-form/",
+          "date": "2026-11-16",
+          "category": "Character Consistency",
+          "excerpt": "The face starts drifting by episode three. A three-view character sheet, a frozen descriptor block, and one action per clip are what held a nine-episode vertical series together."
+        },
+        {
+          "title": "Shipping Solo-Creator Micro-Tools Fast: Why Single-File Offline HTML Apps Win",
+          "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/single-file-offline-html-apps/",
+          "date": "2026-11-16",
+          "category": "Micro-Tools",
+          "excerpt": "One HTML file, no build step, no server, no login. For a solo creator selling small tools, that constraint is not a limitation — it is the whole product advantage."
+        }
+      ],
+      "count": 4,
+      "categories": [
+        "Audio",
+        "Music Video",
+        "Character Consistency",
+        "Micro-Tools"
+      ]
+    }
+  }
+}

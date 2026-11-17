@@ -1,0 +1,11 @@
+# ads.txt — Google AdSense
+#
+# Google requires one line here per authorised seller. It is commented out until the
+# AdSense account for this domain has issued its publisher ID (ca-pub-XXXXXXXXXXXXXXXX).
+#
+# When the ID exists:
+#   1. replace pub-XXXXXXXXXXXXXXXX below with the same number, without the "ca-" prefix
+#   2. delete the leading "# " on the google.com line
+#   3. commit and push — GitHub Pages serves this file at https://theloz33-bot.github.io/ads.txt
+#
+# google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0

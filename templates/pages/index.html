@@ -1,0 +1,170 @@
+<section class="hero">
+  <p class="eyebrow">Omong Studio · 공식 허브</p>
+  <h1>AI로 만드는 숏폼과 뮤직비디오,<br>그리고 그것을 만드는 과정의 기록</h1>
+  <p class="lede">
+    오몽 스튜디오는 한 사람이 AI 도구로 세로형 숏폼 시리즈, 뮤직비디오, 브랜드 영상과
+    작은 웹 도구를 만드는 작업실입니다. 만든 것은 두 개의 저널에, 과정은 숫자와 순서까지
+    남깁니다. 이 페이지는 그 두 저널과 작업 창구를 한곳에 모은 공식 입구입니다.
+  </p>
+  <div class="hero-actions">
+    <a class="button" href="{{kr_url}}">한국어 저널 읽기</a>
+    <a class="button" href="{{en_url}}">English journal</a>
+    <a class="button ghost" href="/about/">스튜디오 소개</a>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <h2>두 개의 저널</h2>
+    <span class="more">최근 글 {{updated}} 기준</span>
+  </div>
+  <p>
+    같은 작업실에서 나오지만 독자가 다릅니다. 한국어 저널은 생활 속 선택과 1인 제작을,
+    영문 저널은 AI 영상·음성 파이프라인의 실무를 다룹니다. 두 곳 모두 회원가입도 댓글도
+    없이 정적 페이지로만 발행합니다.
+  </p>
+  <div class="journal-grid">
+    <article class="journal" lang="ko">
+      <h3><a href="{{kr_url}}">{{kr_name}}</a></h3>
+      <p class="journal-sub">한국어 · 글 {{kr_count}}편 · <a href="{{kr_rss}}">RSS</a></p>
+      <p>{{kr_blurb}}</p>
+      <div class="pills">{{kr_categories}}</div>
+      <ul class="post-list">
+        {{kr_latest}}
+      </ul>
+    </article>
+    <article class="journal" lang="en">
+      <h3><a href="{{en_url}}">{{en_name}}</a></h3>
+      <p class="journal-sub">English · {{en_count}} posts · <a href="{{en_rss}}">RSS</a></p>
+      <p>{{en_blurb}}</p>
+      <div class="pills">{{en_categories}}</div>
+      <ul class="post-list">
+        {{en_latest}}
+      </ul>
+    </article>
+  </div>
+</section>
+
+<section>
+  <h2>이 허브에서 하는 일</h2>
+  <p>
+    스튜디오의 작업은 네 갈래입니다. 어느 하나도 “정보를 모아 놓은 곳”이 아니라, 실제로
+    만들어 보고 남은 것만 정리하는 쪽입니다.
+  </p>
+  <div class="tiles">
+    <div class="tile">
+      <span class="num">01</span>
+      <h3>음악과 영상</h3>
+      <p>직접 쓴 곡을 음원으로 발매하고, 그 곡에 맞춰 세로형 영상과 뮤직비디오를 만듭니다. 컷 길이를 비트에 맞추는 일부터 시작합니다.</p>
+    </div>
+    <div class="tile">
+      <span class="num">02</span>
+      <h3>AI 숏폼 시리즈</h3>
+      <p>한 캐릭터가 여러 편에 걸쳐 같은 얼굴로 나오도록 유지하는 작업이 중심입니다. 3면 캐릭터 시트와 고정 묘사 블록을 씁니다.</p>
+    </div>
+    <div class="tile">
+      <span class="num">03</span>
+      <h3>작은 도구와 킷</h3>
+      <p>서버도 로그인도 없는 단일 HTML 파일 도구, 프롬프트 팩, 템플릿을 만들어 판매합니다. 산출물은 한 파일로 끝납니다.</p>
+    </div>
+    <div class="tile">
+      <span class="num">04</span>
+      <h3>브랜드 의뢰</h3>
+      <p>롱폼 홍보영상, 9:16 광고 컷, 자체 홍보곡을 고정 견적으로 받습니다. 작업 전에 범위와 납품 규격을 문서로 확정합니다.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>처음 오셨다면</h2>
+  <p>두 저널에서 각각 두 편씩, 흐름을 가장 빨리 보여 주는 글입니다.</p>
+  <div class="journal-grid">
+    <div class="journal" lang="ko">
+      <h3>한국어 저널에서</h3>
+      <ul class="post-list">
+        {{kr_start}}
+      </ul>
+      <p class="lang-note" style="margin-top:.9rem"><a href="{{kr_url}}">전체 글 보기 &rarr;</a></p>
+    </div>
+    <div class="journal" lang="en">
+      <h3>From the English journal</h3>
+      <ul class="post-list">
+        {{en_start}}
+      </ul>
+      <p class="lang-note" style="margin-top:.9rem"><a href="{{en_url}}">All posts &rarr;</a></p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>다루는 것</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>분야</th><th>다루는 내용</th><th>모아 둔 곳</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>숏폼 제작</td>
+          <td>9:16 세로형 편집, 첫 3초 훅, 자막 리듬, 루프 지점, 에피소드 단위 캐릭터 유지</td>
+          <td><a href="{{en_url}}">English journal</a></td>
+        </tr>
+        <tr>
+          <td>뮤직비디오</td>
+          <td>믹스 선고정, 타임코드 맵, 구간별 컷 수 배분, 내레이션과 컷의 순서</td>
+          <td><a href="{{en_url}}">English journal</a></td>
+        </tr>
+        <tr>
+          <td>음성·오디오</td>
+          <td>플랫폼별 LUFS 목표, 보이스 체인 순서, 배드 덕킹, 문장 단위 녹음</td>
+          <td><a href="{{en_url}}">English journal</a></td>
+        </tr>
+        <tr>
+          <td>생활 정보</td>
+          <td>계절 살림, 습도와 가전 선택 기준, 고정비를 단가로 비교하는 계산</td>
+          <td><a href="{{kr_url}}">한국어 저널</a></td>
+        </tr>
+        <tr>
+          <td>1인 제작 장비</td>
+          <td>스마트폰 촬영의 빛과 소리 순서, 마이크 위치, 편집을 어디까지 직접 할지</td>
+          <td><a href="{{kr_url}}">한국어 저널</a></td>
+        </tr>
+        <tr>
+          <td>도구·자동화</td>
+          <td>단일 파일 HTML 앱, 배치 제작 파이프라인, 디지털 상품 포장과 배포</td>
+          <td><a href="{{en_url}}">English journal</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="lang-block" lang="en">
+  <h2>About this hub</h2>
+  <p>
+    Omong Studio is one creator working with a small stack of AI tools. The work is vertical
+    short-form series, music videos, brand films and single-file web tools, and everything
+    published here comes out of a project that was actually finished.
+  </p>
+  <p>
+    Two journals carry the writing. The Korean journal,
+    <a href="{{kr_url}}">{{kr_name}}</a>, covers household decisions and one-person production:
+    which humidifier for which room, how to light a phone-shot interview, what to check in an AI
+    video quote. The English journal, <a href="{{en_url}}">{{en_name}}</a>, is the working
+    notebook for AI pipelines — character consistency across episodes, cutting a music video
+    against a locked mix, speech audio levels, and packaging a tool as a product.
+  </p>
+  <p>
+    Both journals are static sites. There are no accounts, no comment sections and no newsletter
+    pop-ups. Where a link is an affiliate link it is labelled, and the
+    <a href="/disclosure/">disclosure page</a> says which ones and why. The
+    <a href="/privacy/">privacy policy</a> explains what the host logs and what Google and other
+    third-party vendors may set through advertising cookies.
+  </p>
+  <p>
+    If you want a video made rather than read about making one, the studio takes commissions for
+    long-form films, 9:16 ad cuts and original brand songs. The
+    <a href="/contact/">contact page</a> lists the working channels — a Korean marketplace
+    storefront, the Gumroad shop and the public repository.
+  </p>
+</section>
