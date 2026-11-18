@@ -748,7 +748,7 @@ The camera holds a static shot as the runner exits the frame.</pre>
         <div class="card">
           <h4><span class="ko">길이</span><span class="en">Length</span></h4>
           <ul>
-            <li><span class="ko">허용 클립 길이는 5–15초. 30초 영화는 30초 프롬프트 하나가 아니라 <b>15초 프롬프트 두 개</b>입니다.</span><span class="en">Allowed clip length is 5–15 s. A 30 s film is two 15 s prompts, not one 30 s prompt.</span></li>
+            <li><span class="ko">길이는 엔진이 정합니다 — Ludyte·Seedance 계열은 <b>5초·10초</b>, H3는 한 요청에 <b>5–15초</b>. 한 편 안에서 티어를 섞지 않습니다. 30초 영화는 Ludyte 기준 5초 6컷, H3면 15초 2컷입니다.</span><span class="en">Length belongs to the engine — 5 s / 10 s on Ludyte-style services, 5–15 s per request on H3 — and one tier set per film. A 30 s film is six 5 s prompts, or two 15 s prompts on H3.</span></li>
             <li><span class="ko">5–8초 단일 샷 본문은 대략 영어 120–250단어, 10–15초 다중 샷은 250–500단어.</span><span class="en">A 5–8 s single shot runs roughly 120–250 English words; a 10–15 s multi-shot 250–500.</span></li>
             <li><span class="ko">한국어 대사는 초당 약 4–5음절. 줄이 길면 설명을 줄이지 말고 대사를 줄입니다.</span><span class="en">Korean dialogue runs about 4–5 syllables per second — cut the line, not the description.</span></li>
           </ul>
@@ -1461,6 +1461,8 @@ cp -r ludyte-mv-studio ~/.claude/skills/</pre>
             <button class="cp" data-copy="inst2" type="button">COPY</button>
             <pre id="inst2">mkdir -p .claude/skills &amp;&amp; cp -r ludyte-mv-studio .claude/skills/</pre>
           </div>
+          <div class="note"><span class="ko"><b>설치·실행 환경.</b> <code>~/.claude/skills/</code> 복사는 PC 경로이고, 계정 스킬 설정의 ZIP 업로드는 그 설정 화면이 열리는 기기에서 됩니다. 채팅 샌드박스는 외부 접속이 막히는 경우가 많아 플랫폼을 직접 부르지 못하니, 클립은 소유자가 첨부하거나 플랫폼 다운로드로 받아 셸에서 합칩니다. 10–60분 주기 확인은 턴이 끝나면 멈추는 세션에서 돌리지 말고, 플랫폼의 대기·조회 도구나 세션 밖의 예약 실행에 맡깁니다.</span>
+          <span class="en"><b>Install and runtime.</b> Copying into <code>~/.claude/skills/</code> is a desktop path; the account's ZIP upload works from whichever device opens those settings. A chat sandbox often blocks outbound network, so the platform cannot be called from inside — have the owner attach the clips, or download them through the platform, and run ffmpeg on the attachments. A 10–60 minute check does not survive a session that ends with the turn: use the platform's wait/query tools or a scheduled run outside the session.</span></div>
           <p><span class="ko">업로드 방식: <code>ludyte-mv-studio/</code>를 루트로 압축해 계정의 스킬 설정에서 업로드합니다. 확인은 “이 스킬이 뭐 하는 스킬이야?”라고 물었을 때 4단계 설명이 돌아오는지로 합니다.</span>
           <span class="en">As an uploaded skill: zip the folder with <code>ludyte-mv-studio/</code> as the root and upload it in the skill settings. Check it loaded by asking what the skill does — the answer should describe the four stages.</span></p>
         </div>
