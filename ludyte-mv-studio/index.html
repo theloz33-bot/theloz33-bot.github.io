@@ -251,6 +251,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
       <a href="#h3">H3 5모드</a>
       <a href="#prompts"><span class="ko">프롬프트 48</span><span class="en">48 prompts</span></a>
       <a href="#spec"><span class="ko">제작 규격</span><span class="en">Specs</span></a>
+      <a href="#trouble"><span class="ko">문제 해결</span><span class="en">Troubleshooting</span></a>
       <a href="#download"><span class="ko">다운로드</span><span class="en">Download</span></a>
     </nav>
     <div class="hdr-right">
@@ -914,6 +915,39 @@ final master       = 750 − 30 = 720 frames = 30.000 s</pre>
         <li><span class="ko">10컷 영화는 보통 페이드 3–5개면 충분합니다. 붙은 조인에 페이드가 연속되면 이미 뭉갠 화면입니다.</span><span class="en">A ten-cut film usually carries three to five fades at most.</span></li>
       </ul>
 
+      <h4 class="mini"><span class="ko">매치컷은 편집이 아니라 보드에서 결정한다</span><span class="en">A match cut is a decision made in the board</span></h4>
+      <div class="grid2">
+        <div class="card">
+          <h4><span class="ko">네 가지 매치</span><span class="en">Four kinds of match</span></h4>
+          <ul>
+            <li><span class="ko"><b>위치</b> — 피사체나 사물이 컷 전후로 프레임의 같은 자리에 있다.</span><span class="en"><b>Position</b> — the subject sits in the same part of the frame before and after.</span></li>
+            <li><span class="ko"><b>방향</b> — 움직임이 같은 화면 방향으로 이어진다. 왼쪽 이동 뒤 오른쪽 이동은 매치가 아니라 튕김입니다.</span><span class="en"><b>Direction</b> — motion continues in the same screen direction; left then right reads as a bounce.</span></li>
+            <li><span class="ko"><b>속도</b> — 프레임당 이동량이 비슷해야 한다. 다르면 템포가 튄 컷이 됩니다.</span><span class="en"><b>Speed</b> — similar travel per frame, or the cut reads as a jump in tempo.</span></li>
+            <li><span class="ko"><b>모양</b> — 원, 사각형, 문틀이 같은 면적을 채우며 넘어간다.</span><span class="en"><b>Shape</b> — a circle, a rectangle, a doorway filling the same area.</span></li>
+          </ul>
+          <p style="margin-bottom:0"><span class="ko">의도를 두 프롬프트에 모두 적으세요(“moves left out of frame”, “enters from the right, moving left”). 그래야 그 컷이 푸티지 안에 존재합니다.</span><span class="en">Write the intent into both prompts so the cut exists in the footage.</span></p>
+        </div>
+        <div class="card">
+          <h4><span class="ko">스틸 승인 체크 — 나쁜 스틸은 돈 나가는 나쁜 클립이 된다</span><span class="en">Still approval — a bad still becomes a paid bad clip</span></h4>
+          <ul class="check">
+            <li><span class="ko">락과 같은 얼굴·머리·액세서리인가 (기억이 아니라 컷 02와 나란히 비교)</span><span class="en">same face, hair and accessory as the lock — compared side by side with cut 02</span></li>
+            <li><span class="ko">손가락이 맞고, 녹은 사물이 없는가</span><span class="en">hands and fingers correct; no melted object</span></li>
+            <li><span class="ko">의상이 바이블과 정확히 일치하는가</span><span class="en">wardrobe matches the bible exactly</span></li>
+            <li><span class="ko">글자·로고·워터마크·자막 같은 흔적이 없는가 (있으면 받아들이지 말고 다시 생성)</span><span class="en">no stray lettering, logo, watermark or subtitle-like marks</span></li>
+            <li><span class="ko">계획한 카메라 무브가 들어갈 여백이 있는가</span><span class="en">framing leaves room for the planned camera move</span></li>
+            <li><span class="ko">이웃 컷과 샷 사이즈나 앵글이 다른가</span><span class="en">shot size or angle differs from its neighbours</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <h4 class="mini"><span class="ko">입 문제 — 생성기는 기본적으로 입을 움직인다</span><span class="en">The mouth problem — generators animate mouths by default</span></h4>
+      <ol>
+        <li><span class="ko"><b>입을 프레이밍하지 않는다</b> — 손, 소품, 어깨 너머, 뒷머리, 반사, 실루엣, 와이드.</span><span class="en"><b>Do not frame the mouth</b> — hands, props, over-shoulder, back of head, reflection, silhouette, wide.</span></li>
+        <li><span class="ko">얼굴이 화면에 있으면 입 닫힘 문장을 넣고, 정면 클로즈업을 피한다.</span><span class="en">If the face is in frame, say the mouth sentence — and keep the shot off a face-on close-up.</span></li>
+        <li><span class="ko">가사를 프롬프트에 절대 넣지 않는다. “sings”, “lip-syncing”, “mouthing the words”도 금지.</span><span class="en">Never put lyrics in the prompt — no “sings”, “lip-syncing”, “mouthing the words”.</span></li>
+        <li><span class="ko">첫 프레임들에서 확인한다. 2프레임째부터 움직인 입은 회복되지 않는다.</span><span class="en">Review at the first frames: a mouth that starts moving in frame 2 will not recover.</span></li>
+      </ol>
+
       <h4 class="mini"><span class="ko">스타일 바이블 — 한 번 쓰고 모든 컷에 그대로</span><span class="en">The style bible — write it once, reuse it verbatim</span></h4>
       <div class="code">
         <button class="cp" data-copy="bible" type="button">COPY</button>
@@ -1105,6 +1139,30 @@ ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=0 v1_vis
         </div>
       </div>
 
+      <h4 class="mini"><span class="ko">줄바꿈 규칙 — 두 줄이 한 줄보다 어려울 때</span><span class="en">Line-break rules</span></h4>
+      <div class="grid2">
+        <div class="card">
+          <h4><span class="ko">한국어</span><span class="en">Korean</span></h4>
+          <ul style="margin:0">
+            <li><span class="ko">구·절 경계에서 끊고, 단어 안에서는 끊지 않는다.</span><span class="en">Break at a phrase boundary, never inside a word.</span></li>
+            <li><span class="ko">조사는 명사에 붙여 둔다 — <code>바람이 / 부는 밤</code>, <code>바람 / 이 부는 밤</code>이 아니라.</span><span class="en">Keep a particle with its noun.</span></li>
+            <li><span class="ko">한 음절, 외톨이 조사, 매달린 어미로 줄을 끝내지 않는다.</span><span class="en">Never end a line on a single syllable, a lone particle or a dangling ending.</span></li>
+            <li><span class="ko">두 줄 길이를 20% 안에서 맞춘다 — 19자 위에 4자는 사고처럼 보인다.</span><span class="en">Balance the two lines within about 20 %.</span></li>
+            <li><span class="ko">하이픈 금지, 숫자와 단위 분리 금지, 영어 단어·이름 내부 분리 금지.</span><span class="en">No hyphenation; never split a number from its unit or break inside a name.</span></li>
+            <li><span class="ko">기하학적 균형보다 의미 경계를 택한다.</span><span class="en">Prefer the semantic break over the geometric one.</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4><span class="ko">영어 · 이중 언어</span><span class="en">English · bilingual</span></h4>
+          <ul style="margin:0">
+            <li><span class="ko">절이나 호흡 경계에서 끊고, 관사·전치사는 명사와 붙여 둔다. “the”, “a”, “of”, “to”, “and”로 줄을 끝내지 않는다.</span><span class="en">Break at clause or breath boundaries; do not end a line on “the”, “a”, “of”, “to”, “and”.</span></li>
+            <li><span class="ko">작가의 다른 자료가 제목 형식을 쓰면 제목 형식, 아니면 문장 형식. 축약형은 작가가 쓴 그대로.</span><span class="en">Title case only if the artist's other materials do; keep contractions as written.</span></li>
+            <li><span class="ko">부른 언어를 위에 풀사이즈, 번역을 아래에 약 85% 크기·90% 불투명도로. 번역은 두 번째 노래가 아니라 주석으로 읽혀야 한다.</span><span class="en">Sung language on top at full size, translation beneath at ~85 % size and ~90 % opacity — a gloss, not a second song.</span></li>
+            <li><span class="ko">두 언어의 타이밍이 어긋나면 각자 큐를 준다. 크기가 다르니 레이아웃이 그것을 견딘다.</span><span class="en">If the two languages cannot share a cue, give each its own.</span></li>
+          </ul>
+        </div>
+      </div>
+
       <h4 class="mini"><span class="ko">레이아웃 — 화면 비율에 맞춰, 편집 창이 아니라 마스터에 맞춰</span><span class="en">Layout for the aspect, not for the editor window</span></h4>
       <div class="scroll">
         <table class="tbl">
@@ -1231,6 +1289,92 @@ Dialogue: 0,0:00:03.20,0:00:06.90,EN,,0,0,0,,{\fad(120,120)}the first line of th
       </div>
       <div class="note"><span class="ko"><b>중복 과금이 나는 방식.</b> 제출과 매니페스트 기록 사이에 실행이 끊기면 태스크는 있는데 매니페스트는 PLANNED라 다음 실행이 또 주문합니다. 그래서 등록 전에 <b>플랫폼의 태스크 목록을 먼저 읽어</b> 매니페스트에 없는 태스크를 편입시키고, 태스크 ID는 <b>기억이 아니라 복사</b>해서 화면을 닫기 전에 적습니다.</span>
       <span class="en"><b>How money is lost twice.</b> If a run breaks between submit and the manifest write, the task exists while the manifest says PLANNED and the next run orders again — so read the platform's own task list first, adopt what the manifest lacks, and copy the id (never recall it) before the page is closed.</span></div>
+
+      <div class="grid2">
+        <div class="card">
+          <h4><span class="ko">관찰 주기 — 초 단위 루프는 금지</span><span class="en">Watching — never a tight loop</span></h4>
+          <ul style="margin:0">
+            <li><span class="ko">10–60분 간격. 더 자주 봐도 얻는 것이 없고 쿼터만 씁니다.</span><span class="en">Poll on a schedule of 10–60 minutes.</span></li>
+            <li><span class="ko">타이머에 블록된 채 기다리지 않습니다 — 그 실행은 다른 일을 못 합니다.</span><span class="en">Never idle-wait in a loop.</span></li>
+            <li><span class="ko">바뀐 게 없으면 조용히 있습니다. “아직 실행 중”을 매번 보고하는 것은 소음입니다.</span><span class="en">Quiet when nothing changed.</span></li>
+            <li><span class="ko">매 확인 전에 프로젝트를 다시 읽습니다 — 다른 세션이 이미 받아 뒀을 수 있습니다.</span><span class="en">Re-read the project before each poll.</span></li>
+            <li><span class="ko">데드라인이 있는 감시는 만료 시 실제 상태를 한 번 보고하고 스스로 삭제합니다. 시계를 이기려고 재생성하지 않습니다.</span><span class="en">A watch with a deadline reports the real state once at expiry and deletes itself.</span></li>
+          </ul>
+        </div>
+        <div>
+          <div class="prompt-label"><span class="ko">배치 보고 — 이야기가 아니라 세 줄 + 증거</span><span class="en">Batch report — three lines plus evidence</span></div>
+          <div class="code">
+            <button class="cp" data-copy="batchrep" type="button">COPY</button>
+            <pre id="batchrep">Batch {project}: {done}/{total} downloaded, {running} running, {failed} failed.
+Probe: S01 1366x768 24fps 5.00s · S02 1366x768 24fps 5.00s · ...
+Blocker: {cut} — {what the platform shows} — needs a decision on {options}.</pre>
+          </div>
+          <p style="font-size:13px;color:var(--muted)"><span class="ko">바뀐 것이 없으면 아무 말도 하지 않습니다. 실패한 컷은 기분이 아니라 화면 언어로 — “1280×720 소스, 클립 중반 모션 블러, 왼쪽 가장자리 글리프 흔적”.</span>
+          <span class="en">If nothing changed, say nothing. A failed cut is described in picture terms, not in mood terms.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 05 TROUBLESHOOTING ================= -->
+  <section class="block" id="trouble">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-num">05</div>
+        <div>
+          <h2><span class="ko">문제 해결 — 증상으로 찾기</span><span class="en">Troubleshooting — start from the symptom</span></h2>
+          <p><span class="ko">스킬 문서의 진단표를 한곳에 모았습니다. 원인을 고치고, 결과물을 고치지 않습니다.</span>
+          <span class="en">The diagnostic tables from the skill's references, in one place. Fix the cause, not the output.</span></p>
+        </div>
+      </div>
+
+      <h4 class="mini"><span class="ko">자막·폰트</span><span class="en">Subtitles and fonts</span></h4>
+      <div class="scroll">
+        <table class="tbl">
+          <thead><tr><th><span class="ko">증상</span><span class="en">Symptom</span></th><th><span class="ko">원인</span><span class="en">Cause</span></th><th><span class="ko">해결</span><span class="en">Fix</span></th></tr></thead>
+          <tbody>
+            <tr><td><span class="ko">한글 자막이 네모로 나옴</span><span class="en">Korean renders as boxes</span></td><td><span class="ko">한글 글리프 없는 폰트로 폴백</span><span class="en">libass fell back to a font without Korean glyphs</span></td><td><span class="ko"><code>fonts/</code>에 <code>.ttf</code>를 넣고 <code>:fontsdir=fonts</code> 지정</span><span class="en">put the <code>.ttf</code> in <code>fonts/</code> and pass <code>:fontsdir=fonts</code></span></td></tr>
+            <tr><td><span class="ko">자막이 앱 UI에 가림</span><span class="en">Subtitles sit under the app's UI</span></td><td><span class="ko">9:16 영상에 16:9 세이프존 적용</span><span class="en">a 16:9 safe zone on a 9:16 film</span></td><td><span class="ko">세로는 하단 여백 약 17 %</span><span class="en">bottom margin ≈17 % of height for vertical</span></td></tr>
+            <tr><td><span class="ko">자막이 화면 3분의 1을 덮음</span><span class="en">Subtitles cover a third of the picture</span></td><td><span class="ko">768p 마스터에 2K 타입 크기</span><span class="en">2K type sizes on a 768p master</span></td><td><span class="ko">1366×768 기준 한글 38–42 px, 또는 <code>PlayRes</code>를 프레임에 맞춤</span><span class="en">38–42 px Korean at 1366×768, or scale the ASS <code>PlayRes</code></span></td></tr>
+            <tr><td><span class="ko">큐가 깜빡임</span><span class="en">Cues flicker</span></td><td><span class="ko">큐 사이 간격 없음</span><span class="en">no gap between cues</span></td><td><span class="ko">2–4프레임 간격</span><span class="en">2–4 frames of gap</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class="mini"><span class="ko">편집·인코딩</span><span class="en">Edit and encode</span></h4>
+      <div class="scroll">
+        <table class="tbl">
+          <thead><tr><th><span class="ko">증상</span><span class="en">Symptom</span></th><th><span class="ko">원인</span><span class="en">Cause</span></th><th><span class="ko">해결</span><span class="en">Fix</span></th></tr></thead>
+          <tbody>
+            <tr><td><code>Offset out of range</code></td><td><span class="ko">오프셋이 누적 입력 길이를 넘음</span><span class="en">the offset exceeds the accumulated input</span></td><td><span class="ko"><code>video-mastering-spec §5.3</code>의 프레임 공식으로 재계산</span><span class="en">recompute with the frame formula</span></td></tr>
+            <tr><td><span class="ko">페이드마다 한 프레임 튐</span><span class="en">A one-frame hitch at every fade</span></td><td><span class="ko">fps 혼합 또는 VFR 소스</span><span class="en">mixed fps or VFR sources</span></td><td><span class="ko"><code>xfade</code> 전에 <code>fps=</code>, 출력은 <code>-fps_mode cfr</code></span><span class="en"><code>fps=</code> before <code>xfade</code>, <code>-fps_mode cfr</code> at output</span></td></tr>
+            <tr><td><span class="ko">마스터가 719프레임</span><span class="en">Master is 719 frames, not 720</span></td><td><span class="ko">컷 길이 반올림</span><span class="en">a cut rounded down</span></td><td><span class="ko">마지막 클립이 아니라 컷 프레임을 고침</span><span class="en">fix the cut frames, not the last clip</span></td></tr>
+            <tr><td><span class="ko">마스터에 소리가 들어감</span><span class="en">Audio in the master</span></td><td><span class="ko"><code>-an</code> 없이 인코딩</span><span class="en">an encode without <code>-an</code></span></td><td><span class="ko">정규화된 구간에서 다시 인코딩</span><span class="en">re-encode from the normalised segments</span></td></tr>
+            <tr><td><span class="ko">concat이 스트림 불일치로 거부</span><span class="en">Concat refuses mismatched streams</span></td><td><span class="ko">정규화 누락</span><span class="en">normalisation was incomplete</span></td><td><span class="ko">전체 재인코딩으로 덮지 말고 되돌아감</span><span class="en">go back; do not re-encode everything</span></td></tr>
+            <tr><td><span class="ko">컷 안이 번지거나 뭉개짐</span><span class="en">Blur or smear inside a cut</span></td><td><span class="ko">생성 결함</span><span class="en">a generation fault</span></td><td><span class="ko">필터가 아니라 교체 결정 — 보고하고 대기</span><span class="en">needs a replacement decision, not a filter</span></td></tr>
+            <tr><td><span class="ko">컷이 몇 초 짧음</span><span class="en">A cut is seconds short</span></td><td><span class="ko">타임라인이 틀림</span><span class="en">the timeline is wrong</span></td><td><span class="ko">늘리지 말고 보고. 몇 프레임이면 <code>tpad</code>로 꼬리 유지</span><span class="en">report it; a few frames can hold the tail with <code>tpad</code></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class="mini"><span class="ko">H3 생성 결과가 기대와 다를 때</span><span class="en">When the H3 clip comes back wrong</span></h4>
+      <div class="scroll">
+        <table class="tbl">
+          <thead><tr><th><span class="ko">증상</span><span class="en">Symptom</span></th><th><span class="ko">흔한 원인</span><span class="en">Usual cause</span></th><th><span class="ko">해결</span><span class="en">Fix</span></th></tr></thead>
+          <tbody>
+            <tr><td><span class="ko">서술하지 않은 것이 끼어들거나 샷 순서가 틀림</span><span class="en">Something cut in that was never described, or the wrong order</span></td><td><span class="ko">클립 길이를 넘는 컷 타임, 연속되지 않은 샷 번호</span><span class="en">a cut time beyond the clip length, or non-consecutive shot numbers</span></td><td><span class="ko">타임코드를 고치고 마지막 값을 길이 안에</span><span class="en">correct the timecodes; keep the last one inside the length</span></td></tr>
+            <tr><td><span class="ko">과잉 애니메이션·모프·여분의 팔다리</span><span class="en">Over-animated, morphing, extra limbs</span></td><td><span class="ko">한 샷에 동작이 너무 많다</span><span class="en">too many actions in one shot</span></td><td><span class="ko">샷마다 주 동작 하나 + 부수 움직임 하나</span><span class="en">one primary action plus one secondary motion</span></td></tr>
+            <tr><td><span class="ko">무음이어야 할 컷의 입이 움직임</span><span class="en">Mouth moving on a cut that should be silent</span></td><td><span class="ko">입 규칙 없음, 정면 클로즈업, 본문에 남은 “says”나 가사</span><span class="en">no mouth rule, face-on close-up, a stray “says” or lyric</span></td><td><span class="ko">입 문장 추가, 재구도, 인용 삭제</span><span class="en">add the mouth sentence, reframe, remove the quoted line</span></td></tr>
+            <tr><td><span class="ko">대사가 뭉개지고 삼켜짐</span><span class="en">Dialogue squeezed, words swallowed</span></td><td><span class="ko">길이에 비해 음절이 많다</span><span class="en">too many syllables for the duration</span></td><td><span class="ko">대사를 줄이거나 클립을 늘림</span><span class="en">shorten the line or extend the clip</span></td></tr>
+            <tr><td><span class="ko">피사체가 키프레임에서 벗어남</span><span class="en">Subject drifts from the keyframe</span></td><td><span class="ko">설명이 스틸과 모순되거나 정의되지 않은 라벨</span><span class="en">description contradicts the still, or an undefined label</span></td><td><span class="ko">오프닝을 스틸에 맞게 다시 쓰고 모든 라벨 정의</span><span class="en">rewrite the opening to match the still; define every label</span></td></tr>
+            <tr><td><span class="ko">완곡 소리가 목소리에 섞임</span><span class="en">Full mix bleeding into the voice</span></td><td><span class="ko">보컬 스템 대신 완곡을 주입</span><span class="en">a full mix injected instead of a vocal stem</span></td><td><span class="ko">보컬만 분리한 스템 재주입</span><span class="en">re-inject a vocal-only stem</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <span class="ko"><b>재생성 규율.</b> 요청받은 것만 바꿉니다. 무언가를 고치는 김에 조명·그레이드를 바꾸거나 “더 밝게 / 더 시네마틱하게”를 얹지 않습니다. 모든 재생성은 유료이고, 잘 나온 샷은 건드리지 않는 것이 맞습니다.</span>
+        <span class="en"><b>Regeneration discipline.</b> Change only what was asked. Do not re-light or add “brighter / more cinematic” while fixing something else — each re-roll is paid, and a shot that worked should be left alone.</span>
+      </div>
     </div>
   </section>
 
@@ -1238,7 +1382,7 @@ Dialogue: 0,0:00:03.20,0:00:06.90,EN,,0,0,0,,{\fad(120,120)}the first line of th
   <section class="block" id="download">
     <div class="wrap">
       <div class="sec-head">
-        <div class="sec-num">05</div>
+        <div class="sec-num">06</div>
         <div>
           <h2><span class="ko">스킬 ZIP 다운로드</span><span class="en">Download the skill ZIP</span></h2>
           <p><span class="ko">9개 파일, 2,677줄. 스킬 본문(SKILL.md)과 6개 레퍼런스, 한·영 README가 한 폴더 안에 들어 있습니다.</span>
