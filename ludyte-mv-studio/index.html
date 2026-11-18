@@ -1,0 +1,1547 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ludyte MV Studio — 가사에서 실측된 뮤직비디오 마스터까지 (Claude Skill v1.3.0)</title>
+<meta name="description" content="가사와 레퍼런스 이미지에서 완성된 뮤직비디오 파일까지 감독하는 클로드 스킬. 10컷 스토리보드, 컷당 생성 1건 추적, 768p 무음 비주얼 마스터, 가사 자막·음원 합본 v2 마스터. H3 5모드 규격과 샷 프롬프트 48종, FFmpeg 레시피, 자막 세이프존 수록.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#07080c">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ludyte MV Studio — Claude Skill v1.3.0">
+<meta property="og:description" content="가사 + 레퍼런스 이미지 → 10컷 보드 → 배치 생성 → 768p 무음 비주얼 마스터(v1) → 가사 자막·음원 합본(v2). 샷 프롬프트 48종과 H3 전용 규격 포함.">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23f6b756'/%3E%3Ctext x='16' y='22' font-family='Helvetica,Arial' font-size='13' font-weight='700' text-anchor='middle' fill='%23191307'%3ELM%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#07080c; --panel:#10131b; --panel2:#141826;
+  --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.15);
+  --text:#ece9e4; --muted:#9aa0ae; --dim:#6d7383;
+  --amber:#f6b756; --amber2:#ffd18b; --cyan:#5fd8e6; --violet:#a78bfa;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:"Pretendard","Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Apple SD Gothic Neo",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.66;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+   radial-gradient(900px 520px at 10% -10%,rgba(246,183,86,.15),transparent 62%),
+   radial-gradient(760px 470px at 92% 2%,rgba(95,216,230,.11),transparent 62%),
+   radial-gradient(700px 620px at 50% 105%,rgba(167,139,250,.08),transparent 62%)}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+  background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
+  background-size:64px 64px}
+body[data-lang="ko"] .en{display:none!important}
+body[data-lang="en"] .ko{display:none!important}
+a{color:var(--amber2)}
+h1,h2,h3,h4{line-height:1.24;letter-spacing:-.015em;margin:0}
+p{margin:0 0 12px}
+ul,ol{margin:0 0 12px;padding-left:20px}
+li{margin:4px 0}
+code{font-family:var(--mono);font-size:.9em;background:rgba(255,255,255,.06);padding:1px 5px;border-radius:5px;color:#e9dcc4}
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* header */
+.site-header{position:sticky;top:0;z-index:30;background:rgba(7,8,12,.82);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.hdr{max-width:1180px;margin:0 auto;padding:11px 24px;display:flex;align-items:center;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);flex:none}
+.mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(150deg,#ffd18b,#e5923c);color:#191307;display:grid;place-items:center;font-weight:800;font-size:12.5px}
+.brand b{display:block;font-size:14px;letter-spacing:-.01em;line-height:1.2}
+.brand small{display:block;font-size:10.5px;color:var(--dim);letter-spacing:.04em}
+.nav{display:flex;gap:2px;margin-left:6px;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav a{padding:7px 10px;border-radius:8px;color:var(--muted);text-decoration:none;font-size:13px;white-space:nowrap}
+.nav a:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:8px;flex:none}
+.lang{display:flex;border:1px solid var(--line2);border-radius:9px;overflow:hidden}
+.lang button{background:none;border:0;color:var(--muted);font:inherit;font-size:11.5px;padding:6px 9px;cursor:pointer;letter-spacing:.04em}
+.lang button[aria-pressed="true"]{background:rgba(246,183,86,.18);color:var(--amber2)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 17px;border-radius:11px;font-size:14px;font-weight:650;text-decoration:none;border:1px solid transparent;cursor:pointer;font-family:inherit;transition:transform .12s ease,box-shadow .12s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:linear-gradient(158deg,#fbc978,#e5923c);color:#1a1205;box-shadow:0 10px 26px rgba(233,150,60,.2)}
+.btn-ghost{border-color:var(--line2);color:var(--text);background:rgba(255,255,255,.035)}
+.btn-sm{padding:7px 12px;font-size:12px;border-radius:9px;font-weight:600}
+.dl{white-space:nowrap}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.08fr .92fr;gap:46px;align-items:center;padding:66px 0 44px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin:0 0 18px;padding:5px 10px;border:1px solid rgba(246,183,86,.28);border-radius:999px;background:rgba(246,183,86,.07)}
+.hero h1{font-size:clamp(30px,4.2vw,46px);font-weight:800;margin:0 0 16px}
+.hero h1 em{font-style:normal;background:linear-gradient(100deg,#ffd18b,#f6b756 45%,#5fd8e6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{font-size:15.5px;color:#c6c9d2;max-width:56ch}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin:24px 0 0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:30px}
+.stat{border:1px solid var(--line);border-radius:12px;padding:11px 13px;background:rgba(255,255,255,.022)}
+.stat b{display:block;font-size:19px;font-weight:750;letter-spacing:-.02em}
+.stat span{font-size:11px;color:var(--dim);line-height:1.35;display:block;margin-top:2px}
+
+/* probe mock */
+.mastercard{border:1px solid var(--line2);border-radius:18px;background:linear-gradient(180deg,rgba(20,24,38,.95),rgba(10,12,19,.95));box-shadow:0 30px 70px rgba(0,0,0,.55);overflow:hidden}
+.mc-top{display:flex;align-items:center;gap:7px;padding:11px 14px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.02)}
+.dot{width:9px;height:9px;border-radius:50%}
+.mc-top span.t{font-family:var(--mono);font-size:11px;color:var(--dim);margin-left:6px;letter-spacing:.05em}
+.mc-body{padding:15px 16px 17px}
+.mrow{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px dashed var(--line)}
+.mrow:last-child{border-bottom:0;padding-bottom:2px}
+.mfile{font-family:var(--mono);font-size:12px;color:#e7e2d7}
+.mfile b{color:var(--amber2);font-weight:600}
+.mtag{font-family:var(--mono);font-size:10px;letter-spacing:.06em;padding:2px 6px;border-radius:5px;border:1px solid var(--line2);color:var(--muted);white-space:nowrap}
+.mnum{font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:3px;line-height:1.7}
+.ok{color:#7fdca6}
+
+/* section shell */
+section.block{padding:56px 0;border-top:1px solid var(--line)}
+.sec-head{display:flex;gap:18px;align-items:flex-start;margin-bottom:26px}
+.sec-num{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--amber);padding-top:6px;flex:none}
+.sec-head h2{font-size:clamp(21px,2.6vw,29px);font-weight:780}
+.sec-head p{margin:8px 0 0;color:var(--muted);font-size:14.5px;max-width:74ch}
+h3.sub{font-size:16.5px;font-weight:700;margin:34px 0 12px;display:flex;align-items:center;gap:9px}
+h3.sub::before{content:"";width:5px;height:16px;border-radius:2px;background:linear-gradient(180deg,var(--amber),rgba(246,183,86,.25))}
+h4.mini{font-size:13.5px;font-weight:700;margin:20px 0 8px;color:#dcd7cc;letter-spacing:.01em}
+
+/* stages */
+.stages{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:8px 0 22px}
+.stage{position:relative;border:1px solid var(--line);border-radius:16px;padding:16px 15px;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.012))}
+.stage .n{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--amber)}
+.stage h3{font-size:14.5px;margin:7px 0 8px}
+.stage ul{list-style:none;padding:0;margin:0;font-size:12.5px;color:var(--muted)}
+.stage li{margin:3px 0;display:flex;gap:6px}
+.stage li b{color:var(--dim);font-weight:600;flex:none;font-size:10.5px;font-family:var(--mono);padding-top:2px;letter-spacing:.05em}
+.stage .gate{margin-top:11px;padding-top:9px;border-top:1px dashed var(--line2);font-size:11px;color:var(--cyan);line-height:1.5}
+.stage:not(:last-child)::after{content:"→";position:absolute;right:-12px;top:50%;transform:translateY(-50%);color:#4d5261;font-size:14px}
+
+/* tables */
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.014);-webkit-overflow-scrolling:touch}
+table.tbl{width:100%;border-collapse:collapse;font-size:13.5px;min-width:520px}
+.tbl th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:650;padding:11px 13px;border-bottom:1px solid var(--line2);white-space:nowrap;background:rgba(255,255,255,.022)}
+.tbl td{padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;color:#cfd3dc}
+.tbl tr:last-child td{border-bottom:0}
+.tbl td:first-child{color:var(--text);font-weight:600}
+.tbl .mono{font-family:var(--mono);font-size:12px;color:#dfe3ea}
+.tbl tr:hover td{background:rgba(255,255,255,.018)}
+
+/* code */
+.code{position:relative;margin:14px 0}
+.code pre{margin:0;padding:15px 16px;background:#0a0c12;border:1px solid var(--line2);border-radius:12px;overflow:auto;font-family:var(--mono);font-size:12.3px;line-height:1.7;color:#cdd4e0;white-space:pre;tab-size:2}
+.code .cp{position:absolute;top:9px;right:9px;opacity:.75}
+.code:hover .cp{opacity:1}
+.cp{background:rgba(255,255,255,.07);border:1px solid var(--line2);color:var(--muted);font-family:var(--mono);font-size:10.5px;padding:5px 9px;border-radius:7px;cursor:pointer;letter-spacing:.05em}
+.cp:hover{color:var(--text);background:rgba(255,255,255,.12)}
+.cp.copied{color:#8fe3c0;border-color:rgba(143,227,192,.45);background:rgba(143,227,192,.12)}
+.prompt-label{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;display:block;margin:0 0 6px}
+
+/* notes & lists */
+.note{border-left:2px solid var(--amber);background:rgba(246,183,86,.07);border-radius:0 10px 10px 0;padding:12px 16px;font-size:13.5px;color:#e8dfcd;margin:14px 0}
+.note.cyan{border-color:var(--cyan);background:rgba(95,216,230,.07);color:#d3ebee}
+.note.warn{border-color:#ff9c7a;background:rgba(255,156,122,.08);color:#f2ddd4}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{border:1px solid var(--line);border-radius:14px;padding:16px;background:rgba(255,255,255,.022)}
+.card h4{margin:0 0 8px;font-size:13.5px}
+.card p:last-child,.card ul:last-child{margin-bottom:0}
+.card p,.card li{font-size:13px;color:var(--muted)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:13px;margin:0}
+.kv dt{font-family:var(--mono);font-size:11.5px;color:var(--amber2);white-space:nowrap}
+.kv dd{margin:0;color:var(--muted)}
+.check{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+.check li{position:relative;padding-left:24px;font-size:13.2px;color:#cbd0da}
+.check li::before{content:"";position:absolute;left:0;top:5px;width:13px;height:13px;border:1px solid var(--line2);border-radius:4px}
+.pill{display:inline-block;font-family:var(--mono);font-size:10.5px;padding:2px 7px;border-radius:999px;border:1px solid var(--line2);color:var(--muted);letter-spacing:.04em}
+.pill.a{color:var(--amber2);border-color:rgba(246,183,86,.35);background:rgba(246,183,86,.08)}
+
+/* prompt explorer */
+.pctrl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 14px}
+.search{flex:1 1 260px;min-width:200px;position:relative}
+.search input{width:100%;padding:11px 13px 11px 36px;border-radius:11px;border:1px solid var(--line2);background:rgba(255,255,255,.04);color:var(--text);font-family:inherit;font-size:13.5px;outline:none}
+.search input:focus{border-color:rgba(246,183,86,.55);box-shadow:0 0 0 3px rgba(246,183,86,.12)}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.5}
+.count{font-family:var(--mono);font-size:12px;color:var(--dim);white-space:nowrap}
+.count b{color:var(--amber2)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px}
+.chips button{font-family:inherit;font-size:12.2px;padding:6px 11px;border-radius:999px;border:1px solid var(--line2);background:rgba(255,255,255,.03);color:var(--muted);cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.chips button i{font-family:var(--mono);font-size:10px;font-style:normal;color:var(--dim)}
+.chips button[aria-pressed="true"]{background:rgba(246,183,86,.15);border-color:rgba(246,183,86,.45);color:var(--amber2)}
+.chips button[aria-pressed="true"] i{color:rgba(255,209,139,.7)}
+.pcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,336px),1fr));gap:14px}
+.pcard{border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,rgba(20,24,37,.9),rgba(14,17,26,.9));display:flex;flex-direction:column;overflow:hidden}
+.pcard[hidden]{display:none}
+.pc-head{padding:13px 14px 8px;display:flex;gap:9px;align-items:flex-start}
+.pc-n{font-family:var(--mono);font-size:11.5px;font-weight:700;padding:3px 6px;border-radius:6px;background:rgba(246,183,86,.16);color:var(--amber2);flex:none;margin-top:1px}
+.pc-t{font-size:13.8px;font-weight:660;line-height:1.38}
+.pc-t small{display:block;font-weight:500;font-size:11.3px;color:var(--dim);margin-top:3px;letter-spacing:.01em}
+.pc-meta{display:flex;flex-wrap:wrap;gap:5px;padding:0 14px 11px}
+.chip{font-family:var(--mono);font-size:10px;letter-spacing:.04em;padding:2px 6px;border-radius:5px;border:1px solid var(--line2);color:var(--muted);white-space:nowrap}
+.chip.no-lip{color:#8fe3c0;border-color:rgba(143,227,192,.32);background:rgba(143,227,192,.07)}
+.chip.perf{color:#ffb3c7;border-color:rgba(255,179,199,.32);background:rgba(255,179,199,.07)}
+.chip.insert{color:#a9c8ff;border-color:rgba(169,200,255,.32);background:rgba(169,200,255,.07)}
+.chip.face{color:#ffe08a;border-color:rgba(255,224,138,.3);background:rgba(255,224,138,.06)}
+.chip.h3{color:#c9b8ff;border-color:rgba(167,139,250,.35);background:rgba(167,139,250,.09)}
+.pc-body{position:relative;border-top:1px solid var(--line);flex:1;display:flex;flex-direction:column}
+.pc-pre{margin:0;padding:12px 14px 4px;font-family:var(--mono);font-size:11.4px;line-height:1.62;color:#c9cfdb;white-space:pre-wrap;word-break:break-word;overflow:hidden;max-height:172px;
+  -webkit-mask-image:linear-gradient(180deg,#000 60%,transparent 100%);mask-image:linear-gradient(180deg,#000 60%,transparent 100%)}
+.pcard.open .pc-pre{max-height:none;-webkit-mask-image:none;mask-image:none}
+.pc-foot{display:flex;gap:7px;padding:10px 14px 13px;border-top:1px solid var(--line);align-items:center;margin-top:auto}
+.pc-foot .sp{flex:1}
+.mini-btn{font-family:inherit;font-size:11.5px;padding:6px 10px;border-radius:8px;border:1px solid var(--line2);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer}
+.mini-btn:hover{color:var(--text);background:rgba(255,255,255,.09)}
+.mini-btn.copied{color:#8fe3c0;border-color:rgba(143,227,192,.45);background:rgba(143,227,192,.13)}
+.empty{border:1px dashed var(--line2);border-radius:12px;padding:34px;text-align:center;color:var(--dim);font-size:13.5px}
+
+/* download */
+.dlwrap{display:grid;grid-template-columns:1.05fr .95fr;gap:20px}
+.zipcard{border:1px solid rgba(246,183,86,.3);border-radius:18px;padding:22px;background:linear-gradient(160deg,rgba(246,183,86,.1),rgba(246,183,86,.02) 60%,rgba(95,216,230,.05));display:flex;flex-direction:column;gap:14px}
+.zipcard h3{font-size:19px}
+.zipcard .meta{font-family:var(--mono);font-size:11.5px;color:var(--muted);line-height:1.9}
+.tree{font-family:var(--mono);font-size:12px;line-height:1.85;color:#c3c9d4;margin:0;padding:14px 16px;background:#0a0c12;border:1px solid var(--line2);border-radius:12px;overflow:auto;white-space:pre}
+.tree b{color:var(--amber2);font-weight:600}
+.tree i{color:var(--dim);font-style:normal}
+.hash{font-family:var(--mono);font-size:10.5px;color:var(--dim);word-break:break-all;line-height:1.7}
+
+/* footer */
+footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px 0 46px;margin-top:20px}
+.foot{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;font-size:12px;color:var(--dim)}
+.foot strong{color:var(--muted);font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:8px;font-size:11.5px;color:var(--dim);margin-top:10px}
+
+@media (max-width:980px){
+  .hero{grid-template-columns:1fr;gap:30px;padding:44px 0 34px}
+  .stages{grid-template-columns:1fr 1fr}
+  .stage:not(:last-child)::after{display:none}
+  .grid2,.grid3,.dlwrap{grid-template-columns:1fr}
+  .nav{display:none}
+  section.block{padding:42px 0}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  .hdr{padding:10px 14px;gap:10px}
+  .brand small{display:none}
+  .stats{grid-template-columns:1fr 1fr}
+  .stages{grid-template-columns:1fr}
+  .sec-head{gap:10px}
+  .hero-actions .btn{flex:1 1 auto;justify-content:center}
+  .tbl th,.tbl td{padding:9px 10px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body data-lang="ko">
+
+<header class="site-header">
+  <div class="hdr">
+    <a class="brand" href="#top">
+      <span class="mark">LM</span>
+      <span><b>Ludyte MV Studio</b><small>CLAUDE SKILL · v1.3.0</small></span>
+    </a>
+    <nav class="nav" aria-label="섹션">
+      <a href="#pipeline"><span class="ko">개요</span><span class="en">Pipeline</span></a>
+      <a href="#h3">H3 5모드</a>
+      <a href="#prompts"><span class="ko">프롬프트 48</span><span class="en">48 prompts</span></a>
+      <a href="#spec"><span class="ko">제작 규격</span><span class="en">Specs</span></a>
+      <a href="#download"><span class="ko">다운로드</span><span class="en">Download</span></a>
+    </nav>
+    <div class="hdr-right">
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-setlang="ko" aria-pressed="true">KO</button>
+        <button type="button" data-setlang="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="btn btn-primary btn-sm dl" href="./ludyte-mv-studio-skill-v1.3.0.zip" download>
+        <span class="ko">ZIP 받기</span><span class="en">Get ZIP</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <div class="wrap">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Claude skill · 4 stages · 4 gates</p>
+        <h1>
+          <span class="ko">가사 한 장에서<br><em>실측된 마스터 파일</em>까지</span>
+          <span class="en">From a lyric sheet to<br><em>a probed master file</em></span>
+        </h1>
+        <p class="lede">
+          <span class="ko">뮤직비디오를 4단계로 감독하는 클로드 스킬입니다. 10컷 스토리보드와 무립싱크 프롬프트를 설계하고, 컷마다 생성 1건만 추적하고, 768p 무음 비주얼 마스터(v1)를 프레임 단위로 조립한 뒤 — 같은 실행에서 가사 자막과 음원을 합친 v2 마스터까지 함께 냅니다.</span>
+          <span class="en">A Claude skill that directs a music video in four stages: a 10-cut board with no-lip-sync prompts, one tracked generation per cut, a 768p silent visual master (v1) assembled frame by frame, and — in the same run — a v2 lyric master with burned subtitles and your own track.</span>
+        </p>
+        <div class="stats">
+          <div class="stat"><b>4</b><span class="ko">단계 · 단계마다 게이트</span><span class="en">stages, each with a gate</span></div>
+          <div class="stat"><b>48</b><span class="ko">바로 붙여 쓰는 샷 프롬프트</span><span class="en">ready-to-paste shot prompts</span></div>
+          <div class="stat"><b>5</b><span class="ko">H3 프롬프트 모드</span><span class="en">H3 prompt modes</span></div>
+          <div class="stat"><b>768p</b><span class="ko">기본 해상도 (스틸·클립·마스터)</span><span class="en">default (stills, clips, masters)</span></div>
+        </div>
+        <div class="hero-actions">
+          <a class="btn btn-primary dl" href="./ludyte-mv-studio-skill-v1.3.0.zip" download>
+            <span class="ko">스킬 ZIP 내려받기 · 63.3 KB</span><span class="en">Download the skill ZIP · 63.3 KB</span>
+          </a>
+          <a class="btn btn-ghost" href="#prompts"><span class="ko">프롬프트 48종 보기</span><span class="en">Browse the 48 prompts</span></a>
+        </div>
+      </div>
+
+      <div class="mastercard" aria-hidden="true">
+        <div class="mc-top">
+          <span class="dot" style="background:#ff5f57"></span>
+          <span class="dot" style="background:#febc2e"></span>
+          <span class="dot" style="background:#28c840"></span>
+          <span class="t">out/ · ffprobe · delivered</span>
+        </div>
+        <div class="mc-body">
+          <div class="mrow">
+            <div>
+              <div class="mfile"><b>v1_visual_master.mp4</b></div>
+              <div class="mnum">720 frames · 24/1 fps · 1366×768<br>30.000 s · yuv420p · <span class="ok">no audio</span></div>
+            </div>
+            <span class="mtag">SILENT</span>
+          </div>
+          <div class="mrow">
+            <div>
+              <div class="mfile"><b>v2_lyric_master.mp4</b></div>
+              <div class="mnum">720 frames · 24/1 fps · 1366×768<br>30.000 s · aac 192k · <span class="ok">track muxed</span></div>
+            </div>
+            <span class="mtag">LYRICS</span>
+          </div>
+          <div class="mrow">
+            <div>
+              <div class="mfile">subs/lyrics.ass · subs/lyrics.srt</div>
+              <div class="mnum">34 cues · PlayRes 1366×768 · same timing<br>last cue cleared before the final frame</div>
+            </div>
+            <span class="mtag">TEXT</span>
+          </div>
+          <div class="mrow">
+            <div>
+              <div class="mfile">out/master_report.md</div>
+              <div class="mnum">per-cut source · frames · upscales · defects<br>what was <b>not</b> verified</div>
+            </div>
+            <span class="mtag">REPORT</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ================= 01 PIPELINE ================= -->
+  <section class="block" id="pipeline">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-num">01</div>
+        <div>
+          <h2><span class="ko">개요 &amp; Stage 1–4 파이프라인</span><span class="en">Overview &amp; the Stage 1–4 pipeline</span></h2>
+          <p><span class="ko">계약은 네 단계, 게이트도 네 개입니다. 각 단계는 앞 단계의 결과물을 입력으로 받고, 파일에서 실측하기 전에는 다음 단계로 넘어가지 않습니다.</span>
+          <span class="en">The contract is four stages and four gates. Each stage takes the previous output as input, and none of them advances until the file itself has been measured.</span></p>
+        </div>
+      </div>
+
+      <div class="stages">
+        <div class="stage">
+          <div class="n">STAGE 01</div>
+          <h3><span class="ko">보드</span><span class="en">Board</span></h3>
+          <ul>
+            <li><b>IN</b><span><span class="ko">가사 + 레퍼런스 이미지 + 목표 러닝타임</span><span class="en">lyrics, reference images, target runtime</span></span></li>
+            <li><b>OUT</b><span><span class="ko">10컷 보드 · 스타일 바이블 · 키프레임 스틸 · 컷별 프롬프트</span><span class="en">10-cut board, style bible, keyframe stills, per-cut prompts</span></span></li>
+          </ul>
+          <div class="gate"><span class="ko">게이트 — 보드 승인 (또는 사전 승인된 실행)</span><span class="en">Gate — board approved (or the run is pre-authorized)</span></div>
+        </div>
+        <div class="stage">
+          <div class="n">STAGE 02</div>
+          <h3><span class="ko">배치</span><span class="en">Batch</span></h3>
+          <ul>
+            <li><b>IN</b><span><span class="ko">승인된 보드 + 스틸</span><span class="en">approved board + stills</span></span></li>
+            <li><b>OUT</b><span><span class="ko">컷당 클립 1개, 매니페스트에 기록</span><span class="en">one clip per cut, logged in the manifest</span></span></li>
+          </ul>
+          <div class="gate"><span class="ko">게이트 — 모든 컷 DONE·다운로드 완료, 또는 실제 블로커 보고</span><span class="en">Gate — every cut DONE and downloaded, or a real blocker reported</span></div>
+        </div>
+        <div class="stage">
+          <div class="n">STAGE 03</div>
+          <h3><span class="ko">비주얼 마스터</span><span class="en">Visual master</span></h3>
+          <ul>
+            <li><b>IN</b><span><span class="ko">다운로드한 원본 클립</span><span class="en">downloaded clips</span></span></li>
+            <li><b>OUT</b><span class="mono">v1_visual_master.mp4</span></li>
+          </ul>
+          <div class="gate"><span class="ko">게이트 — 파일에서 프레임·fps·해상도·무음 실측</span><span class="en">Gate — frames, fps, resolution and silence verified on the file</span></div>
+        </div>
+        <div class="stage">
+          <div class="n">STAGE 04</div>
+          <h3><span class="ko">가사 마스터</span><span class="en">Lyric master</span></h3>
+          <ul>
+            <li><b>IN</b><span><span class="ko">v1 + 가사 시트 + 음원</span><span class="en">v1 + lyric sheet + track</span></span></li>
+            <li><b>OUT</b><span class="mono">v2_lyric_master.mp4</span></li>
+          </ul>
+          <div class="gate"><span class="ko">게이트 — 프레임에서 큐 타이밍·세이프존 확인, 오디오 검증</span><span class="en">Gate — every cue's timing and safe zone checked on frames</span></div>
+        </div>
+      </div>
+
+      <div class="note cyan">
+        <span class="ko"><b>한 번의 실행, 두 개의 마스터.</b> 음원과 가사(파일의 <code>USLT</code> 태그도 포함)가 함께 주어졌다면 3단계에서 멈추지 않습니다. 무음 마스터를 렌더·실측한 직후 같은 실행에서 자막을 굽고 음원을 합쳐 <code>v1</code>과 <code>v2</code>를 동시에 냅니다. 무음만 요청받은 경우에만 v1에서 멈춥니다.</span>
+        <span class="en"><b>One run, two masters.</b> When a track and lyrics arrive together (an audio file with embedded <code>USLT</code> tags counts), the run does not stop at stage 3: right after the silent master is rendered and probed, it burns the subtitles, muxes the track and delivers <code>v1</code> and <code>v2</code> together. Only a silent-only request stops at v1.</span>
+      </div>
+
+      <h3 class="sub"><span class="ko">4단계 계약표</span><span class="en">The four-stage contract</span></h3>
+      <div class="scroll">
+        <table class="tbl">
+          <thead><tr>
+            <th><span class="ko">단계</span><span class="en">Stage</span></th>
+            <th><span class="ko">입력</span><span class="en">Input</span></th>
+            <th><span class="ko">결과물</span><span class="en">Output</span></th>
+            <th><span class="ko">게이트</span><span class="en">Gate</span></th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="ko">1 · 보드</span><span class="en">1 · Board</span></td>
+              <td><span class="ko">가사 + 레퍼런스 이미지 + 목표 러닝타임</span><span class="en">lyrics + reference image(s) + target runtime</span></td>
+              <td><span class="ko">10컷 보드, 키프레임 스틸, 컷별 프롬프트</span><span class="en">10-cut board, keyframe stills, per-cut prompts</span></td>
+              <td><span class="ko">보드 승인</span><span class="en">board approved</span></td>
+            </tr>
+            <tr>
+              <td><span class="ko">2 · 배치</span><span class="en">2 · Batch</span></td>
+              <td><span class="ko">승인된 보드 + 스틸</span><span class="en">approved board + stills</span></td>
+              <td><span class="ko">컷당 생성 클립 1개, 매니페스트 기록</span><span class="en">one generated clip per cut, logged</span></td>
+              <td><span class="ko">전 컷 DONE·다운로드, 또는 블로커 보고</span><span class="en">every cut DONE and downloaded, or a blocker</span></td>
+            </tr>
+            <tr>
+              <td><span class="ko">3 · 비주얼 마스터</span><span class="en">3 · Visual master</span></td>
+              <td><span class="ko">다운로드한 클립</span><span class="en">downloaded clips</span></td>
+              <td><span class="mono">v1_visual_master.mp4</span> — <span class="ko">정확한 러닝타임, 768p, 무음</span><span class="en">exact runtime, 768p, silent</span></td>
+              <td><span class="ko">실측(프레임·fps·해상도·오디오)</span><span class="en">probe: frames, fps, resolution, audio</span></td>
+            </tr>
+            <tr>
+              <td><span class="ko">4 · 가사 마스터</span><span class="en">4 · Lyric master</span></td>
+              <td>v1 + <span class="ko">가사 시트(또는 내장 USLT) + 음원</span><span class="en">lyric sheet (or USLT) + the track</span></td>
+              <td><span class="mono">v2_lyric_master.mp4</span> — <span class="ko">자막 번인 + 음원</span><span class="en">burned subtitles + track</span></td>
+              <td><span class="ko">큐 타이밍·세이프존 프레임 확인, 오디오 검증</span><span class="en">cue timing and safe zone on frames, audio verified</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub"><span class="ko">세 가지가 이 작업 전체를 붙잡고 있습니다</span><span class="en">Three things hold the whole job together</span></h3>
+      <div class="grid3">
+        <div class="card">
+          <h4><span class="ko">러닝타임은 척추</span><span class="en">Runtime is the spine</span></h4>
+          <p><span class="ko">1단계에서 초 <em>그리고</em> 프레임 수로 고정하고, 편집은 그 숫자에서 흔들리지 않습니다. 30초 · 24fps는 720프레임이며 “대략 30초”는 없습니다. 컷 길이, 크로스페이드, 자막 큐가 모두 그 숫자에 대한 산수입니다.</span>
+          <span class="en">Fix it in stage 1 in seconds <em>and</em> frames; every cut length, crossfade and subtitle cue is arithmetic against that number. 30 s at 24 fps is 720 frames — never “about 30 seconds”.</span></p>
+        </div>
+        <div class="card">
+          <h4><span class="ko">생성은 이미 지불한 돈</span><span class="en">A generation is money already spent</span></h4>
+          <p><span class="ko">생성 태스크 하나는 이미 결제된 주문입니다. 재생성·재제출·구매·취소는 지불하는 사람만 결정할 수 있고, 스킬은 결함을 한 번 보고하고 멈춥니다.</span>
+          <span class="en">Each generation task is an order already paid for. Nothing authorizes a re-roll, resubmit, purchase or cancel — only the person paying can say yes, so the skill reports the fault once and stops.</span></p>
+        </div>
+        <div class="card">
+          <h4><span class="ko">파일을 실측하기 전엔 끝이 아님</span><span class="en">Not done until the file is measured</span></h4>
+          <p><span class="ko">“720 frames, 24/1 fps, 1366×768, no audio, 30.000 s”는 QC 합격입니다. “잘 나왔다”는 합격이 아닙니다.</span>
+          <span class="en">“720 frames, 24/1 fps, 1366×768, no audio, 30.000 s” is a QC pass. “Looks good” is not.</span></p>
+        </div>
+      </div>
+
+      <h3 class="sub"><span class="ko">해상도 — 768p가 기본</span><span class="en">Resolution — 768p by default</span></h3>
+      <div class="grid2">
+        <div class="card">
+          <h4><span class="ko">키프레임·클립·마스터의 기본 프레임</span><span class="en">The default frame for stills, clips and masters</span></h4>
+          <dl class="kv">
+            <dt>16:9</dt><dd><b>1366×768</b> <span class="ko">— 플랫폼이 <code>1344×756</code>·<code>1280×768</code>·<code>1280×720</code> 같은 768급 프레임을 돌려주면 probe가 확인한 그 프레임으로 영화 전체를 정규화합니다.</span><span class="en">— if the platform's 768p tier returns <code>1344×756</code>, <code>1280×768</code> or <code>1280×720</code>, the probe decides and the whole film is normalised to that one frame.</span></dd>
+            <dt>9:16</dt><dd><b>768×1366</b> <span class="ko">— 세로형 숏폼·릴스</span><span class="en">— vertical shorts and reels</span></dd>
+            <dt>1080p</dt><dd><span class="ko">1920×1080 — 요청 시에만, “업스케일”로 표기</span><span class="en">1920×1080 — on request only, labelled upscaled</span></dd>
+            <dt>2K</dt><dd><span class="ko">2560×1440 / 1440×2560 — 요청 시에만, “업스케일”로 표기</span><span class="en">2560×1440 / 1440×2560 — on request only, labelled upscaled</span></dd>
+          </dl>
+        </div>
+        <div class="card">
+          <h4><span class="ko">왜 기본값이 768p인가</span><span class="en">Why 768p is the default</span></h4>
+          <ul>
+            <li><span class="ko">상위 티어는 큐가 느리고 건당 비용이 비싸지만, 클립이 담지 못한 디테일을 마스터에서 되살릴 수는 없습니다.</span><span class="en">Higher tiers queue slower and cost more per task, and a bigger master cannot show detail the clips never had.</span></li>
+            <li><span class="ko">스틸·모든 클립·런 락·v1·v2 마스터가 같은 프레임을 씁니다 — 한 편의 영화는 두 프레임을 섞지 않습니다.</span><span class="en">Stills, every clip, the run lock and both masters use one frame — a film never mixes frames.</span></li>
+            <li><span class="ko">업스케일은 별도 파일로 렌더하고 768p 마스터 옆에 두며, 리포트에 업스케일이라고 적습니다. 네이티브 2K라고 부르지 않습니다.</span><span class="en">An upscale is a separate file rendered beside the 768p master and named as an upscale in the report — never called native 2K.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="sub"><span class="ko">납품물 — 두 개의 마스터</span><span class="en">Deliverables — two masters</span></h3>
+      <div class="scroll">
+        <table class="tbl">
+          <thead><tr>
+            <th><span class="ko">파일</span><span class="en">File</span></th>
+            <th><span class="ko">내용</span><span class="en">Content</span></th>
+            <th><span class="ko">소리</span><span class="en">Audio</span></th>
+            <th><span class="ko">용도</span><span class="en">Purpose</span></th>
+          </tr></thead>
+          <tbody>
+            <tr><td class="mono">v1_visual_master.mp4</td>
+              <td><span class="ko">화면만, 글자 없음</span><span class="en">picture only, no text</span></td>
+              <td><span class="ko">없음 (설계상 무음)</span><span class="en">none, silent by design</span></td>
+              <td><span class="ko">승인받을 편집본이자 클린 마스터</span><span class="en">the edit that gets approved; the clean master</span></td></tr>
+            <tr><td class="mono">v2_lyric_master.mp4</td>
+              <td><span class="ko">v1 + 가사 자막 번인</span><span class="en">v1 with lyric subtitles burned in</span></td>
+              <td><span class="ko">소유자의 음원</span><span class="en">the owner's own track</span></td>
+              <td><span class="ko">납품본</span><span class="en">the delivery version</span></td></tr>
+            <tr><td class="mono">subs/lyrics.ass</td>
+              <td><span class="ko">스타일 원본 (언어별 스타일, PlayRes = 마스터 픽셀)</span><span class="en">styled source, per-language styles, PlayRes = master pixels</span></td>
+              <td>—</td>
+              <td><span class="ko">이중 언어 번인·수정의 원본</span><span class="en">bilingual burning and later corrections</span></td></tr>
+            <tr><td class="mono">subs/lyrics.srt</td>
+              <td><span class="ko">범용 사본, ASS와 타이밍 동일</span><span class="en">portable copy, identical timings</span></td>
+              <td>—</td>
+              <td><span class="ko">플랫폼 캡션 업로드용</span><span class="en">platform captions</span></td></tr>
+            <tr><td class="mono">out/master_report.md</td>
+              <td><span class="ko">타임라인, 컷별 소스·프레임, probe 숫자, 결함, <b>확인하지 못한 것</b></span><span class="en">timeline, per-cut source and frames, probe numbers, defects, <b>what was not verified</b></span></td>
+              <td>—</td>
+              <td><span class="ko">재컷·재생성을 결정할 근거</span><span class="en">the basis for a re-cut or regeneration</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub"><span class="ko">이 스킬이 하지 않는 일</span><span class="en">What it will not do</span></h3>
+      <ul class="check">
+        <li><span class="ko">크레딧 구매, 플랜 업그레이드, 좌석 추가, 부계정 생성으로 작업을 끝내지 않습니다.</span><span class="en">Buy credits, upgrade a plan, add seats or open a second account to finish a film.</span></li>
+        <li><span class="ko">마음에 안 드는 컷을 스스로 재생성·재제출하지 않습니다. 결함을 한 번 보고하고 결정을 기다립니다.</span><span class="en">Re-roll, resubmit or regenerate a cut on its own judgement — it reports the fault once and waits.</span></li>
+        <li><span class="ko">진행 중인 작업을 슬롯 확보를 위해 취소하지 않고, PASS·FAIL 표시된 파일을 덮어쓰지 않습니다.</span><span class="en">Cancel an in-flight job to free a slot, or overwrite a file marked PASS or FAIL.</span></li>
+        <li><span class="ko">프롬프트에 가사를 인용하거나 립싱크를 요청하거나, 요청 없이 화면 글자를 넣지 않습니다. 요청받은 퍼포먼스 컷만 예외입니다.</span><span class="en">Quote lyrics, request lip sync, or accept on-screen text unless asked — a requested performance cut is the only exception.</span></li>
+        <li><span class="ko">업스케일한 컷을 “네이티브 2K”라 하지 않고, 무음 마스터를 “믹스”라 하지 않고, 확인하지 않은 컷을 “합격”이라 하지 않습니다.</span><span class="en">Call an upscaled clip native 2K, a silent master a mix, or an unverified cut a pass.</span></li>
+        <li><span class="ko">음악을 구하거나 생성하지 않습니다. 음원은 항상 소유자의 파일입니다.</span><span class="en">Source, license or generate music. The track is always the owner's.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= 02 H3 ================= -->
+  <section class="block" id="h3">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-num">02</div>
+        <div>
+          <h2><span class="ko">MiniMax H3 · 5모드 가이드</span><span class="en">MiniMax H3 · the five-mode guide</span></h2>
+          <p><span class="ko">H3는 자유 산문이 아니라 <b>구조화된 프롬프트</b>로 학습된 모델입니다. 컷 전환·카메라 무브·입 모양·사운드는 그 형식 토큰을 따를 때 확연히 정확해집니다. 그래서 엔진이 H3(또는 H3를 쓰는 플랫폼)라면 1단계에서 쓴 문단을 그대로 보내지 않고, 모드 → 정렬 문장 → 3필드(또는 6섹션) 구조로 다시 씁니다.</span>
+          <span class="en">H3 was trained on a <b>structured</b> prompt format, not on free prose: shot changes, camera moves, dialogue mouth-shape and sound come out markedly more accurate when the format tokens are respected. When the engine is H3 (or a platform fronting it), the paragraph written in stage 1 is re-addressed as mode → alignment line → three fields (or six sections).</span></p>
+        </div>
+      </div>
+
+      <h3 class="sub"><span class="ko">모드 분기표 — 첨부와 역할이 모드를 결정한다</span><span class="en">Mode branch table — the attachments decide the mode</span></h3>
+      <div class="scroll">
+        <table class="tbl">
+          <thead><tr>
+            <th><span class="ko">입력</span><span class="en">Input</span></th>
+            <th><span class="ko">모드</span><span class="en">Mode</span></th>
+            <th><span class="ko">구조</span><span class="en">Structure</span></th>
+            <th><span class="ko">본문 필드</span><span class="en">Body field</span></th>
+          </tr></thead>
+          <tbody>
+            <tr><td><span class="ko">텍스트만 (레퍼런스 없음)</span><span class="en">Text only, no reference</span></td>
+              <td class="mono">T2VA</td><td><span class="ko">3필드, 정렬 문장 없음</span><span class="en">3 fields, no alignment line</span></td><td class="mono">integrated_multimodal_description</td></tr>
+            <tr><td><span class="ko">이미지 1장 · 역할 = 첫 프레임</span><span class="en">One image, role = first frame</span></td>
+              <td class="mono">I2VA</td><td><span class="ko">정렬 문장 + 3필드</span><span class="en">alignment line + 3 fields</span></td><td class="mono">integrated_multimodal_description</td></tr>
+            <tr><td><span class="ko">첫 프레임 + 마지막 프레임</span><span class="en">First frame + last frame</span></td>
+              <td class="mono">FL2VA</td><td><span class="ko">정렬 문장 + 3필드 · 두 프레임 사이의 경로를 서술</span><span class="en">alignment line + 3 fields · describe the path between the frames</span></td><td class="mono">integrated_multimodal_description</td></tr>
+            <tr><td><span class="ko">마지막 프레임만</span><span class="en">Last frame only</span></td>
+              <td class="mono">L2VA</td><td><span class="ko">정렬 문장 + 3필드 · 앞선 상태를 추론해 수렴</span><span class="en">alignment line + 3 fields · infer the earlier state</span></td><td class="mono">integrated_multimodal_description</td></tr>
+            <tr><td><span class="ko">그 밖의 레퍼런스 전부 — 인물·의상·소품·장면·색 룩·모션·카메라·스토리보드·보이스 톤·오디오 재사용·배경음악</span><span class="en">Any other reference: identity, costume, prop, scene, colour look, motion, camera, storyboard, voice timbre, audio reuse, background music</span></td>
+              <td class="mono">Ref2VA</td><td><span class="ko">6섹션</span><span class="en">6 sections</span></td><td class="mono">detailed_description</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <span class="ko">캐릭터 시트 <b>더하기</b> 첫 프레임처럼 섞여 있으면 Ref2VA입니다. 이때 첫 프레임 이미지는 별도 <code>&lt;Picture N&gt;</code> 항목이 되고, 캐릭터 시트는 <code>&lt;Subject N&gt;</code> 정의 안의 소스가 됩니다.</span>
+        <span class="en">A mixed set (a character sheet <b>plus</b> a first frame) is Ref2VA: the first-frame image becomes its own <code>&lt;Picture N&gt;</code> item and the character sheet becomes the source inside a <code>&lt;Subject N&gt;</code> definition.</span>
+      </div>
+
+      <h3 class="sub"><span class="ko">기본 포맷 (T2VA / I2VA / FL2VA / L2VA)</span><span class="en">The base format (T2VA / I2VA / FL2VA / L2VA)</span></h3>
+      <div class="code">
+        <button class="cp" data-copy="fmt-base" type="button">COPY</button>
+        <pre id="fmt-base">&lt;alignment sentence — I2VA, FL2VA, L2VA only; T2VA has none&gt;
+
+integrated_multimodal_description: [Shot 1] ...
+
+overall_soundscape: ...
+
+non_diegetic_music: ...</pre>
+      </div>
+      <ul>
+        <li><span class="ko">정렬 문장은 첫 줄, 그 뒤 빈 줄 하나.</span><span class="en">The alignment sentence is the first line, followed by one blank line.</span></li>
+        <li><span class="ko">세 필드는 그 순서대로, 사이에 빈 줄 하나씩.</span><span class="en">The three fields come in that order, one blank line between each.</span></li>
+        <li><span class="ko"><code>integrated_multimodal_description</code> — 화면·동작·샷·화자·대사·노래·장면음을 재생 순서대로.</span><span class="en"><code>integrated_multimodal_description</code> — picture, action, shots, speakers, dialogue, song and in-scene sound in play order.</span></li>
+        <li><span class="ko"><code>overall_soundscape</code> — 클립 전체의 앰비언스, 물리 동작음, 비언어 인성.</span><span class="en"><code>overall_soundscape</code> — the clip's ambience, physical action sound and non-verbal human sound.</span></li>
+        <li><span class="ko"><code>non_diegetic_music</code> — 관객만 듣는 스코어. 인물이 듣는 음악은 장면 이벤트로 본문에 들어갑니다. 스코어가 없으면 <code>N/A</code>.</span><span class="en"><code>non_diegetic_music</code> — score only the audience hears; music a character hears belongs in the body. No score: <code>N/A</code>.</span></li>
+      </ul>
+
+      <h4 class="mini"><span class="ko">정렬 문장 — 한 글자도 바꾸지 않고 그대로</span><span class="en">Alignment sentences — verbatim, character for character</span></h4>
+      <div class="code">
+        <button class="cp" data-copy="al-i2va" type="button">COPY I2VA</button>
+        <pre id="al-i2va">For the target video, at 0.00 seconds into the target video, &lt;Picture 1&gt; (from [Shot 1]) is fully referenced.</pre>
+      </div>
+      <div class="code">
+        <button class="cp" data-copy="al-fl2va" type="button">COPY FL2VA</button>
+        <pre id="al-fl2va">How the reference pictures align with the target video — Picture 1 (from Shot 1) aligns with the 0.00-second mark of the target video; Picture 2 (from Shot N) aligns with the S.SS-second mark of the target video.</pre>
+      </div>
+      <div class="code">
+        <button class="cp" data-copy="al-l2va" type="button">COPY L2VA</button>
+        <pre id="al-l2va">How the reference pictures align with the target video — &lt;Picture 1&gt; (from [Shot N]) aligns with the S.SS-second mark of the target video.</pre>
+      </div>
+      <ul>
+        <li><code>N</code> <span class="ko">은 실제 마지막 샷 번호(단일 샷이면 1), <code>S.SS</code>는 소수 둘째 자리까지의 클립 길이이며 실제 요청한 길이와 같아야 합니다(8초 → <code>8.00</code>).</span><span class="en">is the real last shot number (1 for a single shot) and <code>S.SS</code> is the clip length to two decimals, equal to the duration actually requested (8 s → <code>8.00</code>).</span></li>
+        <li><span class="ko">원문의 표기 차이를 그대로 유지합니다 — FL2VA 문장만 <code>Picture 1</code>·<code>Picture 2</code>에 꺾쇠가 없습니다.</span><span class="en">Keep the source's own inconsistency: only the FL2VA sentence writes <code>Picture 1</code> / <code>Picture 2</code> without angle brackets.</span></li>
+      </ul>
+
+      <h3 class="sub"><span class="ko">요청 필드와 <code>audio_policy</code> 스펙</span><span class="en">Request fields and the <code>audio_policy</code> spec</span></h3>
+      <p><span class="ko">해상도·비율·길이는 프롬프트 본문에 쓰지 않습니다. 호출의 자체 필드로 보내고, 프롬프트와 일치시킵니다. <b>무음 컷은 텍스트만으로 보장되지 않습니다</b> — 두 사운드 필드를 <code>N/A</code>로 쓰고 <b>오디오 정책 플래그를 함께</b> 보내야 합니다.</span>
+      <span class="en">Aspect ratio, resolution and duration are never written inside the prompt body: they are sent as the call's own fields and made to match the prompt. <b>A silent cut is not guaranteed by text</b> — write both sound fields as <code>N/A</code> <b>and</b> send the audio policy flag.</span></p>
+      <div class="code">
+        <button class="cp" data-copy="req" type="button">COPY</button>
+        <pre id="req"># request fields — outside the prompt body
+aspect_ratio: "16:9"        # or "9:16" — one aspect for the whole film
+duration: 5                # 5 or 10; the last cut time must sit under it
+resolution: "768p"         # default; raise only with the owner's approval
+
+# silent cut — both fields plus the policy flag
+overall_soundscape: N/A
+non_diegetic_music: N/A
+audio_policy: "no_audio"</pre>
+      </div>
+      <div class="note warn">
+        <span class="ko"><b>퍼포먼스 컷의 예외.</b> 노래하는 입은 사용자가 명시적으로 요청한 경우에만 만듭니다. 그때도 <code>non_diegetic_music</code>은 <code>N/A</code>이고, 보컬은 설명하지 않고 <b>오디오 레퍼런스로 주입</b>합니다. 완곡(full mix)이 아니라 <b>리드 보컬 스템</b>만 넣어야 합니다.</span>
+        <span class="en"><b>The performance-cut exception.</b> A singing mouth is made only when the user explicitly asks for it. Even then <code>non_diegetic_music</code> stays <code>N/A</code> and the vocal is not described — it is <b>injected as an audio reference</b>, and that reference must be a <b>clean lead vocal stem</b>, never a full mix.</span>
+      </div>
+
+      <h3 class="sub"><span class="ko">무립싱크 컷 vs 퍼포먼스 컷</span><span class="en">No-lip-sync cut vs performance cut</span></h3>
+      <div class="scroll">
+        <table class="tbl">
+          <thead><tr>
+            <th></th>
+            <th><span class="ko">무립싱크 컷 (기본)</span><span class="en">No-lip-sync cut (default)</span></th>
+            <th><span class="ko">퍼포먼스 컷 (요청 시에만)</span><span class="en">Performance cut (only on request)</span></th>
+          </tr></thead>
+          <tbody>
+            <tr><td><span class="ko">언제</span><span class="en">When</span></td>
+              <td><span class="ko">영화의 소리는 소유자의 완성 음원, 편집에서 얹는다</span><span class="en">the film's audio is the owner's finished track, laid on in the edit</span></td>
+              <td><span class="ko">노래하는 컷을 명시적으로 요청했거나 보컬 스템을 넘겼을 때</span><span class="en">the user explicitly asks for a singing shot, or supplies the vocal stem</span></td></tr>
+            <tr><td><span class="ko">본문</span><span class="en">Body</span></td>
+              <td><span class="ko"><code>&lt;d&gt;</code> 블록 없음 — 가사를 인용하지 않는다</span><span class="en">no <code>&lt;d&gt;</code> block at all; no lyrics, quoted or otherwise</span></td>
+              <td><span class="ko">부른 구절마다 <code>&lt;d&gt;[언어] 가사&lt;/d&gt;</code> 하나, 가사는 원문 그대로</span><span class="en">one <code>&lt;d&gt;[language] line&lt;/d&gt;</code> per sung phrase, lyrics verbatim</span></td></tr>
+            <tr><td><span class="ko">입</span><span class="en">Mouth</span></td>
+              <td><code>Mouth closed and at rest, not singing, not speaking.</code> <span class="ko">그리고 정면 클로즈업을 피한다</span><span class="en">and keep the mouth out of close face-on framing</span></td>
+              <td><span class="ko">입이 그 줄을 수행한다. 버스트 샷~클로즈업이 음소·호흡·턱에 가장 정확하다</span><span class="en">the mouth performs the line; bust shot through close-up reads best for phonemes, breath and jaw</span></td></tr>
+            <tr><td><span class="ko">사운드 필드</span><span class="en">Sound fields</span></td>
+              <td><span class="ko">앰비언스만, <code>non_diegetic_music: N/A</code>, 무음이면 <code>audio_policy: "no_audio"</code></span><span class="en">ambience only, <code>non_diegetic_music: N/A</code>, plus <code>audio_policy: "no_audio"</code> when it must arrive silent</span></td>
+              <td><code>non_diegetic_music: N/A</code> <span class="ko">유지, 보컬은 오디오 레퍼런스로 주입</span><span class="en">still; the vocal is the audio reference, not described</span></td></tr>
+            <tr><td><span class="ko">3단계 영향</span><span class="en">Effect on stage 3</span></td>
+              <td><span class="ko">버릴 것이 없다 — 클립이 무음으로 도착해 타임라인에 놓인다</span><span class="en">nothing to strip; the clip arrives silent and is cut to the timeline</span></td>
+              <td><span class="ko">의도한 보컬이 아니면 생성된 오디오를 3단계에서 걷어낸다</span><span class="en">strip the generated audio in stage 3 unless it is the intended vocal</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h4 class="mini"><span class="ko">퍼포먼스 컷 규칙 — 실제로 망가지는 순서대로</span><span class="en">Performance-cut rules, in order of what actually breaks</span></h4>
+      <ol>
+        <li><span class="ko"><b>깨끗한 리드 보컬만 주입.</b> 드럼·베이스·어택이 목소리로 읽혀 입이 펄럭이거나 박자에 묶인 과잉 연기를 만듭니다. 보컬을 분리한 뒤 편집에서 다시 합칩니다.</span><span class="en"><b>Inject a clean lead vocal, never a full mix.</b> Drums, bass and attacks are read as voice and produce flapping or beat-locked over-acting.</span></li>
+        <li><span class="ko"><b>구간을 짧게.</b> 생성 1건당 5–10초. 길어지면 드리프트합니다.</span><span class="en"><b>Keep the slice short.</b> 5–10 s of audio per generation.</span></li>
+        <li><span class="ko"><b>가사 전체를 붙이지 않는다.</b> 그 클립에서 실제로 부르는 구절만, <code>&lt;d&gt;</code> 안에만. 전달 지시는 밖에.</span><span class="en"><b>Do not paste the whole lyric sheet</b> — only the phrase sung in that clip, only inside <code>&lt;d&gt;</code>.</span></li>
+        <li><span class="ko"><b>입을 위해 프레임을 고른다.</b> 버스트~클로즈업. 와이드는 음소 정확도를 잃으니, 몸동작이 더 중요하면 무립싱크 컷으로 다룹니다.</span><span class="en"><b>Choose the frame for the mouth.</b> Wide shots lose phoneme accuracy — treat those as no-lip-sync cuts.</span></li>
+        <li><span class="ko"><b>목소리에 ID와 톤을 준다</b> (<code>(S1)</code>, 나이·성별·피치) — 컷이 바뀌어도 같은 목소리가 이어지도록.</span><span class="en"><b>Give the voice an ID and a timbre</b> (<code>(S1)</code>, age, gender, pitch) so the same voice persists.</span></li>
+        <li><span class="ko"><b>입은 마지막이 아니라 첫 프레임에서 확인.</b> 두 번째 프레임부터 움직인 입은 회복되지 않고, 재생성은 지불하는 사람의 결정입니다.</span><span class="en"><b>Check the mouth's first frame, not the last.</b> A mouth that starts moving in frame 2 never recovers; a re-roll belongs to whoever pays.</span></li>
+      </ol>
+      <div class="note cyan"><span class="ko">혼합 영화는 정상입니다 — 후렴만 퍼포먼스 컷, 나머지는 무립싱크. 컷마다 보드에서 결정하고 <code>performance</code> / <code>no-lip</code>으로 표시해 두면 3단계가 어느 클립의 오디오를 남기고 어느 것을 음소거할지 알 수 있습니다.</span>
+      <span class="en">Mixed films are normal: performance cuts on the chorus, no-lip-sync everywhere else. Decide per cut on the board and mark each cut <code>performance</code> or <code>no-lip</code> so stage 3 knows which clips keep their audio.</span></div>
+
+      <h3 class="sub"><span class="ko">Ref2VA — 6섹션</span><span class="en">Ref2VA — the six sections</span></h3>
+      <div class="grid2">
+        <div class="scroll">
+          <table class="tbl" style="min-width:0">
+            <thead><tr><th><span class="ko">섹션</span><span class="en">Section</span></th><th><span class="ko">하는 일</span><span class="en">Job</span></th></tr></thead>
+            <tbody>
+              <tr><td class="mono">subject_definitions</td><td><span class="ko">각 레퍼런스가 무엇이고 어떤 라벨을 갖는지</span><span class="en">what each reference is and what label it carries</span></td></tr>
+              <tr><td class="mono">summary</td><td><span class="ko">작업 유형, 목표 클립, 주요 레퍼런스 관계</span><span class="en">work type, target clip, main reference relationships</span></td></tr>
+              <tr><td class="mono">retention_analysis</td><td><span class="ko">각 레퍼런스가 어떻게 보존·전이·재사용되는지</span><span class="en">how each reference is preserved, transferred or reused</span></td></tr>
+              <tr><td class="mono">detailed_description</td><td><span class="ko">화면·동작·샷·사운드·대사를 재생 순서대로</span><span class="en">picture, action, shot, sound, dialogue in play order</span></td></tr>
+              <tr><td class="mono">overall_soundscape</td><td><span class="ko">앰비언스와 물리음</span><span class="en">ambience and physical sound</span></td></tr>
+              <tr><td class="mono">non_diegetic_music</td><td><span class="ko">관객 전용 스코어</span><span class="en">audience-only score</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h4><span class="ko">네 가지 라벨</span><span class="en">The four labels</span></h4>
+          <ul>
+            <li><code>&lt;Subject N&gt;</code> — <span class="ko">레퍼런스에서 가져와 재사용·변형하는 보이는 내용(인물·장소·의상·소품·스타일·모션)</span><span class="en">visible content lifted from a reference and reused (person, place, wardrobe, prop, style, motion)</span></li>
+            <li><code>&lt;Picture N&gt;</code> — <span class="ko">목표 프레임이나 샷 설계 기준으로 쓰는 이미지</span><span class="en">a reference image used as a target frame or shot-design anchor</span></li>
+            <li><code>&lt;Video N&gt;</code> — <span class="ko">편집 소스·연속 시작점·클립 전체의 시간 구조를 주는 영상</span><span class="en">a video giving an edit source, a continuation start, or clip-wide timing</span></li>
+            <li><code>&lt;Audio N&gt;</code> — <span class="ko">복사·참조하는 오디오 신호</span><span class="en">an audio signal copied or referenced</span></li>
+          </ul>
+          <p><span class="ko">레퍼런스 ID는 라벨 순서대로 제출합니다(그림 1부터, 영상 1부터, 오디오 1부터 — 종류별로 셉니다).</span><span class="en">Reference IDs are submitted in label order, counted per kind.</span></p>
+        </div>
+      </div>
+      <h4 class="mini"><span class="ko">보존 마커와 작업 유형</span><span class="en">Retention markers and work types</span></h4>
+      <div class="scroll">
+        <table class="tbl">
+          <thead><tr><th><span class="ko">구분</span><span class="en">Kind</span></th><th><span class="ko">마커</span><span class="en">Markers</span></th></tr></thead>
+          <tbody>
+            <tr><td><span class="ko">작업 유형 (summary 첫머리, <code> + </code>로 결합)</span><span class="en">Work type (opens summary; join with <code> + </code>)</span></td>
+              <td class="mono">keyframe completion · reference generation · video editing · video continuation · audio reuse · audio reference</td></tr>
+            <tr><td><span class="ko">보이는 내용</span><span class="en">Visible content</span></td>
+              <td class="mono">fully_preserved · partially_preserved · attribute_transfer · weak_reference</td></tr>
+            <tr><td><span class="ko">오디오</span><span class="en">Audio</span></td>
+              <td class="mono">fully_copy · partially_copy · reference · weak_reference</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note"><span class="ko"><code>detailed_description</code>은 기본 모드의 본문과 다릅니다 — 스타일 문장이 <code>[Shot 1]</code> <b>앞</b>에 오고, 라벨이 처음 등장할 때와 역할이 작동하는 곳에 삽입되며, 오디오 관계(<code>&lt;Audio N&gt;</code>를 복사했는지 참조했는지)를 샷 안에서 밝힙니다. 길이는 영어 350–500단어, 대사가 촘촘하면 단어 수보다 대사 타임라인을 다 담는 것이 우선입니다.</span>
+      <span class="en"><code>detailed_description</code> differs from the base body: the style sentence comes <b>before</b> <code>[Shot 1]</code>, labels are inserted at first appearance and wherever the role does work, and the audio relationship is named inside the shot. 350–500 English words for a generation task; dense dialogue beats the word count.</span></div>
+
+      <h3 class="sub"><span class="ko">카메라 어휘 — 세 축</span><span class="en">Camera vocabulary — three axes</span></h3>
+      <div class="scroll">
+        <table class="tbl">
+          <thead><tr><th><span class="ko">축</span><span class="en">Axis</span></th><th><span class="ko">용어</span><span class="en">Term</span></th><th><span class="ko">의미</span><span class="en">Meaning</span></th></tr></thead>
+          <tbody>
+            <tr><td rowspan="3"><span class="ko">유형</span><span class="en">Type</span></td>
+              <td class="mono">Zoom In / Zoom Out</td><td><span class="ko">카메라 고정, 초점거리 변화</span><span class="en">camera fixed, focal length changes</span></td></tr>
+            <tr><td class="mono">Push In / Pull Out</td><td><span class="ko">카메라가 앞/뒤로 이동</span><span class="en">camera travels forward / back</span></td></tr>
+            <tr><td class="mono">Pan Left / Right · Truck Left / Right · Tilt Up / Down · Pedestal Up / Down · Arc Shot · Tracking Shot · Static Shot · Shake Slightly / Strongly · POV · Roll Clockwise / Counterclockwise</td>
+              <td><span class="ko">팬(제자리 회전) · 트럭(옆으로 이동) · 틸트(상하 회전) · 페더스털(승강) · 아크 · 트래킹 · 고정 · 핸드헬드 흔들림 · 주관 시점 · 렌즈축 롤</span><span class="en">pan, truck, tilt, pedestal, arc, tracking, static, handheld shake, POV, roll about the lens axis</span></td></tr>
+            <tr><td><span class="ko">진폭</span><span class="en">Amplitude</span></td>
+              <td class="mono">with small amplitude / with large amplitude</td>
+              <td><span class="ko">화면 변화의 크기</span><span class="en">how much the frame changes</span></td></tr>
+            <tr><td><span class="ko">속도</span><span class="en">Speed</span></td>
+              <td class="mono">at slow speed / at fast speed</td>
+              <td><span class="ko">느리게 / 빠르게 — 의미 있을 때만 붙인다</span><span class="en">add only when it means something</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><span class="ko">라벨을 끝에 쌓지 말고 <b>문장 속 동작</b>으로 씁니다.</span><span class="en">Write it as an action inside the sentence, not as labels stacked at the end.</span></p>
+      <div class="code">
+        <button class="cp" data-copy="cam-ex" type="button">COPY</button>
+        <pre id="cam-ex">The camera pushes in with small amplitude at slow speed toward the folded letter in her hands.
+The camera pans right with large amplitude at fast speed, revealing the open doorway.
+The camera holds a static shot as the runner exits the frame.</pre>
+      </div>
+
+      <h3 class="sub"><span class="ko">샷 타이밍과 화자</span><span class="en">Shot timing and speakers</span></h3>
+      <div class="grid2">
+        <div class="card">
+          <h4><span class="ko">샷 시계</span><span class="en">The shot clock</span></h4>
+          <ul>
+            <li><span class="ko"><code>[Shot 1]</code>에는 타임스탬프를 붙이지 않습니다.</span><span class="en">No timestamp on <code>[Shot 1]</code>.</span></li>
+            <li><span class="ko">이후 샷은 <code>MM:SS.mmm</code> 컷 타임으로 시작하고, 값은 증가하며 항상 클립 길이 안에 있어야 합니다 — <code>[Shot 2] At 00:03.500, the camera cuts to ...</code></span><span class="en">Later shots start with a cut time on the <code>MM:SS.mmm</code> clock, increasing and always inside the clip length.</span></li>
+            <li><span class="ko">한 샷 안의 시간은 숫자 대신 <code>Early in the clip</code> · <code>As the clip progresses</code> · <code>Toward the end</code>로 나눕니다.</span><span class="en">Inside one shot, order time with <code>Early in the clip</code> · <code>As the clip progresses</code> · <code>Toward the end</code>.</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4><span class="ko">화자 ID와 가사</span><span class="en">Speaker IDs and lyrics</span></h4>
+          <ul>
+            <li><span class="ko">소리를 내는 존재마다 고정 ID <code>(S1)</code>, <code>(S2)</code>. 둘이 함께면 <code>(S1,S2)</code>. 첫 등장에서 목소리(유형·연령대·성별·화면 안팎·피치·음색·속도)를 세웁니다.</span><span class="en">Every entity that speaks or sings gets a fixed <code>(S1)</code> / <code>(S2)</code>; establish the voice on first appearance.</span></li>
+            <li><span class="ko"><code>&lt;d&gt;</code> 밖에는 지시어·ID·동작·전달 방향, 안에는 언어 태그와 단어만. 주어진 단어는 번역도 교정도 하지 않습니다.</span><span class="en">Outside <code>&lt;d&gt;</code>: the pointing phrase, ID, action and delivery. Inside: only the language tag and the words, never translated or corrected.</span></li>
+            <li><span class="ko">컷을 넘는 대사·가사는 양쪽에 <code>&lt;scenetrans&gt;</code>를 두고 “continues seamlessly across the cut”처럼 오디오가 이어진다고 적습니다. 잘린 단어는 <code>&lt;cutoff&gt;</code>.</span><span class="en">Dialogue or a lyric crossing a cut gets <code>&lt;scenetrans&gt;</code> at the break on both sides, with the audio carrying over; words cut off by the clip end are marked <code>&lt;cutoff&gt;</code>.</span></li>
+            <li><span class="ko">화면 글자(간판·라벨·자막·네온)는 영어 큰따옴표 안에 원문 그대로, 번역 없이.</span><span class="en">On-screen lettering goes inside English double quotes, verbatim and untranslated.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="sub"><span class="ko">클립 길이와 보내기 전 체크리스트</span><span class="en">Clip length and the pre-send checklist</span></h3>
+      <div class="grid2">
+        <div class="card">
+          <h4><span class="ko">길이</span><span class="en">Length</span></h4>
+          <ul>
+            <li><span class="ko">허용 클립 길이는 5–15초. 30초 영화는 30초 프롬프트 하나가 아니라 <b>15초 프롬프트 두 개</b>입니다.</span><span class="en">Allowed clip length is 5–15 s. A 30 s film is two 15 s prompts, not one 30 s prompt.</span></li>
+            <li><span class="ko">5–8초 단일 샷 본문은 대략 영어 120–250단어, 10–15초 다중 샷은 250–500단어.</span><span class="en">A 5–8 s single shot runs roughly 120–250 English words; a 10–15 s multi-shot 250–500.</span></li>
+            <li><span class="ko">한국어 대사는 초당 약 4–5음절. 줄이 길면 설명을 줄이지 말고 대사를 줄입니다.</span><span class="en">Korean dialogue runs about 4–5 syllables per second — cut the line, not the description.</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4><span class="ko">보내기 전 점검</span><span class="en">Before you send</span></h4>
+          <ul class="check">
+            <li><span class="ko">정렬 문장이 모드와 맞고 <code>S.SS</code>가 실제 요청 길이와 같다</span><span class="en">the alignment sentence matches the mode and <code>S.SS</code> equals the real duration</span></li>
+            <li><span class="ko">필드 이름·순서·철자가 정확하고 사이에 빈 줄이 하나씩 있다</span><span class="en">field names, order and spelling are exact, one blank line apart</span></li>
+            <li><span class="ko">마지막 컷 타임이 클립 길이 안에 있고 샷 번호가 연속이다</span><span class="en">the last cut time sits inside the clip length; shot numbers are consecutive</span></li>
+            <li><span class="ko"><code>&lt;d&gt;</code> 안에는 언어 태그와 원문만 있다</span><span class="en"><code>&lt;d&gt;</code> holds only a language tag and the original words</span></li>
+            <li><span class="ko">모든 라벨이 실제 업로드한 첨부와 1:1로 대응한다</span><span class="en">every label maps 1:1 to an uploaded attachment</span></li>
+            <li><span class="ko">두 사운드 필드가 대사·가사를 반복하지 않는다</span><span class="en">neither sound field repeats dialogue or lyrics</span></li>
+            <li><span class="ko">무음 컷에는 <code>audio_policy: "no_audio"</code>가 있다</span><span class="en">a silent cut carries <code>audio_policy: "no_audio"</code></span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 03 PROMPTS ================= -->
+  <section class="block" id="prompts">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-num">03</div>
+        <div>
+          <h2><span class="ko">샷 프롬프트 48종</span><span class="en">The 48 shot prompts</span></h2>
+          <p><span class="ko">오프닝·인물 락·감정·네온 야경·액션·드라이브·비와 눈·실루엣·오브제·엔딩, 그리고 노래하는 퍼포먼스 6종. 모든 프롬프트는 <b>동작 하나 · 카메라 무브 하나</b>로 이미 제한되어 있어 키프레임 스틸 위에 그대로 붙여 실행할 수 있습니다. <code>{SUBJECT}</code> <code>{WARDROBE}</code> <code>{PROP}</code> <code>{LOCATION}</code> <code>{PALETTE}</code> <code>{LIGHT}</code> <code>{SOUND}</code>만 프로젝트의 스타일 바이블 값으로 채우고, 모든 컷에서 <b>같은 값</b>을 재사용하세요 — 그것이 한 편의 영화를 붙잡아 줍니다.</span>
+          <span class="en">Openings, character locks, emotion, neon night, action, drive, rain and snow, silhouettes, objects, endings — plus six performance shots. Every prompt is already limited to <b>one action and one camera move</b>, so it can be pasted over a keyframe still and run without editing. Fill <code>{SUBJECT}</code> <code>{WARDROBE}</code> <code>{PROP}</code> <code>{LOCATION}</code> <code>{PALETTE}</code> <code>{LIGHT}</code> <code>{SOUND}</code> from the project's style bible and reuse the same values in every cut — that is what holds the film together.</span></p>
+        </div>
+      </div>
+
+      <div class="pctrl">
+        <label class="search">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <input id="q" type="search" placeholder="프롬프트 검색 — neon, rain, 05, over the shoulder …" aria-label="프롬프트 검색">
+        </label>
+        <span class="count"><b id="shown">48</b> / 48</span>
+        <button class="mini-btn" id="expandAll" type="button"><span class="ko">전체 펼치기</span><span class="en">Expand all</span></button>
+      </div>
+      <div class="chips" id="catChips" role="group" aria-label="카테고리 필터"></div>
+      <div class="pcards" id="grid" aria-live="polite"></div>
+      <div class="empty" id="empty" hidden><span class="ko">조건에 맞는 프롬프트가 없습니다. 검색어를 줄이거나 카테고리를 바꿔 보세요.</span><span class="en">No prompt matches. Try a shorter search or another category.</span></div>
+
+      <h4 class="mini"><span class="ko">태그 읽는 법</span><span class="en">How to read the tags</span></h4>
+      <div class="legend">
+        <span class="chip no-lip">no-lip</span><span><span class="ko">입 닫힘, 대사 없음 — 완성 음원을 편집에서 얹는 기본 컷</span><span class="en">mouth closed, no dialogue — the safe default for a cut that gets the finished track in the edit</span></span>
+      </div>
+      <div class="legend">
+        <span class="chip perf">perf</span><span><span class="ko">퍼포먼스 — 노래하는 입, 리드 보컬 스템 필요, H3 네이티브 형식</span><span class="en">performance variant — a singing mouth, needs a lead vocal stem, written in H3 native form</span></span>
+      </div>
+      <div class="legend">
+        <span class="chip insert">insert</span><span><span class="ko">1–3초 질감 샷 — 두 비트 사이에 끼워 넣는 컷</span><span class="en">a 1–3 s texture shot, cut in between two beats</span></span>
+      </div>
+      <div class="legend">
+        <span class="chip face">face</span><span><span class="ko">얼굴이 화면에 있음 — 생성 전에 컷 02와 정체성을 대조</span><span class="en">the subject's face is in frame — verify identity against cut 02 before generating</span></span>
+      </div>
+      <div class="legend">
+        <span class="chip h3">H3</span><span><span class="ko">모드·정렬 문장·사운드 필드까지 포함된 H3 네이티브 프롬프트</span><span class="en">H3 native prompt: mode, alignment line and sound fields included</span></span>
+      </div>
+
+      <h4 class="mini"><span class="ko">시퀀스로 묶는 세 가지 출발점</span><span class="en">Three starting points for a sequence</span></h4>
+      <div class="scroll">
+        <table class="tbl">
+          <thead><tr><th><span class="ko">시퀀스</span><span class="en">Sequence</span></th><th><span class="ko">컷</span><span class="en">Cuts</span></th></tr></thead>
+          <tbody>
+            <tr><td><span class="ko">네온 야경 MV</span><span class="en">Neon night MV</span></td><td class="mono">02 → 05 → 13 → 07 → 17 → 14 → 33 → 21 → 16 → 42</td></tr>
+            <tr><td><span class="ko">조용한 감정 단편</span><span class="en">Quiet emotional short</span></td><td class="mono">01 → 05 → 09 → 34 → 12 → 11 → 27 → 40</td></tr>
+            <tr><td><span class="ko">퍼포먼스 후렴</span><span class="en">Performance chorus</span></td><td class="mono">04 → 05 → 43 → 17 → 46 → 44 → 39</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 04 SPECS ================= -->
+  <section class="block" id="spec">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-num">04</div>
+        <div>
+          <h2><span class="ko">제작 규격 — 스토리보드 · FFmpeg · 자막</span><span class="en">Production specs — storyboard, FFmpeg, subtitles</span></h2>
+          <p><span class="ko">여기 있는 숫자와 명령은 전부 그대로 복사해 쓸 수 있습니다. 초는 표시 형식이고, 프레임이 진실입니다.</span>
+          <span class="en">Every number and command here is meant to be copied as-is. Seconds are a display format; frames are the truth.</span></p>
+        </div>
+      </div>
+
+      <h3 class="sub"><span class="ko">1 · 스토리보드와 러닝타임</span><span class="en">1 · Storyboard and runtime</span></h3>
+      <div class="grid2">
+        <div class="card">
+          <h4><span class="ko">러닝타임을 먼저 고정한다</span><span class="en">Fix the runtime before anything else</span></h4>
+          <ol style="margin:0;padding-left:18px">
+            <li><span class="ko">곡 구조를 타임스탬프로 읽는다: <code>[Intro] [Verse 1] [Pre-Chorus] [Chorus] [Verse 2] [Bridge] [Chorus] [Outro]</code>.</span><span class="en">Read the song structure with timestamps.</span></li>
+            <li><span class="ko">구간별 초를 적고, 합이 트랙 길이와 맞는지 확인한다(잘라낼 테일 제외).</span><span class="en">Write the seconds of each section; the sum must equal the track length.</span></li>
+            <li><span class="ko">포맷과 컷 길이 티어를 고정한다 — 768p, 5초(후렴·브릿지는 10초).</span><span class="en">Fix the format and cut tier — 768p, 5 s, 10 s where a shot carries a chorus.</span></li>
+            <li><span class="ko">10컷을 구간에 맞춘다. 한 컷이 짧은 구간 둘을 덮을 수 있다.</span><span class="en">Fit 10 cuts to the sections; one cut may cover two short ones.</span></li>
+            <li><span class="ko">프레임으로 환산한다 — <code>frames = runtime × fps</code>.</span><span class="en">Convert to frames: <code>frames = runtime × fps</code>.</span></li>
+          </ol>
+          <div class="note warn" style="margin-bottom:0"><span class="ko">컷 길이의 합이 러닝타임과 다르거나, 플랫폼이 실제로 생성하는 티어가 아니면 <b>계획을 고칩니다</b>. 출력을 고치지 않습니다.</span><span class="en">If the cut lengths do not sum to the runtime, or a length is not a tier the platform generates, <b>fix the plan</b> — not the output.</span></div>
+        </div>
+        <div class="scroll">
+          <table class="tbl" style="min-width:0">
+            <thead><tr><th><span class="ko">컷</span><span class="en">Cut</span></th><th><span class="ko">극적 임무</span><span class="en">Dramatic job</span></th><th><span class="ko">프레임이 해야 할 일</span><span class="en">What the frame must do</span></th></tr></thead>
+            <tbody>
+              <tr><td>01</td><td><span class="ko">콜드 오픈</span><span class="en">Cold open</span></td><td><span class="ko">장소와 공기, 인물은 있되 얼굴은 감춤</span><span class="en">place and mood; face withheld</span></td></tr>
+              <tr><td>02</td><td><span class="ko">인물 락</span><span class="en">Character lock</span></td><td><span class="ko">처음 드러나는 얼굴, 정지 — 영화의 정체성 기준</span><span class="en">first clear face at rest — the identity reference</span></td></tr>
+              <tr><td>03</td><td><span class="ko">벌스 1</span><span class="en">Verse 1</span></td><td><span class="ko">세계에 속한 작은 동작</span><span class="en">a small action that belongs to the world</span></td></tr>
+              <tr><td>04</td><td><span class="ko">첫 균열</span><span class="en">First crack</span></td><td><span class="ko">감정이 새는 디테일 컷, 연기 금지</span><span class="en">the emotion leaks — a detail shot, not a performance</span></td></tr>
+              <tr><td>05</td><td><span class="ko">프리코러스</span><span class="en">Pre-chorus</span></td><td><span class="ko">움직임이 쌓이되 무브는 하나</span><span class="en">motion builds, one move only</span></td></tr>
+              <tr><td>06</td><td><span class="ko">후렴 A</span><span class="en">Chorus A</span></td><td><span class="ko">히어로 샷 — 반복되는 모든 것을 담는 가장 넓은 프레임</span><span class="en">hero shot, wide enough to hold what repeats</span></td></tr>
+              <tr><td>07</td><td><span class="ko">벌스 2</span><span class="en">Verse 2</span></td><td><span class="ko">대비 — 유일하게 허용되는 장소/시간 점프</span><span class="en">the contrast; the only place jump allowed</span></td></tr>
+              <tr><td>08</td><td><span class="ko">브릿지</span><span class="en">Bridge</span></td><td><span class="ko">가장 가깝고 거친 프레임</span><span class="en">closest and roughest</span></td></tr>
+              <tr><td>09</td><td><span class="ko">후렴 B</span><span class="en">Chorus B</span></td><td><span class="ko">클라이맥스 — 카메라가 처음으로 인물에게 확신을 갖는다</span><span class="en">climax; the camera commits to the subject</span></td></tr>
+              <tr><td>10</td><td><span class="ko">아웃트로</span><span class="en">Outro</span></td><td><span class="ko">01과의 운율 — 같은 사물·프레임, 이제 비었거나 바뀐</span><span class="en">the rhyme with 01: same object, now emptied or changed</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <h4 class="mini"><span class="ko">프레임 산수</span><span class="en">Frame math</span></h4>
+      <div class="scroll">
+        <table class="tbl">
+          <thead><tr><th><span class="ko">목표</span><span class="en">Target</span></th><th>24 fps</th><th>25 fps</th><th>30 fps</th></tr></thead>
+          <tbody>
+            <tr><td>15 s</td><td class="mono">360</td><td class="mono">375</td><td class="mono">450</td></tr>
+            <tr><td>20 s</td><td class="mono">480</td><td class="mono">500</td><td class="mono">600</td></tr>
+            <tr><td>30 s</td><td class="mono">720</td><td class="mono">750</td><td class="mono">900</td></tr>
+            <tr><td>45 s</td><td class="mono">1080</td><td class="mono">1125</td><td class="mono">1350</td></tr>
+            <tr><td>60 s</td><td class="mono">1440</td><td class="mono">1500</td><td class="mono">1800</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul>
+        <li><span class="ko">영화적 마스터는 24fps. 소스 클립이 30fps이거나 플랫폼이 요구할 때만 30fps. 섞는 것은 수정이 아니라 재렌더입니다.</span><span class="en">24 fps for a filmic master; 30 fps only if the sources are 30 or delivery asks. Mixing is a re-render, not a fix.</span></li>
+        <li><span class="ko"><code>duration = frames ÷ fps</code>. 719프레임은 30초가 아니라 29.958초이고, 플랫폼 검사는 그렇게 말합니다.</span><span class="en"><code>duration = frames ÷ fps</code>. 719 frames is 29.958 s, and a platform check will say so.</span></li>
+        <li><span class="ko">컷 길이는 정수 프레임 — 24fps에서 2.4초는 57.6프레임이므로 <b>계획</b>을 반올림합니다.</span><span class="en">Cut lengths must be integer frames — round the plan, not the render.</span></li>
+      </ul>
+
+      <h4 class="mini"><span class="ko">크로스페이드: 겹침은 러닝타임을 바꾼다</span><span class="en">Crossfades: the overlap changes the runtime</span></h4>
+      <div class="code">
+        <button class="cp" data-copy="xf" type="button">COPY</button>
+        <pre id="xf"># a crossfade overlaps two clips, so the film gets shorter at every join
+faded runtime = Σ cut lengths − (N − 1) × D
+
+# to land on T with N cuts and fade D, compensate BEFORE rendering
+Σ cut lengths = T + (N − 1) × D
+
+# frame-exact offset of join k on the accumulated output
+offset_k = (Σ first k clip frames − k × D_frames) ÷ fps</pre>
+      </div>
+      <div class="note">
+        <span class="ko"><b>예시 —</b> 10컷, T = 30초 = 720프레임 @24fps, 5개 조인에 6프레임(0.25초) 페이드.</span>
+        <span class="en"><b>Worked example —</b> 10 cuts, T = 30 s = 720 frames @ 24 fps, a 6-frame (0.25 s) fade on five joins.</span>
+      </div>
+      <div class="code">
+        <button class="cp" data-copy="xfex" type="button">COPY</button>
+        <pre id="xfex">total overlap      = 5 × 6 = 30 frames
+Σ cut frames       = 720 + 30 = 750 frames (31.250 s)
+final master       = 750 − 30 = 720 frames = 30.000 s</pre>
+      </div>
+      <ul>
+        <li><span class="ko">보정은 <b>컷을 늘려서</b> 합니다 — 여유가 있는 락오프는 6프레임을 더 버틸 수 있지만 휩 팬은 못 버팁니다.</span><span class="en">Compensate by <b>lengthening the cuts</b> that can hold the extra frames; a whip pan cannot.</span></li>
+        <li><span class="ko">마지막 클립을 늘리거나, 프리즈 프레임을 붙이거나, 음악을 줄여서 맞추지 않습니다.</span><span class="en">Never stretch the last clip, add a freeze frame, or shorten the music.</span></li>
+        <li><span class="ko">매치컷 조인에는 절대 디졸브를 얹지 않습니다 — 매치가 두 프레임의 겹침으로 녹아 없어집니다.</span><span class="en">Never dissolve a match cut — it merges the match into two superimposed frames.</span></li>
+        <li><span class="ko">10컷 영화는 보통 페이드 3–5개면 충분합니다. 붙은 조인에 페이드가 연속되면 이미 뭉갠 화면입니다.</span><span class="en">A ten-cut film usually carries three to five fades at most.</span></li>
+      </ul>
+
+      <h4 class="mini"><span class="ko">스타일 바이블 — 한 번 쓰고 모든 컷에 그대로</span><span class="en">The style bible — write it once, reuse it verbatim</span></h4>
+      <div class="code">
+        <button class="cp" data-copy="bible" type="button">COPY</button>
+        <pre id="bible">SUBJECT LOCK: {age range, face shape, hair length and colour, eyewear/accessory, distinguishing mark}
+WARDROBE:     {garment, colour, fabric, footwear} — one outfit for the whole film
+WORLD:        {location 1} and {location 2}: materials, architecture, time of day
+PALETTE:      {colour A} in {where}, {colour B} in {where}, {colour C} in {where}
+MOTIF:        {repeating object} — appears in cuts {n, n} and closes the film in cut 10
+FORMAT:       16:9 at 1366×768 (or 9:16 at 768×1366), 5 or 10 s per cut, mouth closed, no lip sync, no on-screen text</pre>
+      </div>
+      <p><span class="ko">의상 하나, 장소 둘, 색 셋 — 그리고 그 셋이 각각 어디에 사는지 적습니다. 모티프는 같은 유리잔·계단·코트 걸이·창문이 세 번 나오게 해 영화가 “누군가 쓴 것”처럼 읽히게 만듭니다.</span>
+      <span class="en">One outfit, two locations, three colours — and where each colour lives. The motif is what makes the film feel authored: the same glass, stairwell or window, seen three times.</span></p>
+
+      <h4 class="mini"><span class="ko">범용 프롬프트 공식 (H3가 아닌 엔진에서도 그대로)</span><span class="en">The house prompt formula (works on any engine)</span></h4>
+      <div class="code">
+        <button class="cp" data-copy="formula" type="button">COPY</button>
+        <pre id="formula">Use the attached keyframe as the first frame. Keep the same {face, hands, wardrobe, prop, set}.
+{SHOT SIZE}. Mouth closed and at rest, not singing, not speaking.
+{one action the body performs in these N seconds}. {one secondary motion in the world}.
+Camera: {one movement}. Do not cut. Do not change lens mid-clip.
+{TONE}: {light}, {lens feel}, {texture}.
+Ambient only: {diegetic sounds}. No vocals, no music, no dialogue.
+No on-screen text, no subtitles, no logo, no lyric captions.
+Duration {N} seconds.</pre>
+      </div>
+      <div class="scroll">
+        <table class="tbl">
+          <thead><tr><th><span class="ko">줄</span><span class="en">Line</span></th><th><span class="ko">하는 일</span><span class="en">Job</span></th><th><span class="ko">막는 실패</span><span class="en">Failure it prevents</span></th></tr></thead>
+          <tbody>
+            <tr><td><span class="ko">키프레임 첫 프레임 고정</span><span class="en">keyframe as first frame</span></td><td><span class="ko">정체성과 구도 고정</span><span class="en">anchors identity and composition</span></td><td><span class="ko">모델이 새 얼굴을 만드는 것</span><span class="en">the model inventing a new face</span></td></tr>
+            <tr><td><span class="ko">“Keep the same …”</span><span class="en">“Keep the same …”</span></td><td><span class="ko">락을 모델의 언어로 반복</span><span class="en">repeats the lock in the model's own terms</span></td><td><span class="ko">컷 사이 의상·소품 드리프트</span><span class="en">wardrobe and prop drift</span></td></tr>
+            <tr><td><span class="ko">입 닫힘 문장</span><span class="en">mouth-closed sentence</span></td><td><span class="ko">립싱크를 원천 차단</span><span class="en">blocks lip sync at the source</span></td><td><span class="ko">노래하는 입, 무너진 턱선</span><span class="en">a singing mouth and a broken jawline</span></td></tr>
+            <tr><td><span class="ko">동작 하나 + 부수 움직임 하나</span><span class="en">one action + one secondary motion</span></td><td><span class="ko">5초에 할 일을 준다</span><span class="en">gives five seconds something to do</span></td><td><span class="ko">과잉 애니메이션·모프·여분의 팔다리</span><span class="en">over-animation, morphing, extra limbs</span></td></tr>
+            <tr><td><span class="ko">카메라 무브 하나</span><span class="en">one camera move</span></td><td><span class="ko">조인 사이 프레임을 안정</span><span class="en">keeps the frame stable across the join</span></td><td><span class="ko">클립 중간에 속도가 바뀌는 무브</span><span class="en">a move that changes speed mid-clip</span></td></tr>
+            <tr><td><span class="ko">톤 줄</span><span class="en">tone line</span></td><td><span class="ko">조명·렌즈·질감</span><span class="en">light, lens, texture</span></td><td><span class="ko">이웃 컷과 붙지 않는 평평한 룩</span><span class="en">a flat look that does not cut with its neighbours</span></td></tr>
+            <tr><td><span class="ko">앰비언스만</span><span class="en">ambient only</span></td><td><span class="ko">생성 음성·음악 차단</span><span class="en">stops generated speech or music</span></td><td><span class="ko">지워야 할 오디오, 움직이는 입</span><span class="en">audio you must remove, a moving mouth</span></td></tr>
+            <tr><td><span class="ko">화면 글자 금지</span><span class="en">no on-screen text</span></td><td><span class="ko">가짜 레터링 차단</span><span class="en">stops fake lettering</span></td><td><span class="ko">깨진 글자가 화면에 구워지는 것</span><span class="en">garbled text burned into the picture</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub"><span class="ko">2 · FFmpeg 마스터링</span><span class="en">2 · FFmpeg mastering</span></h3>
+      <h4 class="mini"><span class="ko">소스 정규화 — 전부 같은 해상도·fps·SAR·픽셀 포맷으로</span><span class="en">Normalise every source to one resolution, fps, SAR and pixel format</span></h4>
+      <div class="code">
+        <button class="cp" data-copy="norm" type="button">COPY</button>
+        <pre id="norm">ffmpeg -y -i "raw/S01_SHOT.mp4" -an \
+  -vf "scale=1366:768:flags=lanczos:force_original_aspect_ratio=increase,crop=1366:768,fps=24,setsar=1,format=yuv420p" \
+  -frames:v 120 \
+  -c:v libx264 -crf 14 -preset slow -g 24 -movflags +faststart seg_01.mp4
+
+# vertical film: the same block reads scale=768:1366 / crop=768:1366
+# short source: hold the last frame instead of slowing the clip
+#   -vf "...,tpad=stop_mode=clone:stop_duration=0.6"</pre>
+      </div>
+      <div class="scroll">
+        <table class="tbl">
+          <thead><tr><th><span class="ko">파라미터</span><span class="en">Parameter</span></th><th><span class="ko">값</span><span class="en">Value</span></th><th><span class="ko">이유</span><span class="en">Why</span></th></tr></thead>
+          <tbody>
+            <tr><td class="mono">scale + crop</td><td><span class="ko">목표 크기, 채운 뒤 중앙 크롭</span><span class="en">target size, fill then centre-crop</span></td><td><span class="ko">레터박스와 얼굴 왜곡을 막는다 (크롭은 5% 이내)</span><span class="en">avoids letterbox bars and distorted faces (crop only ~5 %)</span></td></tr>
+            <tr><td class="mono">fps=24</td><td><span class="ko">전환 필터보다 먼저</span><span class="en">before any transition filter</span></td><td><span class="ko">VFR을 문제가 생기는 지점에서 CFR로 바꾼다</span><span class="en">converts VFR to CFR at the source of the problem</span></td></tr>
+            <tr><td class="mono">setsar=1</td><td>—</td><td><span class="ko">SAR이 다르면 <code>xfade</code>가 엉킨 화면을 만든다</span><span class="en">different SARs make <code>xfade</code> blend garbage</span></td></tr>
+            <tr><td class="mono">format=yuv420p</td><td>—</td><td><span class="ko">모든 플랫폼 재생 호환</span><span class="en">playback compatibility everywhere</span></td></tr>
+            <tr><td class="mono">-frames:v N</td><td><span class="ko">정확한 컷 길이(프레임)</span><span class="en">exact cut length in frames</span></td><td><span class="ko">클립은 초가 아니라 프레임으로 자른다</span><span class="en">the clip is cut by frames, not seconds</span></td></tr>
+            <tr><td class="mono">-crf 14 -preset slow</td><td>—</td><td><span class="ko">거의 무손실 중간 파일</span><span class="en">near-transparent intermediate</span></td></tr>
+            <tr><td class="mono">-g 24</td><td><span class="ko">1초 GOP</span><span class="en">1-second GOP</span></td><td><span class="ko">정확한 탐색과 깔끔한 조인</span><span class="en">precise seeking and clean joins</span></td></tr>
+            <tr><td class="mono">-an</td><td>—</td><td><span class="ko">생성된 말소리·음악은 마스터에 들어가지 않는다</span><span class="en">generated speech and music never ship</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class="mini"><span class="ko">하드컷 조립</span><span class="en">Hard-cut assembly</span></h4>
+      <div class="code">
+        <button class="cp" data-copy="concat" type="button">COPY</button>
+        <pre id="concat">printf "file 'seg_01.mp4'\nfile 'seg_02.mp4'\nfile 'seg_10.mp4'\n" > concat.txt
+ffmpeg -y -f concat -safe 0 -i concat.txt -an \
+  -c:v libx264 -crf 14 -preset slow -pix_fmt yuv420p -g 24 -movflags +faststart v1_visual_master.mp4</pre>
+      </div>
+      <p><span class="ko">기대 프레임은 <code>Σ seg frames</code>입니다. concat demuxer가 스트림 불일치로 거부하면 정규화가 덜 된 것이니, 한 세대 손실을 더하는 “전체 재인코딩”으로 덮지 말고 되돌아갑니다.</span>
+      <span class="en">Expected frames: <code>Σ seg frames</code>. If the concat demuxer refuses mismatched streams, normalisation was incomplete — go back, do not re-encode everything into one more generation of loss.</span></p>
+
+      <h4><span class="ko">크로스페이드 그래프 — 한 번의 인코딩으로</span><span class="en">The <code>xfade</code> graph — one graph, one encode</span></h4>
+      <div class="code">
+        <button class="cp" data-copy="xfg" type="button">COPY</button>
+        <pre id="xfg">ffmpeg -y -i seg_01.mp4 -i seg_02.mp4 -i seg_03.mp4 -filter_complex \
+"[0:v]fps=24,scale=1366:768,setsar=1,format=yuv420p,settb=AVTB,setpts=PTS-STARTPTS[v0];\
+ [1:v]fps=24,scale=1366:768,setsar=1,format=yuv420p,settb=AVTB,setpts=PTS-STARTPTS[v1];\
+ [2:v]fps=24,scale=1366:768,setsar=1,format=yuv420p,settb=AVTB,setpts=PTS-STARTPTS[v2];\
+ [v0][v1]xfade=transition=fade:duration=0.25:offset=4.75[o1];\
+ [o1][v2]xfade=transition=fade:duration=0.25:offset=9.5[o2]" \
+ -map "[o2]" -an -fps_mode cfr -r 24 \
+ -c:v libx264 -crf 14 -preset slow -pix_fmt yuv420p -g 24 -movflags +faststart out.mp4
+
+# 3 clips × 120 frames @24fps, 6-frame fade on both joins:
+# overlaps 0.25 s, offsets 114 and 228 frames = 4.75 s and 9.50 s, output 348 frames = 14.5 s</pre>
+      </div>
+      <h4 class="mini"><span class="ko">오프셋 생성기 — 손으로 숫자를 적지 않기 위해</span><span class="en">Offset generator so no offset is typed by hand</span></h4>
+      <div class="code">
+        <button class="cp" data-copy="xfgen" type="button">COPY</button>
+        <pre id="xfgen">import sys
+frames = [120, 120, 120]      # per-cut frames, in timeline order
+fps, fade = 24, 6             # fade in frames
+if fade * 2 >= min(frames):
+    sys.exit("fade too long for the shortest cut")
+acc, offsets = 0, []
+for k, f in enumerate(frames[:-1], start=1):
+    acc += frames[k - 1]
+    offsets.append((acc - k * fade) / fps)
+total = sum(frames) - (len(frames) - 1) * fade
+parts = [f"[{i}:v]fps={fps},scale=1366:768,setsar=1,format=yuv420p,"
+         f"settb=AVTB,setpts=PTS-STARTPTS[v{i}]" for i in range(len(frames))]
+prev = "[v0]"
+for k, off in enumerate(offsets, start=1):
+    out = f"[x{k}]"
+    parts.append(f"{prev}[v{k}]xfade=transition=fade:duration={fade/fps:.6f}:offset={off:.6f}{out}")
+    prev = out
+print(";".join(parts))
+print(f"# expected frames: {total}  ({total / fps:.3f}s)", file=sys.stderr)</pre>
+      </div>
+      <p><span class="ko"><code>transition=</code>는 <code>fade</code>, <code>dissolve</code>, <code>fadeblack</code>, <code>fadewhite</code>, <code>smoothleft</code>, <code>smoothup</code>, <code>circleopen</code>, <code>hblur</code> 중에서. 음악 영화라면 <code>fade</code>·<code>fadeblack</code>과 — 아껴서 — <code>smoothleft</code>가 전부입니다. 와이프·원형은 슬라이드 덱처럼 읽힙니다.</span>
+      <span class="en">Choose <code>transition=</code> from <code>fade</code>, <code>dissolve</code>, <code>fadeblack</code>, <code>fadewhite</code>, <code>smoothleft</code>, <code>smoothup</code>, <code>circleopen</code>, <code>hblur</code>. For a music film, <code>fade</code>, <code>fadeblack</code> and — sparingly — <code>smoothleft</code> are the whole vocabulary.</span></p>
+
+      <h4 class="mini"><span class="ko">조인에서 끊김·프레임 드롭을 막는 조건</span><span class="en">Preventing stutter and dropped frames at the join</span></h4>
+      <div class="scroll">
+        <table class="tbl">
+          <thead><tr><th><span class="ko">원인</span><span class="en">Cause</span></th><th><span class="ko">증상</span><span class="en">Symptom</span></th><th><span class="ko">가드</span><span class="en">Guard</span></th></tr></thead>
+          <tbody>
+            <tr><td><span class="ko">fps 혼합 소스</span><span class="en">mixed fps sources</span></td><td><span class="ko">페이드 지점에서 정확히 한 프레임 반복·누락</span><span class="en">a repeat or skip exactly at the fade</span></td><td class="mono">fps=24 on every input</td></tr>
+            <tr><td><span class="ko">해상도·SAR·픽셀 포맷 혼합</span><span class="en">mixed resolution / SAR / pix_fmt</span></td><td><span class="ko">에러, 또는 한 프레임 번짐</span><span class="en">error, or a one-frame smear</span></td><td class="mono">normalise first; settb=AVTB</td></tr>
+            <tr><td><span class="ko">VFR 소스</span><span class="en">VFR source</span></td><td><span class="ko">조인을 거듭할수록 커지는 드리프트</span><span class="en">drift that grows across joins</span></td><td class="mono">-fps_mode cfr at output</td></tr>
+            <tr><td><span class="ko">프레임 사이에 떨어지는 오프셋</span><span class="en">offset landing between frames</span></td><td><span class="ko">페이드 시작의 한 프레임 걸림</span><span class="en">a one-frame hitch at the fade's start</span></td><td><span class="ko">정수 페이드 프레임, 정확한 프레임 분수 오프셋</span><span class="en">integer fade frames, offsets in exact frame fractions</span></td></tr>
+            <tr><td><span class="ko">짧은 클립보다 긴 페이드</span><span class="en">fade longer than the shorter clip</span></td><td><span class="ko">에러 또는 프리즈 블렌드</span><span class="en">error, or a freezeframe blend</span></td><td><code>D ≤ 25 %</code> <span class="ko">(짧은 컷 기준)</span><span class="en">of the shorter cut</span></td></tr>
+            <tr><td><span class="ko">페이드된 중간 파일 재인코딩</span><span class="en">re-encoding a faded intermediate</span></td><td><span class="ko">누적 블러</span><span class="en">accumulation blur</span></td><td><span class="ko">한 그래프, 한 번의 인코딩</span><span class="en">one graph, one encode</span></td></tr>
+            <tr><td><span class="ko">전환과 함께 쓰는 <code>-shortest</code></span><span class="en"><code>-shortest</code> with transitions</span></td><td><span class="ko">꼬리가 잘림</span><span class="en">truncated tail</span></td><td><span class="ko">빼고 계산된 오프셋을 믿는다</span><span class="en">drop it; trust the computed offsets</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class="mini"><span class="ko">마스터 QC — 파일에서 확인</span><span class="en">QC on the file</span></h4>
+      <div class="code">
+        <button class="cp" data-copy="probe" type="button">COPY</button>
+        <pre id="probe">ffprobe -v error -count_frames -select_streams v:0 \
+  -show_entries stream=codec_name,width,height,r_frame_rate,pix_fmt,sample_aspect_ratio,nb_read_frames,duration \
+  -show_entries format=duration,size -of json v1_visual_master.mp4
+
+# must print nothing:
+ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=0 v1_visual_master.mp4</pre>
+      </div>
+      <div class="scroll">
+        <table class="tbl">
+          <thead><tr><th><span class="ko">검사</span><span class="en">Check</span></th><th><span class="ko">합격 조건</span><span class="en">Pass condition</span></th></tr></thead>
+          <tbody>
+            <tr><td><span class="ko">프레임 수</span><span class="en">Frame count</span></td><td><span class="ko">계획과 정확히 일치 (±0)</span><span class="en">equals the plan exactly (±0)</span></td></tr>
+            <tr><td><span class="ko">프레임 레이트</span><span class="en">Frame rate</span></td><td><span class="ko">계획한 값 그대로 (<code>24/1</code>)</span><span class="en">exactly the planned rate (<code>24/1</code>)</span></td></tr>
+            <tr><td><span class="ko">길이</span><span class="en">Duration</span></td><td><code>frames ÷ fps</code>, <span class="ko">컨테이너 값과 한 프레임 이내</span><span class="en">within one frame of the container</span></td></tr>
+            <tr><td><span class="ko">해상도</span><span class="en">Resolution</span></td><td><span class="ko">1366×768 또는 768×1366 — 모든 프레임에서</span><span class="en">1366×768 or 768×1366 on every frame</span></td></tr>
+            <tr><td><span class="ko">픽셀 포맷</span><span class="en">Pixel format</span></td><td class="mono">yuv420p, SAR 1:1</td></tr>
+            <tr><td><span class="ko">오디오</span><span class="en">Audio streams</span></td><td><span class="ko">없음 (v1)</span><span class="en">none (v1)</span></td></tr>
+            <tr><td><span class="ko">순서</span><span class="en">Order</span></td><td><span class="ko">컷 01이 먼저, 승인된 순서, 마지막 프레임이 마지막 컷</span><span class="en">cut 01 first, the approved order, the last frame belongs to the last cut</span></td></tr>
+            <tr><td><span class="ko">조인</span><span class="en">Joins</span></td><td><span class="ko">계획에 없는 검은 프레임·프리즈·동일 프레임 연속 없음</span><span class="en">no unplanned black frame, freeze, or two identical frames in a row</span></td></tr>
+            <tr><td><span class="ko">움직임</span><span class="en">Motion</span></td><td><span class="ko">각 컷의 첫·마지막 1초에 의도한 움직임이 있다</span><span class="en">the first and last second of each cut show the intended movement</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub"><span class="ko">3 · 가사 자막</span><span class="en">3 · Lyric subtitles</span></h3>
+      <div class="grid2">
+        <div class="scroll">
+          <table class="tbl" style="min-width:0">
+            <thead><tr><th><span class="ko">규칙</span><span class="en">Rule</span></th><th><span class="ko">값</span><span class="en">Value</span></th></tr></thead>
+            <tbody>
+              <tr><td><span class="ko">첫 음절 전에 들어옴</span><span class="en">cue enters before the first syllable</span></td><td class="mono">0.10–0.20 s (3–5 frames @24)</td></tr>
+              <tr><td><span class="ko">마지막 음절 뒤로 나감</span><span class="en">leaves after the last syllable</span></td><td class="mono">0.30–0.60 s</td></tr>
+              <tr><td><span class="ko">최소 큐 길이</span><span class="en">minimum cue</span></td><td class="mono">1.2 s</td></tr>
+              <tr><td><span class="ko">최대 큐 길이</span><span class="en">maximum cue</span></td><td class="mono">~6 s</td></tr>
+              <tr><td><span class="ko">큐 간 간격</span><span class="en">gap between cues</span></td><td class="mono">2–4 frames</td></tr>
+              <tr><td><span class="ko">읽기 속도 (한/영)</span><span class="en">reading speed</span></td><td class="mono">12–15 ch/s · <span class="ko">한계 17</span><span class="en">hard limit 17</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h4><span class="ko">자막은 노래하는 줄에 맞춘다</span><span class="en">Time to the sung line</span></h4>
+          <ul>
+            <li><span class="ko">구간이나 마디가 아니라 <b>실제로 불린 줄</b>에 맞춥니다.</span><span class="en">Time to the sung line, not to the section or the bar.</span></li>
+            <li><span class="ko">가사는 소유자가 쓴 그대로. 철자·줄 순서를 말없이 고치지 않습니다 — 이상해 보이면 묻습니다.</span><span class="en">The sung language comes from the artist's own text; never silently fix a lyric.</span></li>
+            <li><span class="ko">소유자가 주지 않은 번역은 <code>translation — not approved</code>로 표시하고, 작가의 말처럼 내놓지 않습니다.</span><span class="en">A translation the artist did not write is labelled <code>translation — not approved</code>.</span></li>
+            <li><span class="ko">초과하면 타입을 줄이지 말고 프레이즈 경계에서 큐를 둘로 나눕니다.</span><span class="en">Over the limit, split the line at a phrase boundary — do not shrink the type.</span></li>
+            <li><span class="ko">검증은 프레임에서: 구간마다 세 지점(첫 줄·긴 간주 뒤 줄·마지막 줄)을 스텝으로 확인하고, 마지막 큐가 마지막 프레임 전에 사라지는지 봅니다.</span><span class="en">Verify three anchors per section on frames, and confirm the last cue clears before the final frame.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <h4 class="mini"><span class="ko">레이아웃 — 화면 비율에 맞춰, 편집 창이 아니라 마스터에 맞춰</span><span class="en">Layout for the aspect, not for the editor window</span></h4>
+      <div class="scroll">
+        <table class="tbl">
+          <thead><tr><th></th><th>16:9 · 1366×768</th><th>9:16 · 768×1366</th></tr></thead>
+          <tbody>
+            <tr><td><span class="ko">한 줄 한국어</span><span class="en">Korean chars/line</span></td><td class="mono">≤ 20</td><td class="mono">≤ 13</td></tr>
+            <tr><td><span class="ko">한 줄 영어</span><span class="en">English chars/line</span></td><td class="mono">≤ 42</td><td class="mono">≤ 30</td></tr>
+            <tr><td><span class="ko">하단 여백</span><span class="en">Bottom margin</span></td><td class="mono">~7 % ≈ 54 px</td><td class="mono">~17 % ≈ 230 px</td></tr>
+            <tr><td><span class="ko">좌우 여백</span><span class="en">Side margin</span></td><td class="mono">~6 % ≈ 80 px</td><td class="mono">~7 % ≈ 54 px</td></tr>
+            <tr><td><span class="ko">한국어 크기</span><span class="en">Korean size</span></td><td class="mono">38–42 px</td><td class="mono">49–53 px</td></tr>
+            <tr><td><span class="ko">영어 크기</span><span class="en">English size</span></td><td class="mono">32–36 px</td><td class="mono">42–46 px</td></tr>
+            <tr><td><span class="ko">외곽선 · 그림자</span><span class="en">Outline · shadow</span></td><td class="mono">2 px #1C1C1C 85 % · 1 px black 50 %</td><td class="mono">3 px · 2 px</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note warn">
+        <span class="ko"><b>9:16은 화면의 아래 5분의 1을 앱이 가져갑니다.</b> 세로 768p에 54px로 놓은 자막은 캡션과 버튼 아래에 깔려 보이지 않습니다. 그리고 2K 픽셀 값을 768p 번인에 그대로 쓰면 두 줄이 화면을 먹습니다.</span>
+        <span class="en"><b>9:16 loses its bottom fifth to the app.</b> Text placed at 54 px on a vertical 768p video sits under the caption and the button. Do not paste 2K pixel values onto a 768p burn.</span>
+      </div>
+      <p><span class="ko">서체는 한글이 버티는 것: Noto Sans KR, Pretendard, SUIT, Apple SD Gothic Neo. Light·Thin은 움직임 위에서 부서지고 Black은 얼굴 위의 판때기입니다. <b>폰트를 동봉하세요</b> — OFL 라이선스 <code>.ttf</code>/<code>.otf</code>를 <code>fonts/</code>에 넣고 <code>fontsdir=</code>을 넘기지 않으면 libass가 한글 글리프 없는 폰트로 폴백해 네모가 나옵니다. 텍스트 애니메이션은 요청이 없으면 넣지 않습니다(부드러운 등장 <code>{\fad(120,120)}</code>만).</span>
+      <span class="en">Fonts that hold Korean: Noto Sans KR, Pretendard, SUIT, Apple SD Gothic Neo. <b>Ship the font</b> — put an OFL-licensed <code>.ttf</code>/<code>.otf</code> in <code>fonts/</code> and pass <code>fontsdir=</code>, or libass falls back to a font without Korean glyphs and the render comes back as boxes. No text animation unless asked (a soft <code>{\fad(120,120)}</code> entry only).</span></p>
+
+      <h4 class="mini"><span class="ko">ASS 원본 — PlayRes를 마스터 픽셀에 맞춘다</span><span class="en">The ASS source — PlayRes equal to the master's pixels</span></h4>
+      <div class="code">
+        <button class="cp" data-copy="ass" type="button">COPY</button>
+        <pre id="ass">[Script Info]
+Title: {project} — lyrics
+ScriptType: v4.00+
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+PlayResX: 1366
+PlayResY: 768
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: KO,Noto Sans KR,40,&amp;H00F5F2EA,&amp;H000000FF,&amp;H101C1C1C,&amp;H80000000,0,0,0,0,100,100,0.5,0,1,2,1,2,80,80,112,1
+Style: EN,Noto Sans KR,34,&amp;H00F5F2EA,&amp;H000000FF,&amp;H101C1C1C,&amp;H80000000,0,0,0,0,100,100,0,0,1,2,1,2,80,80,58,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:03.20,0:00:06.90,KO,,0,0,0,,{\fad(120,120)}첫 번째 가사의 한 줄
+Dialogue: 0,0:00:03.20,0:00:06.90,EN,,0,0,0,,{\fad(120,120)}the first line of the lyric</pre>
+      </div>
+      <ul>
+        <li><span class="ko"><code>WrapStyle: 2</code> — 자동 줄바꿈 없음. <code>\N</code>을 쓴 곳에서만 줄이 바뀌어, 한 단어만 떨어져 나오는 고아 줄이 생기지 않습니다.</span><span class="en"><code>WrapStyle: 2</code> — no automatic wrapping; a break happens only where <code>\N</code> is written.</span></li>
+        <li><span class="ko"><code>MarginV</code>를 언어별로 다르게(112 / 58) 두어 두 줄이 겹치지 않고 쌓입니다. 9:16 768×1366이면 약 288 / 235.</span><span class="en"><code>MarginV</code> differs per style (112 / 58) so the two languages stack; for 9:16 at 768×1366 add the safe-zone offset (≈288 / 235).</span></li>
+        <li><span class="ko">ASS 색은 <code>&amp;HAABBGGRR</code> — 알파, 그다음 파랑·초록·빨강. 반투명 박스는 <code>BorderStyle=3</code> + <code>Outline=7</code>(패딩) + <code>BackColour=&amp;HA0000000</code>.</span><span class="en">ASS colours are <code>&amp;HAABBGGRR</code> (alpha first). A semi-transparent box: <code>BorderStyle=3</code>, <code>Outline=7</code>, <code>BackColour=&amp;HA0000000</code>.</span></li>
+        <li><span class="ko">이중 언어 번인은 ASS로만 — <code>force_style</code>은 전역이라 두 언어를 다른 크기로 못 만듭니다.</span><span class="en">Bilingual burning needs ASS: <code>force_style</code> is global and cannot size two languages differently.</span></li>
+      </ul>
+
+      <h4 class="mini"><span class="ko">v1 위에 굽기 — 드래프트가 아니라 승인된 마스터에</span><span class="en">Burn onto v1, never onto a draft</span></h4>
+      <div class="prompt-label"><span class="ko">화면만 — 무음 v2</span><span class="en">Picture only, silent v2</span></div>
+      <div class="code">
+        <button class="cp" data-copy="burn1" type="button">COPY</button>
+        <pre id="burn1">ffmpeg -y -i v1_visual_master.mp4 \
+  -vf "subtitles=subs/lyrics.ass:fontsdir=fonts" \
+  -an -c:v libx264 -crf 16 -preset slow -pix_fmt yuv420p -g 24 -movflags +faststart v2_lyric_master.mp4</pre>
+      </div>
+      <div class="prompt-label"><span class="ko">화면 + 소유자 음원 — v2 납품본</span><span class="en">Picture plus the owner's track — the v2 delivery</span></div>
+      <div class="code">
+        <button class="cp" data-copy="burn2" type="button">COPY</button>
+        <pre id="burn2">ffmpeg -y -i v1_visual_master.mp4 -i audio/track.wav \
+  -vf "subtitles=subs/lyrics.ass:fontsdir=fonts" \
+  -map 0:v -map 1:a -c:v libx264 -crf 16 -preset slow -pix_fmt yuv420p \
+  -c:a aac -b:a 192k -ar 48000 -shortest -movflags +faststart v2_lyric_master.mp4</pre>
+      </div>
+      <div class="scroll">
+        <table class="tbl">
+          <thead><tr><th><span class="ko">v2 게이트</span><span class="en">v2 gate</span></th><th><span class="ko">합격 조건</span><span class="en">Pass condition</span></th></tr></thead>
+          <tbody>
+            <tr><td><span class="ko">프레임·길이</span><span class="en">Frame count / duration</span></td><td><span class="ko">v1과 동일 (자막을 굽는다고 컷이 바뀌면 안 됨)</span><span class="en">identical to v1 — burning text must not change the cut</span></td></tr>
+            <tr><td><span class="ko">해상도·fps·픽셀 포맷</span><span class="en">Resolution / fps / pix_fmt</span></td><td><span class="ko">v1과 동일</span><span class="en">identical to v1</span></td></tr>
+            <tr><td><span class="ko">오디오</span><span class="en">Audio</span></td><td><span class="ko">음원을 준 경우에만 존재, 길이 정확, 클리핑 없음</span><span class="en">present only if a track was supplied; correct duration; not clipped</span></td></tr>
+            <tr><td><span class="ko">큐 수</span><span class="en">Cue count</span></td><td><span class="ko">가사 시트와 일치, 중복·누락 없음</span><span class="en">matches the lyric sheet, no duplicate or missing line</span></td></tr>
+            <tr><td><span class="ko">세이프존</span><span class="en">Safe zone</span></td><td><span class="ko">가장 긴 큐가 첫·마지막 프레임 모두에서 안에 들어옴</span><span class="en">the longest cue fits at both its first and last frame</span></td></tr>
+            <tr><td><span class="ko">얼굴</span><span class="en">Faces</span></td><td><span class="ko">눈매나 입 위에 큐가 앉지 않음</span><span class="en">no cue over an eye line or a mouth</span></td></tr>
+            <tr><td><span class="ko">끝</span><span class="en">End</span></td><td><span class="ko">마지막 큐가 마지막 프레임 전에 사라짐</span><span class="en">the last cue clears before the final frame</span></td></tr>
+            <tr><td><span class="ko">납품 파일</span><span class="en">Files</span></td><td><code>v2_lyric_master.mp4</code> + <code>subs/lyrics.ass</code> + <code>subs/lyrics.srt</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note cyan"><span class="ko">음원은 언제나 소유자의 파일입니다. 스킬은 음악을 구하거나 라이선스하거나 생성하지 않고, 납품 노트가 “음악은 우리가 클리어했다”는 인상을 주지 않습니다. 음원이 그림보다 길면 그림의 마지막 프레임에서 자르고, 짧으면 영화를 줄이지 않고 불일치를 보고합니다.</span>
+      <span class="en">The music is always the owner's file. The skill never sources, licenses or generates a track, and a delivery note never implies the music was cleared by us.</span></div>
+
+      <h3 class="sub"><span class="ko">4 · 태스크 매니페스트와 게이트</span><span class="en">4 · Task manifest and gates</span></h3>
+      <div class="grid2">
+        <div class="card">
+          <h4><span class="ko">두 개의 파일, 두 개의 역할</span><span class="en">Two files, two jobs</span></h4>
+          <p><code>LUDYTE_VIDEO_TASKS.md</code> — <span class="ko">상태 보드. 컷당 한 줄, 현재 상태·설정·파일 위치. 상태가 바뀔 때마다 제자리에서 갱신.</span><span class="en">the state board: one row per cut, current state, settings, where the file went; rewritten in place, always complete.</span></p>
+          <p style="margin:0"><code>out/tasks.txt</code> — <span class="ko">추가 전용 로그. 무엇을 언제 받았고 probe가 뭐라고 했는지. 편집·재정렬 없이 덧붙이기만.</span><span class="en">the append-only log: what was downloaded, when, and what the probe said; never edited, never reordered.</span></p>
+        </div>
+        <div class="scroll">
+          <table class="tbl" style="min-width:0">
+            <thead><tr><th><span class="ko">상태</span><span class="en">State</span></th><th><span class="ko">의미</span><span class="en">Means</span></th></tr></thead>
+            <tbody>
+              <tr><td class="mono">PLANNED</td><td><span class="ko">보드에 컷은 있고 태스크는 없음</span><span class="en">cut exists on the board, no task</span></td></tr>
+              <tr><td class="mono">REGISTERED</td><td><span class="ko">플랫폼이 접수, 아직 진척 없음</span><span class="en">task accepted, no progress yet</span></td></tr>
+              <tr><td class="mono">RUNNING</td><td><span class="ko">생성 중</span><span class="en">generating</span></td></tr>
+              <tr><td class="mono">DONE</td><td><span class="ko">완료, 아직 다운로드 전</span><span class="en">finished, not yet downloaded</span></td></tr>
+              <tr><td class="mono">DOWNLOADED</td><td><span class="ko">원본이 디스크에 있고 probe 완료</span><span class="en">original on disk, probed</span></td></tr>
+              <tr><td class="mono">PASS</td><td><span class="ko">편집에 쓰기로 수락</span><span class="en">picture accepted for the edit</span></td></tr>
+              <tr><td class="mono">FAIL</td><td><span class="ko">사용 불가, 증거로 보존 — 덮어쓰지 않음</span><span class="en">unusable; kept as evidence, never overwritten</span></td></tr>
+              <tr><td class="mono">HELD</td><td><span class="ko">의도적으로 생성 안 함, 사람 결정 대기</span><span class="en">deliberately not generated, waiting on a human</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <h4 class="mini"><span class="ko">게이트 — 묻지 않고 해도 되는 것 / 절대 안 되는 것</span><span class="en">Gates — allowed without asking / never</span></h4>
+      <div class="scroll">
+        <table class="tbl">
+          <thead><tr><th><span class="ko">행동</span><span class="en">Action</span></th><th><span class="ko">승인 없이 가능?</span><span class="en">Allowed without asking</span></th></tr></thead>
+          <tbody>
+            <tr><td><span class="ko">프로젝트·태스크·출력·설정 확인</span><span class="en">inspect project, tasks, outputs, settings</span></td><td><span class="ok">yes</span></td></tr>
+            <tr><td><span class="ko">생성이 승인된 실행에서 컷당 태스크 1건 등록</span><span class="en">register one task per cut when the run was authorized to generate</span></td><td><span class="ok">yes</span></td></tr>
+            <tr><td><span class="ko">DONE 원본 다운로드, 로그 추가, probe 결과 기록</span><span class="en">download a DONE original, append to the log, write probe results</span></td><td><span class="ok">yes</span></td></tr>
+            <tr><td><span class="ko">실패했거나 못난 컷의 재생성·재제출</span><span class="en">re-roll, regenerate or resubmit a failed or ugly cut</span></td><td><b><span class="ko">아니오 — 보고하고 멈춤</span><span class="en">no — report it and stop</span></b></td></tr>
+            <tr><td><span class="ko">크레딧 구매·업그레이드·좌석 추가</span><span class="en">buy credits, upgrade, subscribe, add seats</span></td><td><b><span class="ko">아니오</span><span class="en">no</span></b></td></tr>
+            <tr><td><span class="ko">진행 중 작업 취소</span><span class="en">cancel an in-flight job</span></td><td><b><span class="ko">아니오</span><span class="en">no</span></b></td></tr>
+            <tr><td><span class="ko">PASS·FAIL 표시 파일 덮어쓰기, 태스크 삭제</span><span class="en">delete tasks, or overwrite files marked PASS / FAIL / lowres</span></td><td><b><span class="ko">아니오</span><span class="en">no</span></b></td></tr>
+            <tr><td><span class="ko">실행 중 모델·해상도·비율·길이 변경</span><span class="en">change model, resolution, aspect or duration mid-run</span></td><td><b><span class="ko">아니오</span><span class="en">no</span></b></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note"><span class="ko"><b>중복 과금이 나는 방식.</b> 제출과 매니페스트 기록 사이에 실행이 끊기면 태스크는 있는데 매니페스트는 PLANNED라 다음 실행이 또 주문합니다. 그래서 등록 전에 <b>플랫폼의 태스크 목록을 먼저 읽어</b> 매니페스트에 없는 태스크를 편입시키고, 태스크 ID는 <b>기억이 아니라 복사</b>해서 화면을 닫기 전에 적습니다.</span>
+      <span class="en"><b>How money is lost twice.</b> If a run breaks between submit and the manifest write, the task exists while the manifest says PLANNED and the next run orders again — so read the platform's own task list first, adopt what the manifest lacks, and copy the id (never recall it) before the page is closed.</span></div>
+    </div>
+  </section>
+
+  <!-- ================= 05 DOWNLOAD ================= -->
+  <section class="block" id="download">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-num">05</div>
+        <div>
+          <h2><span class="ko">스킬 ZIP 다운로드</span><span class="en">Download the skill ZIP</span></h2>
+          <p><span class="ko">9개 파일, 2,677줄. 스킬 본문(SKILL.md)과 6개 레퍼런스, 한·영 README가 한 폴더 안에 들어 있습니다.</span>
+          <span class="en">Nine files, 2,677 lines: the skill body (SKILL.md), six references and both READMEs in one folder.</span></p>
+        </div>
+      </div>
+
+      <div class="dlwrap">
+        <div class="zipcard">
+          <div>
+            <div class="pill a" style="margin-bottom:10px">v1.3.0 · 2 masters in one pass</div>
+            <h3>ludyte-mv-studio-skill-v1.3.0.zip</h3>
+            <p class="meta" style="margin:8px 0 0">
+              64,824 bytes · 63.3 KB · 9 files<br>
+              <span class="ko">압축 안 루트 폴더:</span><span class="en">Root folder inside:</span> <code>ludyte-mv-studio/</code>
+            </p>
+          </div>
+          <a class="btn btn-primary dl" href="./ludyte-mv-studio-skill-v1.3.0.zip" download style="justify-content:center">
+            <span class="ko">ZIP 내려받기</span><span class="en">Download ZIP</span>
+          </a>
+          <div>
+            <div class="prompt-label">SHA-256</div>
+            <div class="hash">76cfccc6c6469dfb416295cbba4b5eef08e6374baf587a55387dcdd65451dceb</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="prompt-label"><span class="ko">패키지 구성</span><span class="en">What's inside</span></div>
+          <pre class="tree">ludyte-mv-studio/
+├── <b>SKILL.md</b>                       <i>23.6 KB · 계약 · 4단계 · 게이트 · 절대 규칙</i>
+├── README.md                      <i>12.6 KB · 설치·사용법·문제 해결 (English)</i>
+├── README.ko.md                   <i>13.0 KB · 설치·사용법·문제 해결 (한국어)</i>
+└── references/
+    ├── <b>storyboard-prompt-guide.md</b>  <i>12.1 KB · 가사 분할 · 10비트 · 프롬프트 공식</i>
+    ├── <b>batch-task-manifest.md</b>      <i> 8.0 KB · TASKS.md 양식 · 상태 · 중복 과금 방지</i>
+    ├── <b>video-mastering-spec.md</b>     <i>14.9 KB · 프레임 산수 · ffmpeg · 크로스페이드 · QC</i>
+    ├── <b>lyric-subtitle-spec.md</b>      <i>13.3 KB · SRT/ASS · 이중 언어 · 세이프존 · 번인</i>
+    ├── <b>h3-skillpack.md</b>             <i>23.9 KB · H3 5모드 · 라벨 · 화자 ID · 사운드</i>
+    └── <b>mv-prompt-pack.md</b>           <i>40.7 KB · 샷 프롬프트 48종 (이 페이지의 원본)</i></pre>
+        </div>
+      </div>
+
+      <h3 class="sub"><span class="ko">설치</span><span class="en">Install</span></h3>
+      <div class="grid2">
+        <div>
+          <div class="prompt-label"><span class="ko">Claude Code · 개인 설치</span><span class="en">Claude Code · personal</span></div>
+          <div class="code">
+            <button class="cp" data-copy="inst1" type="button">COPY</button>
+            <pre id="inst1">git clone &lt;this-repo&gt; ~/.claude/skills/ludyte-mv-studio
+# or copy the folder you unzipped:
+cp -r ludyte-mv-studio ~/.claude/skills/</pre>
+          </div>
+          <div class="prompt-label"><span class="ko">Claude Code · 프로젝트별</span><span class="en">Claude Code · per project</span></div>
+          <div class="code">
+            <button class="cp" data-copy="inst2" type="button">COPY</button>
+            <pre id="inst2">mkdir -p .claude/skills &amp;&amp; cp -r ludyte-mv-studio .claude/skills/</pre>
+          </div>
+          <p><span class="ko">업로드 방식: <code>ludyte-mv-studio/</code>를 루트로 압축해 계정의 스킬 설정에서 업로드합니다. 확인은 “이 스킬이 뭐 하는 스킬이야?”라고 물었을 때 4단계 설명이 돌아오는지로 합니다.</span>
+          <span class="en">As an uploaded skill: zip the folder with <code>ludyte-mv-studio/</code> as the root and upload it in the skill settings. Check it loaded by asking what the skill does — the answer should describe the four stages.</span></p>
+        </div>
+        <div class="scroll">
+          <table class="tbl" style="min-width:0">
+            <thead><tr><th><span class="ko">준비물</span><span class="en">Requirement</span></th><th><span class="ko">내용</span><span class="en">What</span></th></tr></thead>
+            <tbody>
+              <tr><td>Claude</td><td><span class="ko">셸과 파일 접근이 되는 클로드 (Claude Code, 또는 파일시스템이 있는 에이전트 런타임)</span><span class="en">any Claude that can run a skill with shell access</span></td></tr>
+              <tr><td class="mono">ffmpeg / ffprobe</td><td><span class="ko">5.1 이상 (<code>xfade</code>, libass 포함 <code>subtitles</code>)</span><span class="en">5.1 or newer (<code>xfade</code>, <code>subtitles</code> with libass)</span></td></tr>
+              <tr><td class="mono">Python 3</td><td><span class="ko">선택 — 크로스페이드 오프셋 계산, 매니페스트 점검</span><span class="en">optional — crossfade offsets, manifest checks</span></td></tr>
+              <tr><td><span class="ko">한글 폰트</span><span class="en">A Korean font</span></td><td><span class="ko">OFL 라이선스 <code>.ttf</code>/<code>.otf</code>를 <code>fonts/</code>에. 없으면 한글이 네모로 나옵니다</span><span class="en">an OFL-licensed <code>.ttf</code>/<code>.otf</code> in <code>fonts/</code>, otherwise Korean renders as boxes</span></td></tr>
+              <tr><td><span class="ko">계정</span><span class="en">Accounts</span></td><td><span class="ko">스틸용 이미지 모델 + 클립용 이미지→영상 서비스</span><span class="en">an image model for stills, plus an image-to-video service for clips</span></td></tr>
+            </tbody>
+          </table>
+          <div class="prompt-label" style="margin-top:14px"><span class="ko">환경 확인</span><span class="en">Check the toolchain</span></div>
+          <div class="code">
+            <button class="cp" data-copy="inst3" type="button">COPY</button>
+            <pre id="inst3">ffmpeg -version | head -1
+ffmpeg -hide_banner -filters | grep -E "xfade|subtitles"</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="sub"><span class="ko">실제로 이렇게 씁니다</span><span class="en">What a run looks like</span></h3>
+      <div class="scroll">
+        <table class="tbl">
+          <thead><tr><th><span class="ko">이렇게 말하면</span><span class="en">Say</span></th><th><span class="ko">이렇게 나옵니다</span><span class="en">Get</span></th></tr></thead>
+          <tbody>
+            <tr><td><span class="ko">“가사랑 사진이야. 30초 뮤비로 10컷 스토리보드 만들어줘. 16:9, 시네마틱 실사, 립싱크 없이. 컷마다 키프레임 프롬프트랑 영상 프롬프트도.”</span><span class="en">“Here are the lyrics and a photo. Make a 10-cut storyboard for a 30-second MV, 16:9, cinematic live action, no lip sync — with a keyframe prompt and a video prompt per cut.”</span></td>
+              <td><span class="ko">스타일 바이블, 스틸이 컷 카드 사이에 붙은 10컷 보드, 컷별 프롬프트. 보드 수정은 공짜이니 여기서 끝냅니다.</span><span class="en">the style bible, ten cut cards with stills between them, and prompts. Approve or change the board here — it is free.</span></td></tr>
+            <tr><td><span class="ko">“10컷 전부 768p, 16:9, 5초로 생성해. 매니페스트에 추적하고 다 되면 알려줘.”</span><span class="en">“Generate all ten cuts at 768p, 16:9, 5 seconds. Track them in the manifest and tell me when they're done.”</span></td>
+              <td><span class="ko">컷당 1건 등록, 아이디를 가장 먼저 기록, 낮은 주기로 확인, 완료 원본만 다운로드·실측. 실패한 컷은 재시도 없이 보고.</span><span class="en">one task per cut, the id recorded first, low-cadence polling, only finished originals downloaded and probed; a failure is reported instead of retried.</span></td></tr>
+            <tr><td><span class="ko">“정확히 30초로 잘라줘. 박자에 하드컷, 후렴 들어갈 때랑 브릿지 다음은 0.25초 크로스페이드. 무음 마스터로.”</span><span class="en">“Cut it to exactly 30 s — hard cuts on the beats, a 0.25 s crossfade into the chorus and after the bridge. Silent master.”</span></td>
+              <td><code>v1_visual_master.mp4</code> + <span class="ko">리포트(프레임·fps·해상도·업스케일한 컷·보이는 결함과 위치)</span><span class="en">report: frames, fps, resolution, which cut was upscaled, which fault is visible where</span></td></tr>
+            <tr><td><span class="ko">“한글 가사는 위에, 영어 번역은 그 아래 작게. 9:16 세이프존 맞추고 내 음원 넣어서.”</span><span class="en">“Korean on top, English beneath it smaller, 9:16 safe zone, with my track.”</span></td>
+              <td><code>v2_lyric_master.mp4</code>, <code>subs/lyrics.ass</code>, <code>subs/lyrics.srt</code>, <span class="ko">그리고 확인이 필요한 항목(승인 안 된 번역, 줄이 안 맞는 가사)</span><span class="en">plus a note on anything left to confirm</span></td></tr>
+            <tr><td><span class="ko">“컷 합치고 가사까지 한 번에 넣어줘.”</span><span class="en">“Cut it together and put the lyrics on — one go.”</span></td>
+              <td><span class="ko">같은 실행에서 <code>v1</code> + <code>v2</code> + 자막 파일, 둘 다 실측</span><span class="en"><code>v1</code> + <code>v2</code> + subtitle files from one run, both probed</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note" style="margin-top:26px">
+        <span class="ko"><b>배포용 패키지입니다.</b> 스킬 본문과 이 페이지에는 실명·활동명·이메일·계정·기존 곡명·제휴처·로컬 경로가 들어 있지 않습니다(개인정보 스캔 0건). 라이선스 파일은 패키지에 넣지 않았으니 배포 전에 직접 추가하세요 — 스킬 텍스트의 라이선스는 올리는 사람이 정하고, 함께 넣는 폰트나 샘플 파일은 각자의 조건을 따릅니다.</span>
+        <span class="en"><b>Distribution build.</b> Neither the package nor this page carries a real name, handle, email, account, existing track title, partner or local path (privacy scan: 0 hits). No LICENSE file is included — add your own before publishing; third-party fonts or sample files you add carry their own terms.</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <strong>Ludyte MV Studio</strong> · v1.3.0 ·
+      <span class="ko">정적 페이지, 추적 스크립트 없음</span><span class="en">static page, no tracking scripts</span>
+    </div>
+    <div>
+      <span class="ko">4단계 · 4게이트 · 샷 프롬프트 48종 · H3 5모드 · 개인정보 0건</span>
+      <span class="en">4 stages · 4 gates · 48 shot prompts · 5 H3 modes · no personal data</span>
+    </div>
+  </div>
+</footer>
+
+<script type="application/json" id="pdata">[{"n":"01","section":"1","cat":"open","title_en":"Still room, one shaft of light","meta":"`5 s` · `wide` · `slow push in` · `no-lip` · interior day","prompt":"Use the attached keyframe as the first frame. Keep the same room, window frame, floor tone and the dust in the air.\nWide shot, empty room, no person in frame.\nA curtain lifts once in the draught and settles; dust turns slowly in the shaft of light across the floor.\nCamera: slow push in toward the window. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: hard daylight through one window, deep shadow elsewhere, fine grain, 35mm feel.\nAmbient only: room tone, a faint street hum outside, the curtain brushing the sill. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"빈 방, 창으로 드는 빛 한 줄기"},{"n":"02","section":"1","cat":"open","title_en":"Empty street, before anyone is awake","meta":"`5 s` · `wide` · `static` · `no-lip` · exterior dawn","prompt":"Use the attached keyframe as the first frame. Keep the same street, wet kerb, shutters and sky colour.\nWide shot of an empty street, no person in frame.\nA plastic bag tumbles across the road and stops against the kerb; one shutter rattles in the wind.\nCamera: steady lock-off. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: blue hour, sodium streetlights still on, thin mist, 28mm feel, light grain.\nAmbient only: distant traffic, wind through an alley, a loose shutter. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"아무도 깨어나기 전, 빈 거리"},{"n":"03","section":"1","cat":"open","title_en":"Figure at the far end, face withheld","meta":"`5 s` · `extreme wide` · `slow track in` · `no-lip` · exterior night","prompt":"Use the attached keyframe as the first frame. Keep the same corridor, overhead lamps and the figure's {WARDROBE}.\nExtreme wide shot from behind: a figure stands at the far end of a long corridor, back to camera, face not visible.\nThe figure shifts weight from one foot to the other; the coat hem moves with it.\nCamera: slow track in along the corridor. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: rows of fluorescent lamps, greenish cast, deep falloff at the end, 40mm feel.\nAmbient only: lamp buzz, the figure's coat shifting, a door closing somewhere behind. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"복도 끝의 인물, 얼굴은 감춘 채"},{"n":"04","section":"1","cat":"open","title_en":"Hands opening a curtain","meta":"`5 s` · `close` · `static` · `no-lip` · interior morning","prompt":"Use the attached keyframe as the first frame. Keep the same hands, sleeve cuffs, curtain fabric and window light.\nClose shot on two hands at the edge of a curtain, face out of frame.\nThe fingers find the seam and pull the curtain open a hand's width; light floods across the knuckles and the fabric falls back.\nCamera: steady lock-off, focus holding on the hands. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: soft morning light, warm bounce, shallow depth, 85mm feel.\nAmbient only: fabric dragging on the rail, a distant bird, room tone. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"커튼을 여는 두 손"},{"n":"05","section":"2","cat":"lock","title_en":"First clear face, at rest","meta":"`5 s` · `medium close` · `static` · `no-lip` · `face` · interior","prompt":"Use the attached keyframe as the first frame. Keep the same {SUBJECT} face, hair, {WARDROBE}, and the wall behind.\nMedium close-up, subject facing the lens but not into it. Mouth closed and at rest, not singing, not speaking.\nThe subject blinks once and the eyes settle slightly off-centre; a strand of hair moves at the temple.\nCamera: steady lock-off. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: soft window light from camera left, gentle falloff, fine grain, 85mm feel.\nAmbient only: quiet room tone, one breath. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"처음 드러나는 얼굴, 정지 상태"},{"n":"06","section":"2","cat":"lock","title_en":"Over the shoulder into a mirror","meta":"`5 s` · `medium` · `slow orbit` · `no-lip` · interior","prompt":"Use the attached keyframe as the first frame. Keep the same {SUBJECT}, {WARDROBE}, the mirror and the wash of light on the wall.\nMedium shot from behind the subject's shoulder, the reflection carrying the face. Mouth closed and at rest.\nThe subject raises one hand and touches the collar; the reflection moves a beat behind the hand.\nCamera: gentle orbit to the right, small amplitude. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: single tungsten bulb, warm pool of light, cool shadow at the edges, 50mm feel.\nAmbient only: fabric at the collar, a tap dripping, room tone. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"어깨 너머 거울 속 얼굴"},{"n":"07","section":"2","cat":"lock","title_en":"Walking toward camera, coat moving","meta":"`5 s` · `medium full` · `track in matching pace` · `no-lip` · `face` · exterior","prompt":"Use the attached keyframe as the first frame. Keep the same {SUBJECT}, {WARDROBE}, {PROP} in hand, and the street behind.\nMedium full shot, subject walking toward camera. Mouth closed and at rest, not speaking.\nThe subject walks four steps and slows, one hand adjusting {PROP}; the coat swings with each step.\nCamera: smooth track-in matching the pace, then holds as the subject slows. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: overcast daylight, soft contrast, muted {PALETTE}, 50mm feel.\nAmbient only: footsteps on pavement, coat fabric, distant traffic. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"카메라로 걸어오는 인물, 흔들리는 코트"},{"n":"08","section":"2","cat":"lock","title_en":"Profile in a doorway","meta":"`5 s` · `close profile` · `slow push in` · `no-lip` · `face` · interior","prompt":"Use the attached keyframe as the first frame. Keep the same {SUBJECT} profile, {WARDROBE}, door frame and hallway light.\nClose profile shot. Mouth closed and at rest, not singing, not speaking.\nThe subject turns the head a few degrees toward the light and holds; an eyelash moves, the jaw stays still.\nCamera: slow push in, small amplitude. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: hard edge light from the hallway, deep shadow on the near side, 100mm feel.\nAmbient only: hallway hum, a distant door latch. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"문틀에 걸린 옆얼굴"},{"n":"09","section":"3","cat":"emotion","title_en":"Hands worrying a sleeve","meta":"`5 s` · `close` · `static` · `no-lip` · interior","prompt":"Use the attached keyframe as the first frame. Keep the same hands, {WARDROBE} cuff, and the surface they rest on.\nClose shot on hands only, face out of frame.\nThe thumb works at a loose thread at the cuff, pulling it, then smoothing the fabric flat twice.\nCamera: steady lock-off. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: low warm lamp light, shallow depth, visible skin texture, 85mm feel.\nAmbient only: fabric rasp, a clock in another room. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"소매를 만지작거리는 손"},{"n":"10","section":"3","cat":"emotion","title_en":"A phone face-down on the bed","meta":"`5 s` · `top down` · `static` · `no-lip` · interior","prompt":"Use the attached keyframe as the first frame. Keep the same bed sheet, the phone, its case colour and the light falling across the covers.\nTop-down close shot, no person in frame.\nThe phone vibrates twice against the sheet and the screen glow leaks around its edge; the sheet creases where it shifts.\nCamera: steady lock-off from directly above. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: late afternoon window light, warm and falling, soft shadow, 50mm feel.\nAmbient only: the buzz of the phone against fabric, a neighbour's muffled voice through the wall. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"침대 위, 뒤집혀 놓인 휴대폰"},{"n":"11","section":"3","cat":"emotion","title_en":"Reflection in a dark window","meta":"`5 s` · `medium close` · `slow push in` · `no-lip` · night","prompt":"Use the attached keyframe as the first frame. Keep the same {SUBJECT} reflection, the window frame, and the city lights beyond.\nMedium close-up of the reflection in a dark window, the real subject out of frame. Mouth closed and at rest.\nThe reflection looks down and away; a light out in the street pulses once across the glass.\nCamera: slow push in toward the glass, small amplitude. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: mixed city light, cold glass reflection, soft grain, 75mm feel.\nAmbient only: room tone, traffic rising and falling outside. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"어두운 창에 비친 얼굴"},{"n":"12","section":"3","cat":"emotion","title_en":"Breath fogging cold air","meta":"`5 s` · `close` · `static` · `no-lip` · exterior night","prompt":"Use the attached keyframe as the first frame. Keep the same {SUBJECT} lower face, scarf, and the dark background.\nClose shot framed on the lower face and scarf, mouth closed. Mouth closed and at rest, not speaking.\nOne slow exhale clouds in the cold air and dissolves; the scarf fibres lift at the edge.\nCamera: steady lock-off. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: cold practical light from one side, blue shadows, breath visible, 100mm feel.\nAmbient only: one long exhale, a distant car passing. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"차가운 공기를 흐리는 입김"},{"n":"13","section":"4","cat":"neon","title_en":"Alley of signs","meta":"`5 s` · `wide` · `slow truck right` · `no-lip` · exterior night","prompt":"Use the attached keyframe as the first frame. Keep the same alley, cables overhead, sign colours and wet ground.\nWide shot, no person in frame.\nSteam rises from a grate and crosses the signs; a neon tube stutters once and steadies.\nCamera: truck right with small amplitude at slow speed, revealing more of the alley. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: magenta and cyan neon, wet asphalt reflections, anamorphic flare, 32mm feel.\nAmbient only: steam hiss, water dripping into a drain, a scooter passing far off. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"간판이 늘어선 골목"},{"n":"14","section":"4","cat":"neon","title_en":"Crossing under the signs","meta":"`5 s` · `medium full` · `track left` · `no-lip` · `face` · exterior night","prompt":"Use the attached keyframe as the first frame. Keep the same {SUBJECT}, {WARDROBE}, the crossing and the sign reflections on the road.\nMedium full shot, subject walking left to right across the frame. Mouth closed and at rest, not speaking.\nThe subject crosses in six steps, {PROP} swinging at the side; neon light slides across the face and coat as they pass each sign.\nCamera: smooth track left to right, matching the pace. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: magenta–cyan mix, wet road highlights, shallow depth, 40mm feel.\nAmbient only: footsteps in shallow water, a crossing signal ticking, distant traffic. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"간판 아래를 지나가는 사람"},{"n":"15","section":"4","cat":"neon","title_en":"Night market colour","meta":"`5 s` · `medium` · `slow push in` · `no-lip` · exterior night","prompt":"Use the attached keyframe as the first frame. Keep the same stall, awning, hanging bulbs and the colour of the produce.\nMedium shot into a night-market stall, the vendor's hands working, no face in frame.\nThe vendor's hands turn a ladle through a pot; steam rolls up through the bulbs and the awning sags with the heat.\nCamera: slow push in toward the pot with small amplitude. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: tungsten bulbs overhead, warm skin tones, rich reds and oranges, 50mm feel.\nAmbient only: bubbling liquid, a ladle against metal, a crowd murmur off screen. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"야시장의 색"},{"n":"16","section":"4","cat":"neon","title_en":"Rooftop over the city","meta":"`5 s` · `wide` · `slow rise` · `no-lip` · exterior night","prompt":"Use the attached keyframe as the first frame. Keep the same rooftop parapet, water tank, laundry line and skyline distance.\nWide shot from the rooftop, no person in frame.\nA laundry line lifts and snaps in the wind; one window in the distance switches off.\nCamera: slow rise with small amplitude, revealing more skyline. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: cool city glow, scattered windows, sodium haze, 24mm feel, light grain.\nAmbient only: wind over concrete, fabric snapping, the city humming below. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"도시를 내려다보는 옥상"},{"n":"17","section":"5","cat":"action","title_en":"Breaking into a sprint","meta":"`5 s` · `medium full` · `track with subject` · `no-lip` · exterior day","prompt":"Use the attached keyframe as the first frame. Keep the same {SUBJECT}, {WARDROBE}, shoes and the ground texture.\nMedium full shot, subject starting from a stand and breaking into a run away from camera. Mouth closed, not shouting.\nThe first step lands hard, the body drops and drives forward; arms pump twice as the coat streams behind.\nCamera: tracking shot behind the subject, matching the pace. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: overcast daylight, desaturated {PALETTE}, motion blur on the limbs, 35mm feel.\nAmbient only: two scuffing footfalls, fabric snapping, wind. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"전력으로 내달리기"},{"n":"18","section":"5","cat":"action","title_en":"Jump across a gap","meta":"`5 s` · `wide` · `static, pan right` · `no-lip` · exterior day","prompt":"Use the attached keyframe as the first frame. Keep the same two rooftops, parapet edges and the distance between them.\nWide shot on the gap between two rooftops, subject entering from the left. Mouth closed, not shouting.\nThe subject sprints in from frame left, plants one foot on the parapet and clears the gap, landing low and rolling to one knee.\nCamera: steady lock-off, then pan right with large amplitude at fast speed to follow the landing. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: hard afternoon sun, long shadows on concrete, dust on impact, 24mm feel.\nAmbient only: a sharp foot plant, air rushing, a heavy landing on gravel. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"틈을 넘는 도약"},{"n":"19","section":"5","cat":"action","title_en":"Slipping a punch, close quarters","meta":"`5 s` · `medium close` · `handheld follow` · `no-lip` · interior","prompt":"Use the attached keyframe as the first frame. Keep the same two figures' wardrobe, the room and the light from one side.\nMedium close shot on the two figures, faces partly out of frame, mouth closed.\nThe near figure drops a shoulder and turns away from the incoming arm; the fabric of the sleeve snaps with the turn.\nCamera: subtle handheld follow, small amplitude. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: single side light, deep shadow on the far wall, sweat sheen, 50mm feel.\nAmbient only: cloth snapping, a sharp exhale, a shoe pivoting on the floor. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"근거리에서 주먹을 흘리기"},{"n":"20","section":"5","cat":"action","title_en":"Throttle and release","meta":"`5 s` · `close` · `static` · `no-lip` · exterior dusk","prompt":"Use the attached keyframe as the first frame. Keep the same glove, throttle grip, handlebar, and the tank colour.\nClose shot on a gloved hand on the throttle, rider's body out of frame above.\nThe wrist rolls the throttle open, the cable tightens, and the hand holds as the frame vibrates with the engine.\nCamera: steady lock-off with a slight shake, small amplitude. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: dusk backlight, warm rim on the glove, shallow depth, 85mm feel.\nAmbient only: engine rising through the revs, chain whine, wind. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"스로틀을 열고 놓기"},{"n":"21","section":"6","cat":"drive","title_en":"Windscreen in rain","meta":"`5 s` · `medium` · `static` · `no-lip` · interior night","prompt":"Use the attached keyframe as the first frame. Keep the same dashboard, windscreen angle and the colour of the traffic outside.\nMedium shot from the passenger seat toward the driver's side, mouth not in frame.\nWipers sweep twice; rain beads run sideways as the car pulls forward and the lights outside smear.\nCamera: steady lock-off inside the car, no hand-held drift. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: sodium streetlights through rain, cold dashboard glow, 32mm feel.\nAmbient only: rain on the roof, wipers dragging, engine at low revs. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"비 내리는 앞유리"},{"n":"22","section":"6","cat":"drive","title_en":"Hand out of the window","meta":"`5 s` · `close` · `static` · `no-lip` · exterior day","prompt":"Use the attached keyframe as the first frame. Keep the same {WARDROBE} sleeve, hand and the blur of the road behind.\nClose shot on a hand held out of a moving car window, faces out of frame.\nThe fingers open and ride the air, the sleeve cuff whipping back; the background streaks past.\nCamera: steady lock-off on the hand. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: low sun behind the car, warm flare, motion blur in the background, 50mm feel.\nAmbient only: wind roar, fabric snapping, tyres on asphalt. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"창밖으로 내민 손"},{"n":"23","section":"6","cat":"drive","title_en":"Rear-view mirror, eyes only","meta":"`5 s` · `close` · `slow push in` · `no-lip` · interior night","prompt":"Use the attached keyframe as the first frame. Keep the same mirror, its frame, and the passing lights reflected in it.\nClose shot on a rear-view mirror holding the subject's eyes and brow, lower face out of frame.\nThe eyes lift to the mirror and hold; a streetlight passes behind and slides across the glass.\nCamera: slow push in toward the mirror, small amplitude. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: passing sodium light, cool interior shadow, 75mm feel, fine grain.\nAmbient only: road noise, an indicator ticking, breathing held low. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"백미러에 담긴 눈"},{"n":"24","section":"6","cat":"drive","title_en":"Tunnel lights strobing","meta":"`5 s` · `medium` · `static` · `no-lip` · interior night","prompt":"Use the attached keyframe as the first frame. Keep the same tunnel interior, dashboard, and the subject's silhouette in the passenger seat.\nMedium shot across the car at the passenger silhouette, mouth closed.\nTunnel lights pass in even strokes, brightening and dimming the profile; one hand rests on the door trim.\nCamera: steady lock-off, small amplitude with the car's motion. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: hard overhead tunnel light, orange–white strobe rhythm, 35mm feel.\nAmbient only: tyre hum thickening in the tunnel, wind buffeting. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"터널 조명이 스치는 차 안"},{"n":"25","section":"7","cat":"weather","title_en":"Umbrellas crossing","meta":"`5 s` · `wide` · `static` · `no-lip` · exterior night","prompt":"Use the attached keyframe as the first frame. Keep the same crossing, wet markings, and the colours of the umbrellas.\nWide high shot of a crossing, several umbrellas moving, no face visible.\nUmbrellas drift right to left in a loose current; one turns against the flow and stops.\nCamera: steady lock-off from above. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: wet asphalt reflecting sign colours, rain streaks in the light, 28mm feel.\nAmbient only: rain on nylon, tyres hissing, a crossing signal ticking. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"횡단보도 위 우산들"},{"n":"26","section":"7","cat":"weather","title_en":"Snow settling on a shoulder","meta":"`5 s` · `close` · `static` · `no-lip` · exterior night","prompt":"Use the attached keyframe as the first frame. Keep the same {WARDROBE} shoulders, scarf and the falling snow.\nClose shot on the shoulder and scarf, face out of frame.\nSnowflakes land and hold on the wool, one after another; a breath of movement shakes two of them loose.\nCamera: steady lock-off, shallow depth. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: cold streetlight above, blue snow highlights, soft falloff, 100mm feel.\nAmbient only: snow-muffled street, one distant car, fabric shifting. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"어깨에 앉는 눈"},{"n":"27","section":"7","cat":"weather","title_en":"Rain on a window, hand behind glass","meta":"`5 s` · `close` · `slow push in` · `no-lip` · interior","prompt":"Use the attached keyframe as the first frame. Keep the same window, rain pattern and the hand's position on the glass.\nClose shot on a hand pressed flat against a rain-covered window, face out of frame.\nRain runs down in branching lines around the fingers; the hand slides down an inch and stops.\nCamera: slow push in toward the glass, small amplitude. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: cold exterior light through rain, soft interior shadow, 85mm feel.\nAmbient only: rain against glass, muffled street outside, one breath. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"비 내리는 창, 유리 뒤의 손"},{"n":"28","section":"7","cat":"weather","title_en":"Puddle breaks under a step","meta":"`5 s` · `extreme close` · `static` · `no-lip` · exterior day","prompt":"Use the attached keyframe as the first frame. Keep the same shoe, puddle edge and the reflected sign above.\nExtreme close-up on a puddle, no person in frame above the ankle.\nA shoe enters and breaks the surface; the reflection shatters outward and the ripples widen and fade.\nCamera: steady lock-off, very shallow depth. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: overcast light, sharp reflection detail, water texture, 100mm feel.\nAmbient only: one splash, water settling, distant traffic. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"발끝에 깨지는 물웅덩이"},{"n":"29","section":"8","cat":"silhouette","title_en":"Backlit doorway","meta":"`5 s` · `full` · `static` · `no-lip` · interior","prompt":"Use the attached keyframe as the first frame. Keep the same doorway, the light behind, and the figure's {WARDROBE} shape.\nFull shot of a figure standing in an open doorway, backlit, face unreadable. Mouth not visible.\nThe figure lifts one hand to the frame of the door and holds; the light behind flickers once.\nCamera: steady lock-off. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: blown-out backlight, haze, deep silhouette, rim light on the shoulders, 50mm feel.\nAmbient only: a low hum from the light, air moving through the doorway. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"역광 속 문간"},{"n":"30","section":"8","cat":"silhouette","title_en":"Headlights through fog","meta":"`5 s` · `wide` · `static` · `no-lip` · exterior night","prompt":"Use the attached keyframe as the first frame. Keep the same road, fog density and the position of the lights.\nWide shot of a road disappearing into fog, no figure in frame.\nTwo headlights grow slowly out of the fog, the beams widening across the road surface.\nCamera: steady lock-off. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: dense fog, hard beam cones, cold blue cast, 35mm feel, light grain.\nAmbient only: an engine approaching at low speed, tyres on wet gravel. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"안개를 뚫는 헤드라이트"},{"n":"31","section":"8","cat":"silhouette","title_en":"Figure on a fog bridge","meta":"`5 s` · `extreme wide` · `slow push in` · `no-lip` · exterior dawn","prompt":"Use the attached keyframe as the first frame. Keep the same bridge lines, fog and the small figure at the rail.\nExtreme wide shot: a small figure stands at the rail of a bridge, back to camera, fog swallowing the far end.\nThe figure leans on the rail; the fog drifts a metre and thins enough to show two more spans.\nCamera: slow push in, small amplitude. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: flat grey dawn, low contrast, heavy atmosphere, 24mm feel.\nAmbient only: wind across the bridge, water far below, a cable humming. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"안개 낀 다리 위의 인물"},{"n":"32","section":"8","cat":"silhouette","title_en":"Shadow on a curtain","meta":"`5 s` · `medium` · `slow pan right` · `no-lip` · interior night","prompt":"Use the attached keyframe as the first frame. Keep the same curtain, window and the lamp behind it.\nMedium shot on a lit curtain, a person's shadow moving behind it, nobody visible.\nThe shadow crosses the fabric and pauses; the curtain lifts slightly and the shadow breaks at the edge.\nCamera: slow pan right with small amplitude. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: warm lamp behind the fabric, textured weave, deep room shadow, 50mm feel.\nAmbient only: fabric moving, a clock, muffled footsteps behind the curtain. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"커튼에 비친 그림자"},{"n":"33","section":"9","cat":"object","title_en":"Phone screen lighting a hand","meta":"`5 s` · `close` · `static` · `insert` · `no-lip` · interior night","prompt":"Use the attached keyframe as the first frame. Keep the same hand, phone, and the dark surface it rests above.\nClose shot on a hand holding a phone, screen facing up, no face in frame.\nThe screen wakes and brightens the fingers from below; the thumb hovers and then withdraws.\nCamera: steady lock-off, very shallow depth. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: screen as the only light source, cold blue fill, warm room shadow behind, 85mm feel.\nAmbient only: a notification tone cut short, room tone. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"화면 빛에 비친 손"},{"n":"34","section":"9","cat":"object","title_en":"Steam off a cup","meta":"`5 s` · `close` · `static` · `insert` · `no-lip` · interior","prompt":"Use the attached keyframe as the first frame. Keep the same cup, saucer, table grain and window light.\nClose shot on a cup, no person in frame.\nSteam rises in one slow column and bends; the surface of the liquid trembles once and stills.\nCamera: steady lock-off, shallow depth. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: backlit window, warm highlight on the ceramic, soft shadow, 100mm feel.\nAmbient only: a spoon settling on the saucer, quiet room tone. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"컵에서 피어오르는 김"},{"n":"35","section":"9","cat":"object","title_en":"Record turning","meta":"`5 s` · `close` · `static` · `insert` · `no-lip` · interior night","prompt":"Use the attached keyframe as the first frame. Keep the same turntable, record label and the lamp reflection on the platter.\nClose shot on a spinning record, no person in frame.\nThe record turns steadily, the tonearm dipping into a warp; the label blurs into a ring under the lamp.\nCamera: steady lock-off from a low angle. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: warm lamp, dust in the air, high-contrast highlights, 85mm feel.\nAmbient only: surface noise and a low crackle, the motor humming. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"돌아가는 레코드"},{"n":"36","section":"9","cat":"object","title_en":"Shoes on stairs","meta":"`5 s` · `low close` · `track down` · `insert` · `no-lip` · interior","prompt":"Use the attached keyframe as the first frame. Keep the same shoes, stair treads and the light from below.\nLow close shot on feet descending a stairwell, no face in frame.\nTwo steps land in rhythm, the third pauses on the edge before it drops out of frame.\nCamera: track down the stairs at the subject's pace, small amplitude. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: hard light from below, deep shadow above, cool concrete, 35mm feel.\nAmbient only: three footfalls, a hand skating on the rail. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"계단을 내려가는 구두"},{"n":"37","section":"9","cat":"object","title_en":"Key turning, lock giving","meta":"`5 s` · `extreme close` · `static` · `insert` · `no-lip` · exterior night","prompt":"Use the attached keyframe as the first frame. Keep the same key, lock plate and the paint scratches around it.\nExtreme close-up on a key entering a lock, hand out of frame.\nThe key slides in, turns a quarter, and the mechanism gives with a small kick against the fingers.\nCamera: steady lock-off, very shallow depth. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: one porch light, cold metal highlights, paint texture, 100mm feel.\nAmbient only: metal on metal, the bolt sliding home, night air. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"열쇠가 돌아가고 잠금이 풀리는 순간"},{"n":"38","section":"9","cat":"object","title_en":"Bare bulb swinging","meta":"`5 s` · `medium` · `static` · `insert` · `no-lip` · interior","prompt":"Use the attached keyframe as the first frame. Keep the same bulb, flex, ceiling texture and the wall behind.\nMedium shot of a bare bulb on a flex, no person in frame.\nThe bulb swings in a short arc; shadows sweep the wall in time with it and shorten at the centre of the arc.\nCamera: steady lock-off. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: single hard bulb, ochre walls, strong moving shadow, 35mm feel.\nAmbient only: the flex creaking, a faint electrical buzz. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"흔들리는 백열전구"},{"n":"39","section":"10","cat":"ending","title_en":"Empty chair in the same light","meta":"`5 s` · `wide` · `slow pull out` · `no-lip` · interior","prompt":"Use the attached keyframe as the first frame. Keep the same room, chair, window light and floor marks.\nWide shot of an empty chair in a pool of light, no person in frame.\nDust turns in the light; the curtain edge breathes once against the sill.\nCamera: slow pull out, small amplitude, revealing more of the empty room. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: low warm sun, long shadow from the chair, fine grain, 35mm feel.\nAmbient only: room tone, the curtain, a street below. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"같은 빛 속의 빈 의자"},{"n":"40","section":"10","cat":"ending","title_en":"Walking away until the frame empties","meta":"`5 s` · `wide` · `static` · `no-lip` · exterior dusk","prompt":"Use the attached keyframe as the first frame. Keep the same road, horizon, poles and the {WARDROBE} figure.\nWide shot from behind: the subject walks away down an empty road. Mouth not visible.\nThe figure walks until it is a small shape, then the road is empty; the coat moves less with each step.\nCamera: steady lock-off. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: dusk gradients, cool foreground, warm horizon, 28mm feel.\nAmbient only: footsteps thinning, wind in grass, one distant car. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"프레임이 비워질 때까지 걸어가기"},{"n":"41","section":"10","cat":"ending","title_en":"Door closing, light narrowing","meta":"`5 s` · `medium` · `static` · `no-lip` · interior","prompt":"Use the attached keyframe as the first frame. Keep the same doorway, hallway light and the door's edge.\nMedium shot on a door already half closed, no person in frame.\nThe door swings the last hand's width and latches; the strip of hallway light narrows and disappears.\nCamera: steady lock-off. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: bright hallway, dark room, hard edge of light on the floor, 50mm feel.\nAmbient only: hinges, the latch, the light switch behind the wall. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"닫히는 문, 좁아지는 빛"},{"n":"42","section":"10","cat":"ending","title_en":"Sunrise over the same first frame","meta":"`5 s` · `wide` · `slow rise` · `no-lip` · exterior dawn","prompt":"Use the attached keyframe as the first frame. Keep the same skyline, rooftop edge and the composition of the opening shot.\nWide shot matching the opening frame of the film, no person in frame.\nThe sky warms from blue to pale gold; one rooftop aerial turns in the wind and settles.\nCamera: slow rise with small amplitude, mirroring the opening move. Do not cut. Do not change lens mid-clip.\nCinematic photoreal: pre-dawn blue to warm gold, soft haze, low contrast, 35mm feel.\nAmbient only: wind on the rooftop, a distant bird, the city starting up. No vocals, no music, no dialogue.\nNo on-screen text, no subtitles, no logo, no lyric captions.\nDuration 5 seconds.","title_ko":"첫 프레임 위로 뜨는 해"},{"n":"43","section":"11","cat":"perf","title_en":"Chorus, bust shot, direct to lens","meta":"`perf` · `bust` · `slow push in` · `5 s`","prompt":"For the target video, at 0.00 seconds into the target video, \u003cPicture 1\u003e (from [Shot 1]) is fully referenced.\n\nintegrated_multimodal_description: [Shot 1] Live-action, cinematic, a bust shot centres {SUBJECT} against {LOCATION}, the lighting and wardrobe of \u003cPicture 1\u003e preserved. A young adult performer with a warm mid-range voice (S1) looks into the lens and sings, \u003cd\u003e[Korean] {LINE 1}\u003c/d\u003e. Early in the clip the shoulders settle into the beat and the head tilts slightly; the chest rises on the sustained vowel. As the clip progresses the camera pushes in with small amplitude at slow speed while the eyes stay on the lens. Toward the end the mouth closes on the last syllable and the jaw relaxes as the vocal stem carries the note out.\noverall_soundscape: Room tone of {LOCATION} with a faint fabric movement on each beat. No other voice.\nnon_diegetic_music: N/A","title_ko":"후렴, 렌즈를 보며 부르는 버스트 샷"},{"n":"44","section":"11","cat":"perf","title_en":"Chorus, side angle, body in the rhythm","meta":"`perf` · `medium` · `track right` · `5 s`","prompt":"For the target video, at 0.00 seconds into the target video, \u003cPicture 1\u003e (from [Shot 1]) is fully referenced.\n\nintegrated_multimodal_description: [Shot 1] Live-action, cinematic, a medium shot holds {SUBJECT} from three-quarters left in {LOCATION}, matching the palette and wardrobe of \u003cPicture 1\u003e. A young adult performer with a warm mid-range voice (S1) sings \u003cd\u003e[Korean] {LINE 2}\u003c/d\u003e while the shoulders mark the beat. The right hand rises to chest height on the second beat and drops on the fourth. The camera trucks right with small amplitude at slow speed, keeping the face in the same third of the frame. Toward the end the head turns back toward the lens as the line lands.\noverall_soundscape: {LOCATION} ambience under the vocal, a single heel strike on the beat.\nnon_diegetic_music: N/A","title_ko":"후렴, 리듬 타는 측면 앵글"},{"n":"45","section":"11","cat":"perf","title_en":"Close-up, whispered line","meta":"`perf` · `close` · `static` · `5 s`","prompt":"For the target video, at 0.00 seconds into the target video, \u003cPicture 1\u003e (from [Shot 1]) is fully referenced.\n\nintegrated_multimodal_description: [Shot 1] Live-action, cinematic, a close shot frames {SUBJECT} from the brow to the collarbone against {LOCATION}, the light of \u003cPicture 1\u003e unchanged. A young adult performer with a quiet, breathy voice (S1) sings close to the lens, \u003cd\u003e[Korean] {LINE 3}\u003c/d\u003e. The delivery stays almost spoken; the lips barely part and the breath is audible on the first syllable. The camera holds a static shot. Toward the end the eyes close once and open again as the note fades.\noverall_soundscape: A close breath before the first syllable, room tone of {LOCATION}.\nnon_diegetic_music: N/A","title_ko":"클로즈업, 속삭이는 한 줄"},{"n":"46","section":"11","cat":"perf","title_en":"Full shot, performance on a stage","meta":"`perf` · `full` · `slow orbit` · `10 s`","prompt":"For the target video, at 0.00 seconds into the target video, \u003cPicture 1\u003e (from [Shot 1]) is fully referenced.\n\nintegrated_multimodal_description: [Shot 1] Live-action, cinematic, a full shot places {SUBJECT} centre stage in {LOCATION}, with a single overhead source and haze holding the shape of \u003cPicture 1\u003e. A young adult performer with a warm mid-range voice (S1) sings \u003cd\u003e[Korean] {LINE 4}\u003c/d\u003e while stepping one pace forward on the first beat. Haze drifts across the source. As the clip progresses the camera orbits to the right with small amplitude at slow speed, keeping the figure centred. Toward the end the arms open on the sustained note and the figure holds the final shape.\noverall_soundscape: A stage floor under each step, cloth moving, a faint room reverb.\nnon_diegetic_music: N/A","title_ko":"무대 위 퍼포먼스 풀 샷"},{"n":"47","section":"11","cat":"perf","title_en":"Verse, half-lit face, no dance","meta":"`perf` · `medium close` · `static` · `5 s`","prompt":"For the target video, at 0.00 seconds into the target video, \u003cPicture 1\u003e (from [Shot 1]) is fully referenced.\n\nintegrated_multimodal_description: [Shot 1] Live-action, cinematic, a medium close-up frames {SUBJECT} against {LOCATION}, one hard side light splitting the face as in \u003cPicture 1\u003e. A young adult performer with a low, cool voice (S1) sings the line \u003cd\u003e[Korean] {LINE 5}\u003c/d\u003e without any gesture, the chin level and the jaw relaxed between syllables. The camera holds a static shot. Toward the end the head lowers a fraction and the lit side of the face falls into shadow on the last word.\noverall_soundscape: Quiet room tone, one intake of breath.\nnon_diegetic_music: N/A","title_ko":"반쯤 빛든 얼굴, 동작 없이"},{"n":"48","section":"11","cat":"perf","title_en":"Two-shot, answering lines","meta":"`perf` · `medium two-shot` · `static` · `10 s`","prompt":"For the target video, at 0.00 seconds into the target video, \u003cPicture 1\u003e (from [Shot 1]) is fully referenced.\n\nintegrated_multimodal_description: [Shot 1] Live-action, cinematic, a medium two-shot frames {SUBJECT A} on the left facing {SUBJECT B} on the right in {LOCATION}, wardrobe and light of \u003cPicture 1\u003e preserved. An adult performer with a warm mid-range voice (S1) sings \u003cd\u003e[Korean] {LINE 6A}\u003c/d\u003e while the other listens, mouth closed and body still. [Shot 2] At 00:05.000, the camera cuts to a medium close-up of {SUBJECT B}, who answers in a lower, quieter voice (S2), \u003cd\u003e[Korean] {LINE 6B}\u003c/d\u003e, then looks away. The camera holds a static shot to the end.\noverall_soundscape: {LOCATION} ambience, one shift of weight on the floor between the lines.\nnon_diegetic_music: N/A","title_ko":"주고받는 두 사람, 투 샷"}]</script>
+<script>
+(function(){
+  "use strict";
+  var items;
+  try { items = JSON.parse(document.getElementById('pdata').textContent); } catch(e) { items = []; }
+  var CATS = [
+    {id:'all', ko:'전체', en:'All'},
+    {id:'open', ko:'콜드 오프닝', en:'Cold open'},
+    {id:'lock', ko:'인물 락', en:'Character lock'},
+    {id:'emotion', ko:'감정 디테일', en:'Emotional detail'},
+    {id:'neon', ko:'네온 야경', en:'Neon night'},
+    {id:'action', ko:'액션', en:'Action'},
+    {id:'drive', ko:'드라이브', en:'Drive'},
+    {id:'weather', ko:'비와 눈', en:'Rain and snow'},
+    {id:'silhouette', ko:'실루엣', en:'Silhouette'},
+    {id:'object', ko:'오브제·인서트', en:'Objects'},
+    {id:'ending', ko:'엔딩', en:'Endings'},
+    {id:'perf', ko:'퍼포먼스', en:'Performance'}
+  ];
+  var state = { q: '', cat: 'all' };
+  var grid = document.getElementById('grid');
+  var chips = document.getElementById('catChips');
+  var shown = document.getElementById('shown');
+  var empty = document.getElementById('empty');
+  var input = document.getElementById('q');
+
+  function lang(){ return document.body.getAttribute('data-lang') || 'ko'; }
+  function T(ko, en){ return lang() === 'ko' ? ko : en; }
+
+  function copyText(text, btn, label){
+    function done(){
+      if(!btn) return;
+      var prev = btn.getAttribute('data-label') || btn.textContent;
+      btn.setAttribute('data-label', prev);
+      btn.classList.add('copied');
+      btn.textContent = T('복사됨', 'Copied');
+      setTimeout(function(){ btn.classList.remove('copied'); btn.textContent = prev; }, 1500);
+    }
+    function fallback(){
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly','');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch(e) {}
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(done, function(){ fallback(); done(); });
+    } else { fallback(); done(); }
+  }
+
+  // static COPY buttons (code blocks)
+  document.querySelectorAll('.code .cp').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var target = document.getElementById(btn.getAttribute('data-copy'));
+      if (target) copyText(target.textContent, btn);
+    });
+  });
+
+  function metaChips(meta){
+    var parts = meta.split('·').map(function(s){ return s.trim().replace(/^`|`$/g, ''); });
+    return parts.map(function(p){
+      if(!p) return '';
+      var cls = 'chip' + (/^(no-lip|perf|insert|face)$/.test(p) ? ' ' + p : '');
+      return '<span class="' + cls + '">' + p.replace(/[<>&]/g, function(c){ return {'<':'&lt;','>':'&gt;','&':'&amp;'}[c]; }) + '</span>';
+    }).join('');
+  }
+
+  function card(p, idx){
+    var ko = lang() === 'ko';
+    var main = ko ? p.title_ko : p.title_en;
+    var sub = ko ? p.title_en : p.title_ko;
+    var el = document.createElement('article');
+    el.className = 'pcard';
+    el.setAttribute('data-idx', idx);
+    el.innerHTML =
+      '<div class="pc-head"><span class="pc-n">' + p.n + '</span>' +
+        '<div class="pc-t">' + escHtml(main) + '<small>' + escHtml(sub) + '</small></div></div>' +
+      '<div class="pc-meta">' + metaChips(p.meta) + (p.cat === 'perf' ? '<span class="chip h3">H3</span>' : '') + '</div>' +
+      '<div class="pc-body"><pre class="pc-pre">' + escHtml(p.prompt) + '</pre></div>' +
+      '<div class="pc-foot">' +
+        '<button class="mini-btn cp-card" type="button">' + T('복사', 'Copy') + '</button>' +
+        '<span class="sp"></span>' +
+        '<button class="mini-btn tg" type="button" aria-expanded="false">' + T('펼치기', 'Expand') + '</button>' +
+      '</div>';
+    el.querySelector('.cp-card').addEventListener('click', function(e){
+      copyText(p.prompt, e.currentTarget);
+    });
+    var pre = el.querySelector('.pc-pre');
+    var tg = el.querySelector('.tg');
+    function apply(){
+      var open = el.classList.contains('open');
+      tg.setAttribute('aria-expanded', String(open));
+      tg.textContent = open ? T('접기', 'Collapse') : T('펼치기', 'Expand');
+      if (!open) pre.scrollTop = 0;
+    }
+    tg.addEventListener('click', function(){
+      el.classList.toggle('open');
+      apply();
+    });
+    pre.addEventListener('dblclick', function(){ el.classList.toggle('open'); apply(); });
+    return el;
+  }
+
+  function escHtml(s){
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function render(){
+    if(!grid) return;
+    var q = state.q.trim().toLowerCase();
+    var frag = document.createDocumentFragment();
+    var n = 0;
+    items.forEach(function(p, i){
+      var hay = (p.n + ' ' + p.title_en + ' ' + p.title_ko + ' ' + p.meta + ' ' + p.prompt).toLowerCase();
+      if (state.cat !== 'all' && p.cat !== state.cat) return;
+      if (q && hay.indexOf(q) === -1) return;
+      frag.appendChild(card(p, i));
+      n++;
+    });
+    grid.textContent = '';
+    grid.appendChild(frag);
+    if (shown) shown.textContent = String(n);
+    if (empty) empty.hidden = n !== 0;
+    var ea = document.getElementById('expandAll');
+    if (ea) ea.classList.remove('open');
+  }
+
+  function buildChips(){
+    if(!chips) return;
+    chips.textContent = '';
+    CATS.forEach(function(c){
+      var count = c.id === 'all' ? items.length : items.filter(function(p){ return p.cat === c.id; }).length;
+      if (!count) return;
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('data-cat', c.id);
+      b.setAttribute('aria-pressed', String(c.id === state.cat));
+      b.innerHTML = '<span>' + (lang() === 'ko' ? c.ko : c.en) + '</span><i>' + count + '</i>';
+      b.addEventListener('click', function(){
+        state.cat = c.id;
+        chips.querySelectorAll('button').forEach(function(x){ x.setAttribute('aria-pressed', String(x === b)); });
+        render();
+      });
+      chips.appendChild(b);
+    });
+  }
+
+  function setLang(l){
+    document.body.setAttribute('data-lang', l);
+    document.documentElement.lang = l;
+    document.querySelectorAll('[data-setlang]').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-setlang') === l));
+    });
+    if (input) input.placeholder = l === 'ko'
+      ? '프롬프트 검색 — neon, rain, 05, over the shoulder …'
+      : 'Search prompts — neon, rain, 05, over the shoulder …';
+    try { localStorage.setItem('lms-lang', l); } catch(e) {}
+    buildChips();
+    render();
+  }
+
+  document.querySelectorAll('[data-setlang]').forEach(function(b){
+    b.addEventListener('click', function(){ setLang(b.getAttribute('data-setlang')); });
+  });
+
+  if (input) {
+    input.addEventListener('input', function(){ state.q = input.value; render(); });
+  }
+  var ea = document.getElementById('expandAll');
+  if (ea) {
+    ea.addEventListener('click', function(){
+      var open = !ea.classList.contains('open');
+      ea.classList.toggle('open', open);
+      ea.textContent = open ? T('전체 접기', 'Collapse all') : T('전체 펼치기', 'Expand all');
+      grid.querySelectorAll('.pcard').forEach(function(c){
+        c.classList.toggle('open', open);
+        var t = c.querySelector('.tg');
+        if (t) { t.setAttribute('aria-expanded', String(open)); t.textContent = open ? T('접기', 'Collapse') : T('펼치기', 'Expand'); }
+      });
+    });
+  }
+
+  var saved = 'ko';
+  try { saved = localStorage.getItem('lms-lang') || 'ko'; } catch(e) {}
+  setLang(saved === 'en' ? 'en' : 'ko');
+})();
+</script>
+</body>
+</html>
