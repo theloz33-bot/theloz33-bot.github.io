@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ludyte MV Studio — 가사에서 실측된 뮤직비디오 마스터까지 (Claude Skill v1.3.1)</title>
+<title>Ludyte MV Studio — 가사에서 실측된 뮤직비디오 마스터까지 (Claude Skill v1.3.2)</title>
 <meta name="description" content="가사와 레퍼런스 이미지에서 완성된 뮤직비디오 파일까지 감독하는 클로드 스킬. 러닝타임에 맞춘 스토리보드, 컷당 생성 1건 추적, 768p 무음 비주얼 마스터, 가사 자막·음원 합본 v2 마스터. H3 5모드 규격과 샷 프롬프트 48종, FFmpeg 레시피, 자막 세이프존 수록.">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#07080c">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Ludyte MV Studio — Claude Skill v1.3.1">
+<meta property="og:title" content="Ludyte MV Studio — Claude Skill v1.3.2">
 <meta property="og:description" content="가사 + 레퍼런스 이미지 → 러닝타임에 맞춘 보드 → 배치 생성 → 768p 무음 비주얼 마스터(v1) → 가사 자막·음원 합본(v2). 샷 프롬프트 48종과 H3 전용 규격 포함.">
 <meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary">
@@ -244,7 +244,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
   <div class="hdr">
     <a class="brand" href="#top">
       <span class="mark">LM</span>
-      <span><b>Ludyte MV Studio</b><small>CLAUDE SKILL · v1.3.1</small></span>
+      <span><b>Ludyte MV Studio</b><small>CLAUDE SKILL · v1.3.2</small></span>
     </a>
     <nav class="nav" aria-label="섹션">
       <a href="#pipeline"><span class="ko">개요</span><span class="en">Pipeline</span></a>
@@ -259,7 +259,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
         <button type="button" data-setlang="ko" aria-pressed="true">KO</button>
         <button type="button" data-setlang="en" aria-pressed="false">EN</button>
       </div>
-      <a class="btn btn-primary btn-sm dl" href="/ludyte-mv-studio/ludyte-mv-studio-skill-v1.3.1.zip" download>
+      <a class="btn btn-primary btn-sm dl" href="/ludyte-mv-studio/ludyte-mv-studio-skill-v1.3.2.zip" download>
         <span class="ko">ZIP 받기</span><span class="en">Get ZIP</span>
       </a>
     </div>
@@ -287,8 +287,8 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
           <div class="stat"><b>768p</b><span class="ko">기본 해상도 (스틸·클립·마스터)</span><span class="en">default (stills, clips, masters)</span></div>
         </div>
         <div class="hero-actions">
-          <a class="btn btn-primary dl" href="/ludyte-mv-studio/ludyte-mv-studio-skill-v1.3.1.zip" download>
-            <span class="ko">스킬 ZIP 내려받기 · 69.0 KB</span><span class="en">Download the skill ZIP · 69.0 KB</span>
+          <a class="btn btn-primary dl" href="/ludyte-mv-studio/ludyte-mv-studio-skill-v1.3.2.zip" download>
+            <span class="ko">스킬 ZIP 내려받기 · 76.9 KB</span><span class="en">Download the skill ZIP · 76.9 KB</span>
           </a>
           <a class="btn btn-ghost" href="#prompts"><span class="ko">프롬프트 48종 보기</span><span class="en">Browse the 48 prompts</span></a>
         </div>
@@ -1401,9 +1401,14 @@ Blocker: {cut} — {what the platform shows} — needs a decision on {options}.<
         <div class="sec-num">06</div>
         <div>
           <h2><span class="ko">스킬 ZIP 다운로드</span><span class="en">Download the skill ZIP</span></h2>
-          <p><span class="ko">9개 파일, 2,917줄 · 69.0 KB. 스킬 본문(SKILL.md)과 6개 레퍼런스, 한·영 README가 한 폴더 안에 들어 있습니다.</span>
-          <span class="en">Nine files, 2,917 lines, 69.0 KB: the skill body (SKILL.md), six references and both READMEs in one folder.</span></p>
+          <p><span class="ko">10개 파일, 3,385줄 · 76.9 KB. 스킬 본문(SKILL.md)과 6개 레퍼런스, 한·영 README, CC BY-NC 4.0 라이선스가 한 폴더 안에 들어 있습니다.</span>
+          <span class="en">Ten files, 3,385 lines, 76.9 KB: the skill body (SKILL.md), six references, both READMEs and the CC BY-NC 4.0 LICENSE in one folder.</span></p>
         </div>
+      </div>
+
+      <div class="note">
+        <span class="ko"><b>v1.3.2에서 달라진 것 (2026-11-19)</b> — 패키지에 <b>CC BY-NC 4.0 LICENSE</b>를 넣었습니다(전문 445줄). 비영리 목적이면 공유·수정·재배포가 자유롭고, 저작자 표기는 실명·활동명·이메일 없이 <code>Ludyte MV Studio Authors</code>만 씁니다. 폴더 구조·README 두 개·이 페이지의 “LICENSE 미포함” 안내도 모두 “CC BY-NC 4.0 (LICENSE 포함)”으로 바꿨습니다.</span>
+        <span class="en"><b>What changed in 1.3.2 (2026-11-19)</b> — the package now ships a <b>CC BY-NC 4.0 LICENSE</b> (the full 445-line legal code). Share, adapt and redistribute it freely for non-commercial use; attribution is the anonymous <code>Ludyte MV Studio Authors</code>, with no name, handle or email. The folder tree, both READMEs and this page's “no LICENSE included” note now read “CC BY-NC 4.0 (LICENSE included)”.</span>
       </div>
 
       <div class="note cyan">
@@ -1414,19 +1419,19 @@ Blocker: {cut} — {what the platform shows} — needs a decision on {options}.<
       <div class="dlwrap">
         <div class="zipcard">
           <div>
-            <div class="pill a" style="margin-bottom:10px">v1.3.1 · 2 masters in one pass</div>
-            <h3>ludyte-mv-studio-skill-v1.3.1.zip</h3>
+            <div class="pill a" style="margin-bottom:10px">v1.3.2 · 2 masters in one pass · CC BY-NC 4.0</div>
+            <h3>ludyte-mv-studio-skill-v1.3.2.zip</h3>
             <p class="meta" style="margin:8px 0 0">
-              70,696 bytes · 69.0 KB · 9 files<br>
+              78,743 bytes · 76.9 KB · 10 files<br>
               <span class="ko">압축 안 루트 폴더:</span><span class="en">Root folder inside:</span> <code>ludyte-mv-studio/</code>
             </p>
           </div>
-          <a class="btn btn-primary dl" href="/ludyte-mv-studio/ludyte-mv-studio-skill-v1.3.1.zip" download style="justify-content:center">
+          <a class="btn btn-primary dl" href="/ludyte-mv-studio/ludyte-mv-studio-skill-v1.3.2.zip" download style="justify-content:center">
             <span class="ko">ZIP 내려받기</span><span class="en">Download ZIP</span>
           </a>
           <div>
             <div class="prompt-label">SHA-256</div>
-            <div class="hash">9282341de571a151dd594087e1631a057c518e61bbc8977edc01b6ac7b992314</div>
+            <div class="hash">22755227662405c299eb7980188acdb0fe5af90e68ae8f23af27b30ba299471f</div>
           </div>
         </div>
 
@@ -1434,8 +1439,9 @@ Blocker: {cut} — {what the platform shows} — needs a decision on {options}.<
           <div class="prompt-label"><span class="ko">패키지 구성</span><span class="en">What's inside</span></div>
           <pre class="tree">ludyte-mv-studio/
 ├── <b>SKILL.md</b>                       <i>28.0 KB · 계약 · 4단계 · 게이트 · 절대 규칙</i>
-├── README.md                      <i>13.5 KB · 설치·사용법·문제 해결 (English)</i>
-├── README.ko.md                   <i>13.9 KB · 설치·사용법·문제 해결 (한국어)</i>
+├── README.md                      <i>14.8 KB · 설치·사용법·문제 해결 (English)</i>
+├── README.ko.md                   <i>15.4 KB · 설치·사용법·문제 해결 (한국어)</i>
+├── <b>LICENSE</b>                        <i>20.6 KB · CC BY-NC 4.0 전문 · 익명 표기</i>
 └── references/
     ├── <b>storyboard-prompt-guide.md</b>  <i>12.6 KB · 가사 분할 · 비트 골격 · 프롬프트 공식</i>
     ├── <b>batch-task-manifest.md</b>      <i> 8.0 KB · TASKS.md 양식 · 상태 · 중복 과금 방지</i>
@@ -1506,8 +1512,8 @@ ffmpeg -hide_banner -filters | grep -E "xfade|subtitles"</pre>
       </div>
 
       <div class="note" style="margin-top:26px">
-        <span class="ko"><b>배포용 패키지입니다.</b> 스킬 본문과 이 페이지에는 실명·활동명·이메일·계정·기존 곡명·제휴처·로컬 경로가 들어 있지 않습니다(개인정보 스캔 0건). 라이선스 파일은 패키지에 넣지 않았으니 배포 전에 직접 추가하세요 — 스킬 텍스트의 라이선스는 올리는 사람이 정하고, 함께 넣는 폰트나 샘플 파일은 각자의 조건을 따릅니다.</span>
-        <span class="en"><b>Distribution build.</b> Neither the package nor this page carries a real name, handle, email, account, existing track title, partner or local path (privacy scan: 0 hits). No LICENSE file is included — add your own before publishing; third-party fonts or sample files you add carry their own terms.</span>
+        <span class="ko"><b>배포용 패키지입니다.</b> 스킬 본문과 이 페이지에는 실명·활동명·이메일·계정·기존 곡명·제휴처·로컬 경로가 들어 있지 않습니다(개인정보 스캔 0건). 라이선스는 <b>CC BY-NC 4.0 (LICENSE 포함)</b>입니다 — 패키지 루트의 <code>LICENSE</code>에 전문이 들어 있고, 저작자 표기는 익명의 “Ludyte MV Studio Authors”입니다. 비영리 목적의 공유·수정·재배포는 자유롭게 허용되며, 함께 넣는 폰트나 샘플 파일은 각자의 조건을 따릅니다.</span>
+        <span class="en"><b>Distribution build.</b> Neither the package nor this page carries a real name, handle, email, account, existing track title, partner or local path (privacy scan: 0 hits). It is released under <b>CC BY-NC 4.0 (LICENSE included)</b>: the full text is in <code>LICENSE</code> at the package root, credited to the anonymous “Ludyte MV Studio Authors”. Non-commercial sharing, adaptation and redistribution are welcome; third-party fonts or sample files you add carry their own terms.</span>
       </div>
     </div>
   </section>
@@ -1517,7 +1523,7 @@ ffmpeg -hide_banner -filters | grep -E "xfade|subtitles"</pre>
 <footer>
   <div class="wrap foot">
     <div>
-      <strong>Ludyte MV Studio</strong> · v1.3.1 ·
+      <strong>Ludyte MV Studio</strong> · v1.3.2 ·
       <span class="ko">정적 페이지, 추적 스크립트 없음</span><span class="en">static page, no tracking scripts</span>
     </div>
     <div>
