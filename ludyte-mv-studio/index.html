@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ludyte MV Studio — 가사에서 실측된 뮤직비디오 마스터까지 (Claude Skill v1.3.1)</title>
-<meta name="description" content="가사와 레퍼런스 이미지에서 완성된 뮤직비디오 파일까지 감독하는 클로드 스킬. 10컷 스토리보드, 컷당 생성 1건 추적, 768p 무음 비주얼 마스터, 가사 자막·음원 합본 v2 마스터. H3 5모드 규격과 샷 프롬프트 48종, FFmpeg 레시피, 자막 세이프존 수록.">
+<meta name="description" content="가사와 레퍼런스 이미지에서 완성된 뮤직비디오 파일까지 감독하는 클로드 스킬. 러닝타임에 맞춘 스토리보드, 컷당 생성 1건 추적, 768p 무음 비주얼 마스터, 가사 자막·음원 합본 v2 마스터. H3 5모드 규격과 샷 프롬프트 48종, FFmpeg 레시피, 자막 세이프존 수록.">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#07080c">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ludyte MV Studio — Claude Skill v1.3.1">
-<meta property="og:description" content="가사 + 레퍼런스 이미지 → 10컷 보드 → 배치 생성 → 768p 무음 비주얼 마스터(v1) → 가사 자막·음원 합본(v2). 샷 프롬프트 48종과 H3 전용 규격 포함.">
+<meta property="og:description" content="가사 + 레퍼런스 이미지 → 러닝타임에 맞춘 보드 → 배치 생성 → 768p 무음 비주얼 마스터(v1) → 가사 자막·음원 합본(v2). 샷 프롬프트 48종과 H3 전용 규격 포함.">
 <meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23f6b756'/%3E%3Ctext x='16' y='22' font-family='Helvetica,Arial' font-size='13' font-weight='700' text-anchor='middle' fill='%23191307'%3ELM%3C/text%3E%3C/svg%3E">
@@ -277,8 +277,8 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
           <span class="en">From a lyric sheet to<br><em>a probed master file</em></span>
         </h1>
         <p class="lede">
-          <span class="ko">뮤직비디오를 4단계로 감독하는 클로드 스킬입니다. 10컷 스토리보드와 무립싱크 프롬프트를 설계하고, 컷마다 생성 1건만 추적하고, 768p 무음 비주얼 마스터(v1)를 프레임 단위로 조립한 뒤 — 같은 실행에서 가사 자막과 음원을 합친 v2 마스터까지 함께 냅니다.</span>
-          <span class="en">A Claude skill that directs a music video in four stages: a 10-cut board with no-lip-sync prompts, one tracked generation per cut, a 768p silent visual master (v1) assembled frame by frame, and — in the same run — a v2 lyric master with burned subtitles and your own track.</span>
+          <span class="ko">뮤직비디오를 4단계로 감독하는 클로드 스킬입니다. 러닝타임에서 컷 수를 정해 스토리보드와 무립싱크 프롬프트를 설계하고, 컷마다 생성 1건만 추적하고, 768p 무음 비주얼 마스터(v1)를 프레임 단위로 조립한 뒤 — 같은 실행에서 가사 자막과 음원을 합친 v2 마스터까지 함께 냅니다.</span>
+          <span class="en">A Claude skill that directs a music video in four stages: a board whose cut count comes from the runtime, with no-lip-sync prompts, one tracked generation per cut, a 768p silent visual master (v1) assembled frame by frame, and — in the same run — a v2 lyric master with burned subtitles and your own track.</span>
         </p>
         <div class="stats">
           <div class="stat"><b>4</b><span class="ko">단계 · 단계마다 게이트</span><span class="en">stages, each with a gate</span></div>
@@ -288,7 +288,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
         </div>
         <div class="hero-actions">
           <a class="btn btn-primary dl" href="/ludyte-mv-studio/ludyte-mv-studio-skill-v1.3.1.zip" download>
-            <span class="ko">스킬 ZIP 내려받기 · 63.3 KB</span><span class="en">Download the skill ZIP · 63.3 KB</span>
+            <span class="ko">스킬 ZIP 내려받기 · 68.9 KB</span><span class="en">Download the skill ZIP · 68.9 KB</span>
           </a>
           <a class="btn btn-ghost" href="#prompts"><span class="ko">프롬프트 48종 보기</span><span class="en">Browse the 48 prompts</span></a>
         </div>
@@ -353,7 +353,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
           <h3><span class="ko">보드</span><span class="en">Board</span></h3>
           <ul>
             <li><b>IN</b><span><span class="ko">가사 + 레퍼런스 이미지 + 목표 러닝타임</span><span class="en">lyrics, reference images, target runtime</span></span></li>
-            <li><b>OUT</b><span><span class="ko">10컷 보드 · 스타일 바이블 · 키프레임 스틸 · 컷별 프롬프트</span><span class="en">10-cut board, style bible, keyframe stills, per-cut prompts</span></span></li>
+            <li><b>OUT</b><span><span class="ko">러닝타임에서 정한 컷 수의 보드 · 스타일 바이블 · 키프레임 스틸 · 컷별 프롬프트</span><span class="en">board (cut count from the runtime), style bible, keyframe stills, per-cut prompts</span></span></li>
           </ul>
           <div class="gate"><span class="ko">게이트 — 보드 승인 (또는 사전 승인된 실행)</span><span class="en">Gate — board approved (or the run is pre-authorized)</span></div>
         </div>
@@ -404,7 +404,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:34px
             <tr>
               <td><span class="ko">1 · 보드</span><span class="en">1 · Board</span></td>
               <td><span class="ko">가사 + 레퍼런스 이미지 + 목표 러닝타임</span><span class="en">lyrics + reference image(s) + target runtime</span></td>
-              <td><span class="ko">10컷 보드, 키프레임 스틸, 컷별 프롬프트</span><span class="en">10-cut board, keyframe stills, per-cut prompts</span></td>
+              <td><span class="ko">보드(컷 수는 러닝타임에서), 키프레임 스틸, 컷별 프롬프트</span><span class="en">board (cut count from the runtime), keyframe stills, per-cut prompts</span></td>
               <td><span class="ko">보드 승인</span><span class="en">board approved</span></td>
             </tr>
             <tr>
@@ -1055,22 +1055,27 @@ ffmpeg -y -f concat -safe 0 -i concat.txt -an \
       <div class="code">
         <button class="cp" data-copy="xfgen" type="button">COPY</button>
         <pre id="xfgen">import sys
-frames = [120, 120, 120]      # per-cut frames, in timeline order
-fps, fade = 24, 6             # fade in frames
-if fade * 2 >= min(frames):
+frames = [120, 120, 120]          # per-cut frames, in timeline order
+fades  = [6, 0]                   # fade frames per join; 0 = a hard cut at that join
+fps = 24
+if len(fades) != len(frames) - 1:
+    sys.exit("one fade value per join")
+if max(fades) * 2 >= min(frames):
     sys.exit("fade too long for the shortest cut")
-acc, offsets = 0, []
-for k, f in enumerate(frames[:-1], start=1):
-    acc += frames[k - 1]
-    offsets.append((acc - k * fade) / fps)
-total = sum(frames) - (len(frames) - 1) * fade
 parts = [f"[{i}:v]fps={fps},scale=1366:768,setsar=1,format=yuv420p,"
          f"settb=AVTB,setpts=PTS-STARTPTS[v{i}]" for i in range(len(frames))]
-prev = "[v0]"
-for k, off in enumerate(offsets, start=1):
+prev, acc, overlap = "[v0]", 0, 0
+for k, f in enumerate(fades, start=1):
+    acc += frames[k - 1]
+    overlap += f
+    off = (acc - overlap) / fps
     out = f"[x{k}]"
-    parts.append(f"{prev}[v{k}]xfade=transition=fade:duration={fade/fps:.6f}:offset={off:.6f}{out}")
+    if f == 0:
+        parts.append(f"{prev}[v{k}]concat=n=2:v=1:a=0{out}")
+    else:
+        parts.append(f"{prev}[v{k}]xfade=transition=fade:duration={f/fps:.6f}:offset={off:.6f}{out}")
     prev = out
+total = sum(frames) - overlap
 print(";".join(parts))
 print(f"# expected frames: {total}  ({total / fps:.3f}s)", file=sys.stderr)</pre>
       </div>
@@ -1396,9 +1401,14 @@ Blocker: {cut} — {what the platform shows} — needs a decision on {options}.<
         <div class="sec-num">06</div>
         <div>
           <h2><span class="ko">스킬 ZIP 다운로드</span><span class="en">Download the skill ZIP</span></h2>
-          <p><span class="ko">9개 파일, 2,677줄. 스킬 본문(SKILL.md)과 6개 레퍼런스, 한·영 README가 한 폴더 안에 들어 있습니다.</span>
-          <span class="en">Nine files, 2,677 lines: the skill body (SKILL.md), six references and both READMEs in one folder.</span></p>
+          <p><span class="ko">9개 파일, 2,910줄 · 68.9 KB. 스킬 본문(SKILL.md)과 6개 레퍼런스, 한·영 README가 한 폴더 안에 들어 있습니다.</span>
+          <span class="en">Nine files, 2,910 lines, 68.9 KB: the skill body (SKILL.md), six references and both READMEs in one folder.</span></p>
         </div>
+      </div>
+
+      <div class="note cyan">
+        <span class="ko"><b>v1.3.1에서 달라진 것 (2026-11-19)</b> — 컷 수를 러닝타임에서 역산(30초 = 4–6컷, 10컷×5초는 50초를 생성해 30초만 씀) · 클립 길이 규칙을 엔진별로 하나만(5/10초 vs H3 5–15초) · 퍼포먼스 컷을 <b>Ref2VA 6섹션 + 목소리당 스템 하나</b>로 규격화 · v2 합본에서 <code>-shortest</code> 제거, 음원·영상 길이를 먼저 재고 <code>-t</code>로만 자름 · 크로스페이드를 조인별로 계산(<code>Σ D_k</code>) · 가사 자막은 정렬 타임스탬프를 1차 시안으로 · 샌드박스·모바일 런타임 주의 섹션 추가</span>
+        <span class="en"><b>What changed in 1.3.1 (2026-11-19)</b> — cut count derived from the runtime (30 s is 4–6 cuts; ten 5 s jobs generate 50 s for 30 s of film) · one clip-length rule per engine (5/10 s vs H3 5–15 s) · performance cuts specified as <b>Ref2VA, six sections, one stem per voice</b> · <code>-shortest</code> removed from the v2 mux: both durations are measured and only <code>-t</code> trims · crossfades compensated per join (<code>Σ D_k</code>) · lyric cues start from the track's own aligned timestamps · runtime notes for sandboxes and phone-only setups</span>
       </div>
 
       <div class="dlwrap">
@@ -1407,7 +1417,7 @@ Blocker: {cut} — {what the platform shows} — needs a decision on {options}.<
             <div class="pill a" style="margin-bottom:10px">v1.3.1 · 2 masters in one pass</div>
             <h3>ludyte-mv-studio-skill-v1.3.1.zip</h3>
             <p class="meta" style="margin:8px 0 0">
-              64,824 bytes · 63.3 KB · 9 files<br>
+              70,515 bytes · 68.9 KB · 9 files<br>
               <span class="ko">압축 안 루트 폴더:</span><span class="en">Root folder inside:</span> <code>ludyte-mv-studio/</code>
             </p>
           </div>
@@ -1416,23 +1426,23 @@ Blocker: {cut} — {what the platform shows} — needs a decision on {options}.<
           </a>
           <div>
             <div class="prompt-label">SHA-256</div>
-            <div class="hash">76cfccc6c6469dfb416295cbba4b5eef08e6374baf587a55387dcdd65451dceb</div>
+            <div class="hash">f882163851926955ab329138463b91ef779c754b72795292a6a6a58895e5f7c5</div>
           </div>
         </div>
 
         <div>
           <div class="prompt-label"><span class="ko">패키지 구성</span><span class="en">What's inside</span></div>
           <pre class="tree">ludyte-mv-studio/
-├── <b>SKILL.md</b>                       <i>23.6 KB · 계약 · 4단계 · 게이트 · 절대 규칙</i>
-├── README.md                      <i>12.6 KB · 설치·사용법·문제 해결 (English)</i>
-├── README.ko.md                   <i>13.0 KB · 설치·사용법·문제 해결 (한국어)</i>
+├── <b>SKILL.md</b>                       <i>28.0 KB · 계약 · 4단계 · 게이트 · 절대 규칙</i>
+├── README.md                      <i>13.5 KB · 설치·사용법·문제 해결 (English)</i>
+├── README.ko.md                   <i>13.9 KB · 설치·사용법·문제 해결 (한국어)</i>
 └── references/
-    ├── <b>storyboard-prompt-guide.md</b>  <i>12.1 KB · 가사 분할 · 10비트 · 프롬프트 공식</i>
+    ├── <b>storyboard-prompt-guide.md</b>  <i>12.6 KB · 가사 분할 · 비트 골격 · 프롬프트 공식</i>
     ├── <b>batch-task-manifest.md</b>      <i> 8.0 KB · TASKS.md 양식 · 상태 · 중복 과금 방지</i>
-    ├── <b>video-mastering-spec.md</b>     <i>14.9 KB · 프레임 산수 · ffmpeg · 크로스페이드 · QC</i>
-    ├── <b>lyric-subtitle-spec.md</b>      <i>13.3 KB · SRT/ASS · 이중 언어 · 세이프존 · 번인</i>
-    ├── <b>h3-skillpack.md</b>             <i>23.9 KB · H3 5모드 · 라벨 · 화자 ID · 사운드</i>
-    └── <b>mv-prompt-pack.md</b>           <i>40.7 KB · 샷 프롬프트 48종 (이 페이지의 원본)</i></pre>
+    ├── <b>video-mastering-spec.md</b>     <i>16.1 KB · 프레임 산수 · ffmpeg · 크로스페이드 · QC</i>
+    ├── <b>lyric-subtitle-spec.md</b>      <i>14.2 KB · SRT/ASS · 이중 언어 · 세이프존 · 번인</i>
+    ├── <b>h3-skillpack.md</b>             <i>26.3 KB · H3 5모드 · 라벨 · 화자 ID · 사운드</i>
+    └── <b>mv-prompt-pack.md</b>           <i>46.7 KB · 샷 프롬프트 48종 (이 페이지의 원본)</i></pre>
         </div>
       </div>
 
@@ -1479,9 +1489,9 @@ ffmpeg -hide_banner -filters | grep -E "xfade|subtitles"</pre>
         <table class="tbl">
           <thead><tr><th><span class="ko">이렇게 말하면</span><span class="en">Say</span></th><th><span class="ko">이렇게 나옵니다</span><span class="en">Get</span></th></tr></thead>
           <tbody>
-            <tr><td><span class="ko">“가사랑 사진이야. 30초 뮤비로 10컷 스토리보드 만들어줘. 16:9, 시네마틱 실사, 립싱크 없이. 컷마다 키프레임 프롬프트랑 영상 프롬프트도.”</span><span class="en">“Here are the lyrics and a photo. Make a 10-cut storyboard for a 30-second MV, 16:9, cinematic live action, no lip sync — with a keyframe prompt and a video prompt per cut.”</span></td>
-              <td><span class="ko">스타일 바이블, 스틸이 컷 카드 사이에 붙은 10컷 보드, 컷별 프롬프트. 보드 수정은 공짜이니 여기서 끝냅니다.</span><span class="en">the style bible, ten cut cards with stills between them, and prompts. Approve or change the board here — it is free.</span></td></tr>
-            <tr><td><span class="ko">“10컷 전부 768p, 16:9, 5초로 생성해. 매니페스트에 추적하고 다 되면 알려줘.”</span><span class="en">“Generate all ten cuts at 768p, 16:9, 5 seconds. Track them in the manifest and tell me when they're done.”</span></td>
+            <tr><td><span class="ko">“가사랑 사진이야. 30초 뮤비로 스토리보드 만들어줘. 16:9, 시네마틱 실사, 립싱크 없이. 컷마다 키프레임 프롬프트랑 영상 프롬프트도.”</span><span class="en">“Here are the lyrics and a photo. Storyboard a 30-second MV, 16:9, cinematic live action, no lip sync — with a keyframe prompt and a video prompt per cut.”</span></td>
+              <td><span class="ko">스타일 바이블, 스틸이 컷 카드 사이에 붙은 보드(30초 영상이면 6컷), 컷별 프롬프트. 보드 수정은 공짜이니 여기서 끝냅니다.</span><span class="en">the style bible, cut cards with stills between them (six for a 30 s film), and prompts. Approve or change the board here — it is free.</span></td></tr>
+            <tr><td><span class="ko">“6컷 전부 768p, 16:9, 5초로 생성해. 매니페스트에 추적하고 다 되면 알려줘.”</span><span class="en">“Generate all six cuts at 768p, 16:9, 5 seconds. Track them in the manifest and tell me when they're done.”</span></td>
               <td><span class="ko">컷당 1건 등록, 아이디를 가장 먼저 기록, 낮은 주기로 확인, 완료 원본만 다운로드·실측. 실패한 컷은 재시도 없이 보고.</span><span class="en">one task per cut, the id recorded first, low-cadence polling, only finished originals downloaded and probed; a failure is reported instead of retried.</span></td></tr>
             <tr><td><span class="ko">“정확히 30초로 잘라줘. 박자에 하드컷, 후렴 들어갈 때랑 브릿지 다음은 0.25초 크로스페이드. 무음 마스터로.”</span><span class="en">“Cut it to exactly 30 s — hard cuts on the beats, a 0.25 s crossfade into the chorus and after the bridge. Silent master.”</span></td>
               <td><code>v1_visual_master.mp4</code> + <span class="ko">리포트(프레임·fps·해상도·업스케일한 컷·보이는 결함과 위치)</span><span class="en">report: frames, fps, resolution, which cut was upscaled, which fault is visible where</span></td></tr>
