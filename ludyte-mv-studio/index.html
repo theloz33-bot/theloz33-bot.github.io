@@ -536,7 +536,7 @@ mkdir -p .claude/skills &amp;&amp; unzip -o ludyte-mv-studio-skill-v1.3.2.zip -d
           <div class="step-h">
             <div class="step-n">2</div>
             <div>
-              <h4><span class="ko">스토리 기획·선택 — 여기서 바꾸는 건 공짜</span><span class="en">Pick the story — changing it here costs nothing</span></h4>
+              <h4><span class="ko">스토리 기획·선택 — 여기서는 아직 아무것도 만들지 않습니다</span><span class="en">Pick the story — ask again as often as you like</span></h4>
               <span class="s2">contract · stage 1 board</span>
             </div>
           </div>
@@ -546,7 +546,7 @@ mkdir -p .claude/skills &amp;&amp; unzip -o ludyte-mv-studio-skill-v1.3.2.zip -d
               <ul>
                 <li><span class="ko">분위기·주인공·배경 후보 중 하나를 고릅니다. 마음에 안 들면 몇 번이든 다시 시킵니다.</span><span class="en">Choose one of the moods, protagonists or settings on offer — and ask again as often as you like.</span></li>
                 <li><span class="ko">실제 인물을 화면에 세우려면 <b>레퍼런스 사진 1장</b>을 같이 줍니다. 사진이 없으면 텍스트로는 스타일만 잡히고 얼굴은 컷마다 흔들립니다.</span><span class="en">For a real face on screen, add <b>one reference photo</b>. Without it, text can carry a style but not an identity, and the face drifts between cuts.</span></li>
-                <li><span class="ko">곡이 길면 “30초만”처럼 어디를 쓸지 정합니다 — 줄 수가 아니라 초가 기준입니다.</span><span class="en">For a long song, say which 30 seconds you want — the film is budgeted in seconds, not in lyric lines.</span></li>
+                <li><span class="ko">곡이 길면 “30초만”처럼 어디를 쓸지 정합니다 — 줄 수가 아니라 초가 기준입니다.</span><span class="en">For a long song, say which 30 seconds you want — the film is counted in seconds, not in lyric lines.</span></li>
               </ul>
             </div>
             <div>
@@ -554,7 +554,7 @@ mkdir -p .claude/skills &amp;&amp; unzip -o ludyte-mv-studio-skill-v1.3.2.zip -d
               <ul>
                 <li><span class="ko">곡의 정서를 기준으로 시나리오 3~4개를 <b>로그라인·분위기·배경·필요한 샷</b>으로 나눠 제시합니다.</span><span class="en">Offers three or four directions separated into <b>logline, mood, setting and the shots each needs</b>.</span></li>
                 <li><span class="ko">고른 안을 10비트 골격(콜드 오픈 → 캐릭터 락 → 벌스 → 후렴 → 브릿지 → 엔딩)에 얹고, 컷 수에 맞춰 비트를 합칩니다.</span><span class="en">Maps the choice onto the ten-beat skeleton (cold open → character lock → verse → chorus → bridge → outro) and merges beats to fit the cut count.</span></li>
-                <li><span class="ko">가사는 <b>2~4줄에 한 컷</b>으로 묶습니다. 한 줄에 한 컷은 10컷이 되어 30초 영화의 예산을 넘깁니다.</span><span class="en">Groups lyrics at <b>one cut per 2–4 lines</b>; a cut per line would make ten cuts and overrun a 30 s film.</span></li>
+                <li><span class="ko">가사는 <b>2~4줄에 한 컷</b>으로 묶습니다. 한 줄에 한 컷은 10컷이 되어 30초 영화에 담기지 않습니다.</span><span class="en">Groups lyrics at <b>one cut per 2–4 lines</b>; a cut per line would make ten cuts and overrun a 30 s film.</span></li>
               </ul>
             </div>
           </div>
@@ -631,8 +631,8 @@ then give me four concept images to choose from — 768p, 16:9, no on-screen tex
               <div class="prompt-label"><span class="ko">내가 할 일</span><span class="en">You</span></div>
               <ul>
                 <li><span class="ko">컷별 스틸을 검수합니다 — <b>얼굴 일관성·손·소품 모양·옷·글자 조각</b>. 이상한 컷만 다시 뽑게 합니다.</span><span class="en">Check each still for <b>face consistency, hands, prop shape, wardrobe and lettering</b>, and have only the bad ones redone.</span></li>
-                <li><span class="ko">여기까지는 <b>생성 크레딧이 들지 않는 구간</b>입니다(스틸 제외). 보드·프롬프트 수정은 공짜이니 여기서 끝내세요.</span><span class="en">Up to here nothing is generated for the film itself (the stills aside). Board and prompt changes are free — finish them here.</span></li>
-                <li><span class="ko">“이 보드로 간다”고 말하는 순간이 게이트입니다. 그 뒤의 사고는 크레딧으로 고칩니다.</span><span class="en">Saying “this board is it” is the gate; after that, fixes are paid for in credits.</span></li>
+                <li><span class="ko">여기까지는 <b>본편 생성이 아직 시작되지 않은 구간</b>입니다(스틸 제외). 보드·프롬프트 수정은 여기서 몇 번이든 하세요.</span><span class="en">Up to here nothing is generated for the film itself (the stills aside) — make every board and prompt change you want now.</span></li>
+                <li><span class="ko">“이 보드로 간다”고 말하는 순간이 게이트입니다. 그 뒤의 수정은 새 생성으로 다시 만드는 일이 됩니다.</span><span class="en">Saying “this board is it” is the gate; after that, a fix means generating again.</span></li>
               </ul>
             </div>
             <div>
@@ -666,7 +666,7 @@ Then show the stills between the cut cards together with each cut's video prompt
           <div class="step-h">
             <div class="step-n">5</div>
             <div>
-              <h4><span class="ko">영상 생성·검토 — 돈이 나가는 유일한 지점</span><span class="en">Generate and review — the one place money is spent</span></h4>
+              <h4><span class="ko">영상 생성·검토 — 실제 생성이 도는 구간</span><span class="en">Generate and review — where the clips are actually rendered</span></h4>
               <span class="s2">contract · stage 2 batch, gate 2</span>
             </div>
           </div>
@@ -674,7 +674,7 @@ Then show the stills between the cut cards together with each cut's video prompt
             <div>
               <div class="prompt-label"><span class="ko">내가 할 일</span><span class="en">You</span></div>
               <ul>
-                <li><span class="ko">컷 수·길이·해상도를 확인하고 <b>“생성 시작”</b>을 승인합니다. 생성 1건은 이미 지불한 주문입니다.</span><span class="en">Check count, length and resolution, then say <b>start</b>. A generation is an order already paid for.</span></li>
+                <li><span class="ko">컷 수·길이·해상도를 확인하고 <b>“생성 시작”</b>을 승인합니다. 생성 1건은 한 번 등록하면 되돌릴 수 없는 실행입니다.</span><span class="en">Check count, length and resolution, then say <b>start</b>. A generation is a run that cannot be taken back once registered.</span></li>
                 <li><span class="ko">결함 보고가 오면 <b>재생성할지 내가 정합니다</b>. 스킬은 스스로 다시 돌리지 않습니다.</span><span class="en">When a fault is reported, <b>you decide</b> whether to re-roll; the skill never does it on its own.</span></li>
                 <li><span class="ko">큐가 밀리면 기다립니다. 확인은 수십 분 주기로 하고, 그동안 다른 일을 하세요.</span><span class="en">If the queue is slow, wait — checks run every few tens of minutes, so go do something else.</span></li>
               </ul>
@@ -682,9 +682,9 @@ Then show the stills between the cut cards together with each cut's video prompt
             <div>
               <div class="prompt-label"><span class="ko">AI가 하는 일</span><span class="en">The AI</span></div>
               <ul>
-                <li><span class="ko"><b>컷당 한 건만</b> 등록하고, 플랫폼이 준 태스크 ID를 <b>가장 먼저</b> 매니페스트에 적습니다. 기록 없는 태스크는 영수증 없는 돈입니다.</span><span class="en"><b>One task per cut</b>, with the task id written into the manifest <b>first</b> — an untracked task is money with no receipt.</span></li>
+                <li><span class="ko"><b>컷당 한 건만</b> 등록하고, 플랫폼이 준 태스크 ID를 <b>가장 먼저</b> 매니페스트에 적습니다. 기록 없는 태스크는 나중에 확인할 수 없는 작업입니다.</span><span class="en"><b>One task per cut</b>, with the task id written into the manifest <b>first</b> — an untracked task is one nobody can account for afterwards.</span></li>
                 <li><span class="ko">끝난 컷만 <b>원본 그대로</b> 받아 해상도·길이·오디오를 실측합니다(재인코딩 금지).</span><span class="en">Downloads only finished cuts, <b>originals untouched</b>, and probes resolution, duration and audio.</span></li>
-                <li><span class="ko">실패·결함 컷은 재제출하지 않고 <b>한 번 보고하고 멈춥니다</b>. 크레딧 구매·플랜 변경·진행 중 작업 취소도 하지 않습니다.</span><span class="en">A failed or faulty cut is <b>reported once and stopped</b> — no resubmit, no credit purchase, no cancelling an in-flight job.</span></li>
+                <li><span class="ko">실패·결함 컷은 재제출하지 않고 <b>한 번 보고하고 멈춥니다</b>. 플랜 변경·진행 중 작업 취소도 하지 않습니다.</span><span class="en">A failed or faulty cut is <b>reported once and stopped</b> — no resubmit, no plan change, no cancelling an in-flight job.</span></li>
               </ul>
             </div>
           </div>
@@ -726,7 +726,7 @@ download only finished cuts as originals and probe resolution and duration. Repo
             <div>
               <div class="prompt-label"><span class="ko">AI가 하는 일</span><span class="en">The AI</span></div>
               <ul>
-                <li><span class="ko"><b>프레임 단위로 조립</b>합니다 — 하드컷·매치컷·크로스페이드. 크로스페이드는 겹친 만큼 영화가 짧아지므로 컷 길이에서 미리 보정합니다.</span><span class="en"><b>Assembles frame by frame</b> — hard cuts, match cuts, crossfades — and pays for each fade's overlap by adding it back to the cut lengths beforehand.</span></li>
+                <li><span class="ko"><b>프레임 단위로 조립</b>합니다 — 하드컷·매치컷·크로스페이드. 크로스페이드는 겹친 만큼 영화가 짧아지므로 컷 길이에서 미리 보정합니다.</span><span class="en"><b>Assembles frame by frame</b> — hard cuts, match cuts, crossfades — and adds each fade's overlap back to the cut lengths beforehand.</span></li>
                 <li><span class="ko"><code>v1_visual_master.mp4</code>를 렌더하고 <b>실측</b>합니다 — 프레임 수·fps·해상도·무음. 그 다음 같은 실행에서 자막을 굽고 음원을 합쳐 <code>v2_lyric_master.mp4</code>를 냅니다.</span><span class="en">Renders <code>v1_visual_master.mp4</code> and <b>probes it</b> — frames, fps, resolution, silence — then in the same run burns subtitles and muxes the track into <code>v2_lyric_master.mp4</code>.</span></li>
                 <li><span class="ko"><code>subs/lyrics.ass</code>·<code>subs/lyrics.srt</code>와 <code>master_report.md</code>를 같이 냅니다. 확인하지 못한 것은 리포트에 그대로 적습니다.</span><span class="en">Ships <code>subs/lyrics.ass</code>, <code>subs/lyrics.srt</code> and <code>master_report.md</code> too, with anything unverified written down as such.</span></li>
               </ul>
@@ -826,8 +826,8 @@ Once I approve the stills, generate every cut, then take me from the silent v1 t
       </div>
 
       <div class="note warn">
-        <span class="ko"><b>돈이 나가는 곳은 4단계(스틸)와 5단계(클립)뿐입니다.</b> 6단계 편집·자막은 이미 디스크에 있는 파일 위의 ffmpeg 작업이라 생성 크레딧이 들지 않습니다. 그래서 스토리·보드·프롬프트는 1~4단계에서 최대한 끝내는 게 맞습니다 — 그 뒤의 수정은 새 생성으로 갚아야 합니다.</span>
-        <span class="en"><b>Money leaves only at step 4 (stills) and step 5 (clips).</b> Step 6 is ffmpeg over files already on disk and spends no generation credits. That is why story, board and prompts belong in steps 1–4: a change after generation is paid for in new generations.</span>
+        <span class="ko"><b>실제 생성이 도는 곳은 4단계(스틸)와 5단계(클립)뿐입니다.</b> 6단계 편집·자막은 이미 디스크에 있는 파일 위의 ffmpeg 작업이라 생성 대기열(큐)을 거치지 않습니다. 그래서 스토리·보드·프롬프트는 1~4단계에서 최대한 끝내는 게 맞습니다 — 그 뒤의 수정은 새 생성으로 다시 풀어야 합니다.</span>
+        <span class="en"><b>Generation runs only at step 4 (stills) and step 5 (clips).</b> Step 6 is ffmpeg over files already on disk and never enters the generation queue. That is why story, board and prompts belong in steps 1–4: a change after generation means generating it again.</span>
       </div>
 
       <p style="margin-top:16px;font-size:13px;color:var(--dim)">
@@ -939,9 +939,9 @@ Once I approve the stills, generate every cut, then take me from the silent v1 t
           <span class="en">Fix it in stage 1 in seconds <em>and</em> frames; every cut length, crossfade and subtitle cue is arithmetic against that number. 30 s at 24 fps is 720 frames — never “about 30 seconds”.</span></p>
         </div>
         <div class="card">
-          <h4><span class="ko">생성은 이미 지불한 돈</span><span class="en">A generation is money already spent</span></h4>
-          <p><span class="ko">생성 태스크 하나는 이미 결제된 주문입니다. 재생성·재제출·구매·취소는 지불하는 사람만 결정할 수 있고, 스킬은 결함을 한 번 보고하고 멈춥니다.</span>
-          <span class="en">Each generation task is an order already paid for. Nothing authorizes a re-roll, resubmit, purchase or cancel — only the person paying can say yes, so the skill reports the fault once and stops.</span></p>
+          <h4><span class="ko">생성은 되돌릴 수 없는 한 번의 실행</span><span class="en">A generation is a run you cannot take back</span></h4>
+          <p><span class="ko">생성 태스크 하나는 한 번 등록하면 되돌릴 수 없는 실행입니다. 재생성·재제출·플랜 변경·취소는 승인한 사람만 결정할 수 있고, 스킬은 결함을 한 번 보고하고 멈춥니다.</span>
+          <span class="en">Each generation task is a run that cannot be taken back once registered. Nothing authorizes a re-roll, resubmit, plan change or cancel — only the person who approved the run can say yes, so the skill reports the fault once and stops.</span></p>
         </div>
         <div class="card">
           <h4><span class="ko">파일을 실측하기 전엔 끝이 아님</span><span class="en">Not done until the file is measured</span></h4>
@@ -964,7 +964,7 @@ Once I approve the stills, generate every cut, then take me from the silent v1 t
         <div class="card">
           <h4><span class="ko">왜 기본값이 768p인가</span><span class="en">Why 768p is the default</span></h4>
           <ul>
-            <li><span class="ko">상위 티어는 큐가 느리고 건당 비용이 비싸지만, 클립이 담지 못한 디테일을 마스터에서 되살릴 수는 없습니다.</span><span class="en">Higher tiers queue slower and cost more per task, and a bigger master cannot show detail the clips never had.</span></li>
+            <li><span class="ko">상위 티어는 큐가 느리고, 클립이 담지 못한 디테일을 마스터에서 되살릴 수는 없습니다.</span><span class="en">Higher tiers queue slower, and a bigger master cannot show detail the clips never had.</span></li>
             <li><span class="ko">스틸·모든 클립·런 락·v1·v2 마스터가 같은 프레임을 씁니다 — 한 편의 영화는 두 프레임을 섞지 않습니다.</span><span class="en">Stills, every clip, the run lock and both masters use one frame — a film never mixes frames.</span></li>
             <li><span class="ko">업스케일은 별도 파일로 렌더하고 768p 마스터 옆에 두며, 리포트에 업스케일이라고 적습니다. 네이티브 2K라고 부르지 않습니다.</span><span class="en">An upscale is a separate file rendered beside the 768p master and named as an upscale in the report — never called native 2K.</span></li>
           </ul>
@@ -1007,7 +1007,7 @@ Once I approve the stills, generate every cut, then take me from the silent v1 t
 
       <h3 class="sub"><span class="ko">이 스킬이 하지 않는 일</span><span class="en">What it will not do</span></h3>
       <ul class="check">
-        <li><span class="ko">크레딧 구매, 플랜 업그레이드, 좌석 추가, 부계정 생성으로 작업을 끝내지 않습니다.</span><span class="en">Buy credits, upgrade a plan, add seats or open a second account to finish a film.</span></li>
+        <li><span class="ko">플랜 업그레이드, 좌석 추가, 부계정 생성으로 작업을 끝내지 않습니다.</span><span class="en">Upgrade a plan, add seats or open a second account to finish a film.</span></li>
         <li><span class="ko">마음에 안 드는 컷을 스스로 재생성·재제출하지 않습니다. 결함을 한 번 보고하고 결정을 기다립니다.</span><span class="en">Re-roll, resubmit or regenerate a cut on its own judgement — it reports the fault once and waits.</span></li>
         <li><span class="ko">진행 중인 작업을 슬롯 확보를 위해 취소하지 않고, PASS·FAIL 표시된 파일을 덮어쓰지 않습니다.</span><span class="en">Cancel an in-flight job to free a slot, or overwrite a file marked PASS or FAIL.</span></li>
         <li><span class="ko">프롬프트에 가사를 인용하거나 립싱크를 요청하거나, 요청 없이 화면 글자를 넣지 않습니다. 요청받은 퍼포먼스 컷만 예외입니다.</span><span class="en">Quote lyrics, request lip sync, or accept on-screen text unless asked — a requested performance cut is the only exception.</span></li>
@@ -1149,7 +1149,7 @@ audio_policy: "no_audio"</pre>
         <li><span class="ko"><b>가사 전체를 붙이지 않는다.</b> 그 클립에서 실제로 부르는 구절만, <code>&lt;d&gt;</code> 안에만. 전달 지시는 밖에.</span><span class="en"><b>Do not paste the whole lyric sheet</b> — only the phrase sung in that clip, only inside <code>&lt;d&gt;</code>.</span></li>
         <li><span class="ko"><b>입을 위해 프레임을 고른다.</b> 버스트~클로즈업. 와이드는 음소 정확도를 잃으니, 몸동작이 더 중요하면 무립싱크 컷으로 다룹니다.</span><span class="en"><b>Choose the frame for the mouth.</b> Wide shots lose phoneme accuracy — treat those as no-lip-sync cuts.</span></li>
         <li><span class="ko"><b>목소리에 ID와 톤을 준다</b> (<code>(S1)</code>, 나이·성별·피치) — 컷이 바뀌어도 같은 목소리가 이어지도록.</span><span class="en"><b>Give the voice an ID and a timbre</b> (<code>(S1)</code>, age, gender, pitch) so the same voice persists.</span></li>
-        <li><span class="ko"><b>입은 마지막이 아니라 첫 프레임에서 확인.</b> 두 번째 프레임부터 움직인 입은 회복되지 않고, 재생성은 지불하는 사람의 결정입니다.</span><span class="en"><b>Check the mouth's first frame, not the last.</b> A mouth that starts moving in frame 2 never recovers; a re-roll belongs to whoever pays.</span></li>
+        <li><span class="ko"><b>입은 마지막이 아니라 첫 프레임에서 확인.</b> 두 번째 프레임부터 움직인 입은 회복되지 않고, 재생성은 승인한 사람의 결정입니다.</span><span class="en"><b>Check the mouth's first frame, not the last.</b> A mouth that starts moving in frame 2 never recovers; a re-roll belongs to whoever approved the run.</span></li>
       </ol>
       <div class="note cyan"><span class="ko">혼합 영화는 정상입니다 — 후렴만 퍼포먼스 컷, 나머지는 무립싱크. 컷마다 보드에서 결정하고 <code>performance</code> / <code>no-lip</code>으로 표시해 두면 3단계가 어느 클립의 오디오를 남기고 어느 것을 음소거할지 알 수 있습니다.</span>
       <span class="en">Mixed films are normal: performance cuts on the chorus, no-lip-sync everywhere else. Decide per cut on the board and mark each cut <code>performance</code> or <code>no-lip</code> so stage 3 knows which clips keep their audio.</span></div>
@@ -1438,7 +1438,7 @@ final master       = 738 − 18 = 720 frames = 30.000 s
           <p style="margin-bottom:0"><span class="ko">의도를 두 프롬프트에 모두 적으세요(“moves left out of frame”, “enters from the right, moving left”). 그래야 그 컷이 푸티지 안에 존재합니다.</span><span class="en">Write the intent into both prompts so the cut exists in the footage.</span></p>
         </div>
         <div class="card">
-          <h4><span class="ko">스틸 승인 체크 — 나쁜 스틸은 돈 나가는 나쁜 클립이 된다</span><span class="en">Still approval — a bad still becomes a paid bad clip</span></h4>
+          <h4><span class="ko">스틸 승인 체크 — 나쁜 스틸은 그대로 나쁜 클립이 된다</span><span class="en">Still approval — a bad still becomes a bad clip</span></h4>
           <ul class="check">
             <li><span class="ko">락과 같은 얼굴·머리·액세서리인가 (기억이 아니라 컷 02와 나란히 비교)</span><span class="en">same face, hair and accessory as the lock — compared side by side with cut 02</span></li>
             <li><span class="ko">손가락이 맞고, 녹은 사물이 없는가</span><span class="en">hands and fingers correct; no melted object</span></li>
@@ -1798,15 +1798,15 @@ Dialogue: 0,0:00:03.20,0:00:06.90,EN,,0,0,0,,{\fad(120,120)}the first line of th
             <tr><td><span class="ko">생성이 승인된 실행에서 컷당 태스크 1건 등록</span><span class="en">register one task per cut when the run was authorized to generate</span></td><td><span class="ok">yes</span></td></tr>
             <tr><td><span class="ko">DONE 원본 다운로드, 로그 추가, probe 결과 기록</span><span class="en">download a DONE original, append to the log, write probe results</span></td><td><span class="ok">yes</span></td></tr>
             <tr><td><span class="ko">실패했거나 못난 컷의 재생성·재제출</span><span class="en">re-roll, regenerate or resubmit a failed or ugly cut</span></td><td><b><span class="ko">아니오 — 보고하고 멈춤</span><span class="en">no — report it and stop</span></b></td></tr>
-            <tr><td><span class="ko">크레딧 구매·업그레이드·좌석 추가</span><span class="en">buy credits, upgrade, subscribe, add seats</span></td><td><b><span class="ko">아니오</span><span class="en">no</span></b></td></tr>
+            <tr><td><span class="ko">플랜 업그레이드·구독 변경·좌석 추가</span><span class="en">upgrade, subscribe, add seats</span></td><td><b><span class="ko">아니오</span><span class="en">no</span></b></td></tr>
             <tr><td><span class="ko">진행 중 작업 취소</span><span class="en">cancel an in-flight job</span></td><td><b><span class="ko">아니오</span><span class="en">no</span></b></td></tr>
             <tr><td><span class="ko">PASS·FAIL 표시 파일 덮어쓰기, 태스크 삭제</span><span class="en">delete tasks, or overwrite files marked PASS / FAIL / lowres</span></td><td><b><span class="ko">아니오</span><span class="en">no</span></b></td></tr>
             <tr><td><span class="ko">실행 중 모델·해상도·비율·길이 변경</span><span class="en">change model, resolution, aspect or duration mid-run</span></td><td><b><span class="ko">아니오</span><span class="en">no</span></b></td></tr>
           </tbody>
         </table>
       </div>
-      <div class="note"><span class="ko"><b>중복 과금이 나는 방식.</b> 제출과 매니페스트 기록 사이에 실행이 끊기면 태스크는 있는데 매니페스트는 PLANNED라 다음 실행이 또 주문합니다. 그래서 등록 전에 <b>플랫폼의 태스크 목록을 먼저 읽어</b> 매니페스트에 없는 태스크를 편입시키고, 태스크 ID는 <b>기억이 아니라 복사</b>해서 화면을 닫기 전에 적습니다.</span>
-      <span class="en"><b>How money is lost twice.</b> If a run breaks between submit and the manifest write, the task exists while the manifest says PLANNED and the next run orders again — so read the platform's own task list first, adopt what the manifest lacks, and copy the id (never recall it) before the page is closed.</span></div>
+      <div class="note"><span class="ko"><b>같은 컷이 두 번 등록되는 방식.</b> 제출과 매니페스트 기록 사이에 실행이 끊기면 태스크는 있는데 매니페스트는 PLANNED라 다음 실행이 같은 컷을 또 등록합니다. 그래서 등록 전에 <b>플랫폼의 태스크 목록을 먼저 읽어</b> 매니페스트에 없는 태스크를 편입시키고, 태스크 ID는 <b>기억이 아니라 복사</b>해서 화면을 닫기 전에 적습니다.</span>
+      <span class="en"><b>How one cut gets registered twice.</b> If a run breaks between submit and the manifest write, the task exists while the manifest says PLANNED and the next run registers the same cut again — so read the platform's own task list first, adopt what the manifest lacks, and copy the id (never recall it) before the page is closed.</span></div>
 
       <div class="grid2">
         <div class="card">
@@ -1890,8 +1890,8 @@ Blocker: {cut} — {what the platform shows} — needs a decision on {options}.<
         </table>
       </div>
       <div class="note">
-        <span class="ko"><b>재생성 규율.</b> 요청받은 것만 바꿉니다. 무언가를 고치는 김에 조명·그레이드를 바꾸거나 “더 밝게 / 더 시네마틱하게”를 얹지 않습니다. 모든 재생성은 유료이고, 잘 나온 샷은 건드리지 않는 것이 맞습니다.</span>
-        <span class="en"><b>Regeneration discipline.</b> Change only what was asked. Do not re-light or add “brighter / more cinematic” while fixing something else — each re-roll is paid, and a shot that worked should be left alone.</span>
+        <span class="ko"><b>재생성 규율.</b> 요청받은 것만 바꿉니다. 무언가를 고치는 김에 조명·그레이드를 바꾸거나 “더 밝게 / 더 시네마틱하게”를 얹지 않습니다. 재생성은 매번 새로 만드는 일이니, 잘 나온 샷은 건드리지 않는 것이 맞습니다.</span>
+        <span class="en"><b>Regeneration discipline.</b> Change only what was asked. Do not re-light or add “brighter / more cinematic” while fixing something else — each re-roll means generating again, and a shot that worked should be left alone.</span>
       </div>
     </div>
   </section>
@@ -1946,7 +1946,7 @@ Blocker: {cut} — {what the platform shows} — needs a decision on {options}.<
 ├── <b>LICENSE</b>                        <i>20.7 KB · CC BY-NC 4.0 전문 · 오몽</i>
 └── references/
     ├── <b>storyboard-prompt-guide.md</b>  <i>12.6 KB · 가사 분할 · 비트 골격 · 프롬프트 공식</i>
-    ├── <b>batch-task-manifest.md</b>      <i> 8.0 KB · TASKS.md 양식 · 상태 · 중복 과금 방지</i>
+    ├── <b>batch-task-manifest.md</b>      <i> 8.0 KB · TASKS.md 양식 · 상태 · 중복 등록 방지</i>
     ├── <b>video-mastering-spec.md</b>     <i>16.1 KB · 프레임 산수 · ffmpeg · 크로스페이드 · QC</i>
     ├── <b>lyric-subtitle-spec.md</b>      <i>14.7 KB · SRT/ASS · 이중 언어 · 세이프존 · 번인</i>
     ├── <b>h3-skillpack.md</b>             <i>26.3 KB · H3 5모드 · 라벨 · 화자 ID · 사운드</i>
@@ -2000,7 +2000,7 @@ ffmpeg -hide_banner -filters | grep -E "xfade|subtitles"</pre>
           <thead><tr><th><span class="ko">이렇게 말하면</span><span class="en">Say</span></th><th><span class="ko">이렇게 나옵니다</span><span class="en">Get</span></th></tr></thead>
           <tbody>
             <tr><td><span class="ko">“가사랑 사진이야. 30초 뮤비로 스토리보드 만들어줘. 16:9, 시네마틱 실사, 립싱크 없이. 컷마다 키프레임 프롬프트랑 영상 프롬프트도.”</span><span class="en">“Here are the lyrics and a photo. Storyboard a 30-second MV, 16:9, cinematic live action, no lip sync — with a keyframe prompt and a video prompt per cut.”</span></td>
-              <td><span class="ko">스타일 바이블, 스틸이 컷 카드 사이에 붙은 보드(30초 영상이면 6컷), 컷별 프롬프트. 보드 수정은 공짜이니 여기서 끝냅니다.</span><span class="en">the style bible, cut cards with stills between them (six for a 30 s film), and prompts. Approve or change the board here — it is free.</span></td></tr>
+              <td><span class="ko">스타일 바이블, 스틸이 컷 카드 사이에 붙은 보드(30초 영상이면 6컷), 컷별 프롬프트. 보드 수정은 여기서 끝냅니다.</span><span class="en">the style bible, cut cards with stills between them (six for a 30 s film), and prompts. Approve or change the board here, before anything is generated.</span></td></tr>
             <tr><td><span class="ko">“6컷 전부 768p, 16:9, 5초로 생성해. 매니페스트에 추적하고 다 되면 알려줘.”</span><span class="en">“Generate all six cuts at 768p, 16:9, 5 seconds. Track them in the manifest and tell me when they're done.”</span></td>
               <td><span class="ko">컷당 1건 등록, 아이디를 가장 먼저 기록, 낮은 주기로 확인, 완료 원본만 다운로드·실측. 실패한 컷은 재시도 없이 보고.</span><span class="en">one task per cut, the id recorded first, low-cadence polling, only finished originals downloaded and probed; a failure is reported instead of retried.</span></td></tr>
             <tr><td><span class="ko">“정확히 30초로 잘라줘. 박자에 하드컷, 후렴 들어갈 때랑 브릿지 다음은 0.25초 크로스페이드. 무음 마스터로.”</span><span class="en">“Cut it to exactly 30 s — hard cuts on the beats, a 0.25 s crossfade into the chorus and after the bridge. Silent master.”</span></td>
