@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "journals": {
     "kr": {
       "name": "오몽 라이프 & AI 연구소",
@@ -10,6 +10,20 @@
       "blurb": "생활 정보와 1인 제작, AI 영상 외주를 직접 해보고 남긴 기록. 겨울철 습도처럼 계절마다 반복되는 질문과, 스마트폰 하나로 찍고 편집하는 순서를 숫자와 기준으로 정리합니다.",
       "blurb_en": "A Korean-language journal on household decisions, one-person production and AI video commissions, written from work actually done.",
       "posts": [
+        {
+          "title": "한한령 빗장 풀렸다는데, 내 콘텐츠는 아직 심사 중",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/hanryu-fta-content-gate/",
+          "date": "2026-11-19",
+          "category": "시사 4컷",
+          "excerpt": "한중 FTA 서비스·투자 후속협상이 8년 8개월 만에 실질 타결됐다. 영화·게임 최혜국대우, 공동제작 확대까지. 그런데 사전 심사는 사라지지 않았고, 발효까지는 아직 절차가 남았다."
+        },
+        {
+          "title": "겨울 실내 빨래, 냄새 없이 하루 만에 말리는 순서 — 세제량·탈수·널어 두는 간격",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/winter-indoor-laundry-drying/",
+          "date": "2026-11-19",
+          "category": "생활 정보",
+          "excerpt": "겨울 실내 건조는 시간이 아니라 순서 문제다. 세제를 줄이고, 탈수를 끝까지 하고, 간격을 띄워 널면 같은 방에서도 하루 안에 마른다."
+        },
         {
           "title": "AI로 주 3.7시간 아꼈는데, 생산성은 그대로인 이유",
           "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/ai-saves-hours-productivity-gap/",
@@ -74,7 +88,7 @@
           "excerpt": "난방을 켜면 방 안 습도는 조용히 30% 아래로 떨어진다. 40~60%를 지키는 방법, 가습기 세 방식의 차이, 핫팩을 쓸 때 지켜야 할 선을 정리했다."
         }
       ],
-      "count": 9,
+      "count": 11,
       "categories": [
         "생활 정보",
         "크리에이터 장비",
@@ -91,6 +105,13 @@
       "blurb": "Field notes on AI short-form series, music-video pipelines, speech audio and single-file tools. The order of operations, the levels in dB, and the stage that broke first.",
       "blurb_ko": "AI 숏폼 시리즈와 뮤직비디오 파이프라인, 음성 오디오, 단일 파일 도구에 대한 영문 실무 기록.",
       "posts": [
+        {
+          "title": "What One Workflow Run Really Costs: Run-Cost Math, Retry Budgets and Rate-Limit Guardrails in n8n, Make and Zapier",
+          "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/workflow-run-cost-retry-rate-limits/",
+          "date": "2026-11-19",
+          "category": "Automation",
+          "excerpt": "Two workflows that do the same job can cost ten times different amounts, and both can fail at 3am without telling anyone. The billing unit each platform counts, the retry window it gives you, and the guardrails that make a run safe to leave on."
+        },
         {
           "title": "Editing 9:16 Shorts for Retention: the Hook Frame, Caption Rhythm and the Loop Point",
           "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/9-16-short-form-retention-editing/",
@@ -155,10 +176,10 @@
           "excerpt": "One HTML file, no build step, no server, no login. For a solo creator selling small tools, that constraint is not a limitation — it is the whole product advantage."
         }
       ],
-      "count": 9,
+      "count": 10,
       "categories": [
-        "Short-Form Production",
         "Automation",
+        "Short-Form Production",
         "Product",
         "Music Video",
         "Audio",
