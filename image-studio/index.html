@@ -768,8 +768,8 @@ function resetCropRect(){
   if(!crop.bmp)return;
   const [ow,oh]=RATIOS[crop.ratio],ratio=ow/oh,b=crop.bmp;
   let mw=b.height*ratio<=b.width?b.height*ratio:b.width;
-  mw/=crop.zoom;
-  const chh=mw/ratio;
+  mw=Math.round(mw/crop.zoom);
+  const chh=Math.round(mw/ratio);
   let x=(b.width-mw)/2,y=(b.height-chh)/2;
   if(crop.pos==="top")y=0;if(crop.pos==="bottom")y=b.height-chh;
   crop.rect={x:Math.max(0,x),y:Math.max(0,y),w:Math.min(mw,b.width),h:chh};
@@ -802,10 +802,11 @@ document.querySelectorAll("[data-pos]").forEach(b=>b.onclick=()=>{
 });
 $("cropZoom").oninput=()=>{
   if(!crop.bmp)return;
-  const b=crop.bmp,[ow,oh]=RATIOS[crop.ratio],ratio=ow/oh;
-  crop.zoom=parseInt($("cropZoom").value,10)/100;
+  const b=crop.bmp,ratio=ow/oh;
   let mw=Math.min(b.width,b.height*ratio)*crop.zoom;
-  const chh=mw/ratio,old=crop.rect;
+  mw=Math.round(mw);
+  crop.zoom=parseInt($("cropZoom").value,10)/100;
+  const chh=Math.round(mw/ratio),old=crop.rect;
   let x=old?old.x+(old.w-mw)/2:(b.width-mw)/2;
   let y=old?old.y+(old.h-chh)/2:(b.height-chh)/2;
   if(crop.pos==="top")y=0;if(crop.pos==="bottom")y=b.height-chh;
