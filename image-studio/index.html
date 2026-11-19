@@ -536,6 +536,8 @@ function applyLang(){
 
 /* ================= theme / tabs ================= */
 const $=id=>document.getElementById(id);
+$("langKO").onclick=()=>{if(lang!="ko"){lang="ko";applyLang();}};
+$("langEN").onclick=()=>{if(lang!="en"){lang="en";applyLang();}};
 function setTheme(th){
   document.documentElement.dataset.theme=th;
   $("thDark").setAttribute("aria-pressed",th==="dark");
