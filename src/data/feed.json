@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-19",
+  "updated": "2026-11-20",
   "journals": {
     "kr": {
       "name": "오몽 라이프 & AI 연구소",
@@ -10,6 +10,20 @@
       "blurb": "생활 정보와 1인 제작, AI 영상 외주를 직접 해보고 남긴 기록. 겨울철 습도처럼 계절마다 반복되는 질문과, 스마트폰 하나로 찍고 편집하는 순서를 숫자와 기준으로 정리합니다.",
       "blurb_en": "A Korean-language journal on household decisions, one-person production and AI video commissions, written from work actually done.",
       "posts": [
+        {
+          "title": "AI 회사가 143조를 모았다, 내 구독료로",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/ai-ipo-subscription-bill/",
+          "date": "2026-11-20",
+          "category": "시사 4컷",
+          "excerpt": "앤트로픽이 나스닥 상장 첫날 사상 최대인 1,073억 달러(약 143조원)를 조달했다. AI로 콘텐츠를 만드는 사람은 매달 구독료를 내고, 그 구독료가 모여 143조가 됐다. 숫자를 뜯어보면 남는 질문은 하나다."
+        },
+        {
+          "title": "겨울 야외 촬영, 배터리가 먼저 죽는다 — 0도 아래에서 스마트폰 지키는 순서",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/winter-outdoor-shooting-cold-battery/",
+          "date": "2026-11-20",
+          "category": "크리에이터 장비",
+          "excerpt": "영하에서 화면이 꺼지는 건 배터리가 닳아서가 아니라 추워서다. 촬영 전 보온, 촬영 중 컷 길이, 실내에 들어온 뒤 결로까지 순서대로 정리했습니다."
+        },
         {
           "title": "한한령 빗장 풀렸다는데, 내 콘텐츠는 아직 심사 중",
           "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/hanryu-fta-content-gate/",
@@ -88,7 +102,7 @@
           "excerpt": "난방을 켜면 방 안 습도는 조용히 30% 아래로 떨어진다. 40~60%를 지키는 방법, 가습기 세 방식의 차이, 핫팩을 쓸 때 지켜야 할 선을 정리했다."
         }
       ],
-      "count": 11,
+      "count": 13,
       "categories": [
         "생활 정보",
         "크리에이터 장비",
@@ -105,6 +119,13 @@
       "blurb": "Field notes on AI short-form series, music-video pipelines, speech audio and single-file tools. The order of operations, the levels in dB, and the stage that broke first.",
       "blurb_ko": "AI 숏폼 시리즈와 뮤직비디오 파이프라인, 음성 오디오, 단일 파일 도구에 대한 영문 실무 기록.",
       "posts": [
+        {
+          "title": "What a 15-Second Ad Costs to Make Alone: Hours, a Rate Floor and a Quote That Holds",
+          "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/15-second-ad-cost-quote-sheet/",
+          "date": "2026-11-20",
+          "category": "Product",
+          "excerpt": "Two quotes for the same 15-second vertical ad can differ by ten times and both be honest. What separates them is whether the person quoting knows where the hours go — so here are the hours, the rate floor they imply, and the six lines a quote needs before it leaves your desk."
+        },
         {
           "title": "What One Workflow Run Really Costs: Run-Cost Math, Retry Budgets and Rate-Limit Guardrails in n8n, Make and Zapier",
           "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/workflow-run-cost-retry-rate-limits/",
@@ -176,11 +197,11 @@
           "excerpt": "One HTML file, no build step, no server, no login. For a solo creator selling small tools, that constraint is not a limitation — it is the whole product advantage."
         }
       ],
-      "count": 10,
+      "count": 11,
       "categories": [
+        "Product",
         "Automation",
         "Short-Form Production",
-        "Product",
         "Music Video",
         "Audio",
         "Character Consistency",
