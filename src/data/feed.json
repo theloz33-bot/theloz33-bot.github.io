@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-20",
+  "updated": "2026-11-21",
   "journals": {
     "kr": {
       "name": "오몽 라이프 & AI 연구소",
@@ -10,6 +10,20 @@
       "blurb": "생활 정보와 1인 제작, AI 영상 외주를 직접 해보고 남긴 기록. 겨울철 습도처럼 계절마다 반복되는 질문과, 스마트폰 하나로 찍고 편집하는 순서를 숫자와 기준으로 정리합니다.",
       "blurb_en": "A Korean-language journal on household decisions, one-person production and AI video commissions, written from work actually done.",
       "posts": [
+        {
+          "title": "사과는 29% 내렸는데, 케이크는 15.6% 올랐다",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/cake-price-up-producer-price-down/",
+          "date": "2026-11-21",
+          "category": "시사 4컷",
+          "excerpt": "스타벅스가 '부생카'를 11년 만에 700원(15.6%) 올린다. 같은 날 발표된 10월 생산자물가는 0.1% 하락, 사과는 29.2%, 돼지고기는 12.8% 내렸다. 원가는 내려가는데 매대의 가격표만 새로 붙는 이유를 숫자로 짚었다."
+        },
+        {
+          "title": "겨울 전기 난방기기, 한 달에 얼마 나올까 — 소비전력표로 먼저 계산하는 법",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/winter-electric-heating-cost-calc/",
+          "date": "2026-11-21",
+          "category": "생활 정보",
+          "excerpt": "전기장판 하나는 한 달 1만 2천원, 같은 기간 전기온풍기는 13만원입니다. 라벨의 W를 kWh로 바꾸고 누진 단계에 넣으면 차이가 어디서 나는지 숫자로 보입니다."
+        },
         {
           "title": "AI 회사가 143조를 모았다, 내 구독료로",
           "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/ai-ipo-subscription-bill/",
@@ -102,7 +116,7 @@
           "excerpt": "난방을 켜면 방 안 습도는 조용히 30% 아래로 떨어진다. 40~60%를 지키는 방법, 가습기 세 방식의 차이, 핫팩을 쓸 때 지켜야 할 선을 정리했다."
         }
       ],
-      "count": 13,
+      "count": 15,
       "categories": [
         "생활 정보",
         "크리에이터 장비",
@@ -119,6 +133,13 @@
       "blurb": "Field notes on AI short-form series, music-video pipelines, speech audio and single-file tools. The order of operations, the levels in dB, and the stage that broke first.",
       "blurb_ko": "AI 숏폼 시리즈와 뮤직비디오 파이프라인, 음성 오디오, 단일 파일 도구에 대한 영문 실무 기록.",
       "posts": [
+        {
+          "title": "Matching Colour Across AI Shots: Measure Four Numbers, Grade in Two Passes, Then Apply the Look",
+          "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/ai-shot-color-match-look/",
+          "date": "2026-11-21",
+          "category": "Short-Form Production",
+          "excerpt": "Six AI clips cut together can look like footage from six cameras. The fix is not a better LUT — it is measuring four numbers per clip and grading in the right order, so one look survives a whole series."
+        },
         {
           "title": "What a 15-Second Ad Costs to Make Alone: Hours, a Rate Floor and a Quote That Holds",
           "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/15-second-ad-cost-quote-sheet/",
@@ -197,11 +218,11 @@
           "excerpt": "One HTML file, no build step, no server, no login. For a solo creator selling small tools, that constraint is not a limitation — it is the whole product advantage."
         }
       ],
-      "count": 11,
+      "count": 12,
       "categories": [
+        "Short-Form Production",
         "Product",
         "Automation",
-        "Short-Form Production",
         "Music Video",
         "Audio",
         "Character Consistency",
