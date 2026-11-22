@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-21",
+  "updated": "2026-11-22",
   "journals": {
     "kr": {
       "name": "오몽 라이프 & AI 연구소",
@@ -10,6 +10,20 @@
       "blurb": "생활 정보와 1인 제작, AI 영상 외주를 직접 해보고 남긴 기록. 겨울철 습도처럼 계절마다 반복되는 질문과, 스마트폰 하나로 찍고 편집하는 순서를 숫자와 기준으로 정리합니다.",
       "blurb_en": "A Korean-language journal on household decisions, one-person production and AI video commissions, written from work actually done.",
       "posts": [
+        {
+          "title": "집값은 꺾였는데, 전세는 안 꺾였다",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/jeonse-up-sale-price-flat/",
+          "date": "2026-11-22",
+          "category": "시사 4컷",
+          "excerpt": "서울 아파트 매매는 0.03%, 전세는 0.14% 올랐다. 강남구는 매매가 0.30% 빠지는 동안 전세가 0.22% 올랐다. 입주 물량이 반토막 난 시장에서 두 숫자가 반대로 가는 이유를 정리했다."
+        },
+        {
+          "title": "겨울 수도계량기 동파, 영하 5도부터 위험 — 채우기·틀기·녹이기 순서",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/winter-water-meter-freeze-prevention/",
+          "date": "2026-11-22",
+          "category": "생활 정보",
+          "excerpt": "한파 아침에 물이 안 나오면 대개 계량기가 얼어 있다. 서울시 기준 최저기온 영하 5도면 이미 '관심' 단계고, 채우기·틀기·녹이기 세 동작이면 대부분 막을 수 있다."
+        },
         {
           "title": "사과는 29% 내렸는데, 케이크는 15.6% 올랐다",
           "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/cake-price-up-producer-price-down/",
@@ -116,7 +130,7 @@
           "excerpt": "난방을 켜면 방 안 습도는 조용히 30% 아래로 떨어진다. 40~60%를 지키는 방법, 가습기 세 방식의 차이, 핫팩을 쓸 때 지켜야 할 선을 정리했다."
         }
       ],
-      "count": 15,
+      "count": 17,
       "categories": [
         "생활 정보",
         "크리에이터 장비",
@@ -133,6 +147,13 @@
       "blurb": "Field notes on AI short-form series, music-video pipelines, speech audio and single-file tools. The order of operations, the levels in dB, and the stage that broke first.",
       "blurb_ko": "AI 숏폼 시리즈와 뮤직비디오 파이프라인, 음성 오디오, 단일 파일 도구에 대한 영문 실무 기록.",
       "posts": [
+        {
+          "title": "A Product Page for a Digital Download: Eight Sections, Eighteen Objections and the Test Maths",
+          "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/product-page-sections-objections-test-maths/",
+          "date": "2026-11-22",
+          "category": "Product",
+          "excerpt": "A listing with views and no sales is usually answering the wrong question, in the wrong order. Eight sections in the order a buyer asks them, the objections that block a $19 download, and the sample size a test needs before it can tell you anything."
+        },
         {
           "title": "Matching Colour Across AI Shots: Measure Four Numbers, Grade in Two Passes, Then Apply the Look",
           "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/ai-shot-color-match-look/",
@@ -218,10 +239,10 @@
           "excerpt": "One HTML file, no build step, no server, no login. For a solo creator selling small tools, that constraint is not a limitation — it is the whole product advantage."
         }
       ],
-      "count": 12,
+      "count": 13,
       "categories": [
-        "Short-Form Production",
         "Product",
+        "Short-Form Production",
         "Automation",
         "Music Video",
         "Audio",
