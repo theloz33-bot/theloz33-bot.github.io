@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-22",
+  "updated": "2026-11-23",
   "journals": {
     "kr": {
       "name": "오몽 라이프 & AI 연구소",
@@ -10,6 +10,20 @@
       "blurb": "생활 정보와 1인 제작, AI 영상 외주를 직접 해보고 남긴 기록. 겨울철 습도처럼 계절마다 반복되는 질문과, 스마트폰 하나로 찍고 편집하는 순서를 숫자와 기준으로 정리합니다.",
       "blurb_en": "A Korean-language journal on household decisions, one-person production and AI video commissions, written from work actually done.",
       "posts": [
+        {
+          "title": "96만 원 팔아 63만 원 받았다",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/delivery-app-fee-net-settlement/",
+          "date": "2026-11-23",
+          "category": "시사 4컷",
+          "excerpt": "하루 매출 96만6,000원을 올린 한식당의 정산금은 63만3,994원이었다. 34%가 빠져나간 정산서의 항목을 하나씩 뜯어보고, 배달앱 수수료가 사장과 손님 사이에서 어떻게 오가는지 숫자로 정리했다."
+        },
+        {
+          "title": "겨울철 자동차 배터리 방전, 블랙박스 설정부터 — 12.2V와 주차 3일 계산",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/winter-car-battery-dashcam-drain/",
+          "date": "2026-11-23",
+          "category": "생활 정보",
+          "excerpt": "한파 아침 시동이 안 걸리는 건 그날의 추위 때문이 아니다. 앞선 사흘 밤 주차 녹화가 배터리를 미리 깎아 놓는다. 전압표와 소비전력으로 남은 시간을 계산하고, 설정 네 가지만 바꾸는 방법."
+        },
         {
           "title": "집값은 꺾였는데, 전세는 안 꺾였다",
           "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/jeonse-up-sale-price-flat/",
@@ -130,7 +144,7 @@
           "excerpt": "난방을 켜면 방 안 습도는 조용히 30% 아래로 떨어진다. 40~60%를 지키는 방법, 가습기 세 방식의 차이, 핫팩을 쓸 때 지켜야 할 선을 정리했다."
         }
       ],
-      "count": 17,
+      "count": 19,
       "categories": [
         "생활 정보",
         "크리에이터 장비",
@@ -147,6 +161,13 @@
       "blurb": "Field notes on AI short-form series, music-video pipelines, speech audio and single-file tools. The order of operations, the levels in dB, and the stage that broke first.",
       "blurb_ko": "AI 숏폼 시리즈와 뮤직비디오 파이프라인, 음성 오디오, 단일 파일 도구에 대한 영문 실무 기록.",
       "posts": [
+        {
+          "title": "Activation in Seven Days: The One Event, the Funnel Maths and the Churn Interview",
+          "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/saas-first-seven-days-activation/",
+          "date": "2026-11-23",
+          "category": "Product",
+          "excerpt": "Sign-ups arrive every day and the product is empty by week three. The fix is not a longer tour: it is one activation event, a median time to value, four emails with one action each — and the maths that says how many paying customers that is worth."
+        },
         {
           "title": "A Product Page for a Digital Download: Eight Sections, Eighteen Objections and the Test Maths",
           "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/product-page-sections-objections-test-maths/",
@@ -239,7 +260,7 @@
           "excerpt": "One HTML file, no build step, no server, no login. For a solo creator selling small tools, that constraint is not a limitation — it is the whole product advantage."
         }
       ],
-      "count": 13,
+      "count": 14,
       "categories": [
         "Product",
         "Short-Form Production",
