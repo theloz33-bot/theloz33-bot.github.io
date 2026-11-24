@@ -161,12 +161,9 @@ html.swp-lock, html.swp-lock body { overflow: hidden; }
 .swp .swp-head__search { grid-area: search; }
 .swp .swp-account { grid-area: account; }
 
-.swp .swp-header.is-compact .swp-head__search { display: none; }
-
 @media (min-width: 1024px) {
   .swp .swp-head__inner { grid-template-columns: auto minmax(0, 560px) 1fr; grid-template-areas: "logo search account"; column-gap: 40px; height: var(--swp-head-h); padding-top: 0; padding-bottom: 0; }
   .swp .swp-head__menu { display: none; }
-  .swp .swp-header.is-compact .swp-head__search { display: flex; }
 }
 
 /* 로고 */
@@ -735,17 +732,15 @@ html.swp-lock, html.swp-lock body { overflow: hidden; }
       if (window.MutationObserver) new MutationObserver(sync).observe(c, { childList: true, subtree: true, characterData: true });
     });
 
-    // 스크롤: 그림자 + 모바일에서 아래로 내릴 때 검색줄 접기
+    // 스크롤: 그림자만 토글 (헤더 높이 변동으로 인한 모바일 스크롤 떨림 방지)
     if (!header) return;
-    var last = 0, ticking = false;
+    var ticking = false;
     window.addEventListener('scroll', function () {
       if (ticking) return; ticking = true;
       window.requestAnimationFrame(function () {
         var y = window.pageYOffset || document.documentElement.scrollTop;
         header.classList.toggle('is-scrolled', y > 8);
-        if (y > 180 && y > last + 6) header.classList.add('is-compact');
-        else if (y < last - 6 || y < 180) header.classList.remove('is-compact');
-        last = y; ticking = false;
+        ticking = false;
       });
     }, { passive: true });
   }
