@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-23",
+  "updated": "2026-11-24",
   "journals": {
     "kr": {
       "name": "오몽 라이프 & AI 연구소",
@@ -10,6 +10,20 @@
       "blurb": "생활 정보와 1인 제작, AI 영상 외주를 직접 해보고 남긴 기록. 겨울철 습도처럼 계절마다 반복되는 질문과, 스마트폰 하나로 찍고 편집하는 순서를 숫자와 기준으로 정리합니다.",
       "blurb_en": "A Korean-language journal on household decisions, one-person production and AI video commissions, written from work actually done.",
       "posts": [
+        {
+          "title": "4,700을 지킨 건 지수뿐이었다",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/kospi-4700-index-vs-my-account/",
+          "date": "2026-11-24",
+          "category": "시사 4컷",
+          "excerpt": "코스피는 3.31% 빠진 4,708.54로 마감하며 4,700선을 지켰다. 그 선을 지킨 돈이 어디서 왔는지, 지수 방어와 내 계좌 사이의 거리를 숫자로 정리했다."
+        },
+        {
+          "title": "겨울 결로·곰팡이, 습도보다 '벽 온도'부터 — 이슬점표로 위험 구간 계산하기",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/winter-condensation-mold-dew-point/",
+          "date": "2026-11-24",
+          "category": "생활 정보",
+          "excerpt": "같은 습도 50%라도 어떤 집은 창틀이 젖고 어떤 집은 멀쩡하다. 결로를 가르는 건 공기가 아니라 가장 차가운 벽면의 온도다. 이슬점표로 우리 집 위험 구간을 먼저 계산하는 방법."
+        },
         {
           "title": "96만 원 팔아 63만 원 받았다",
           "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/delivery-app-fee-net-settlement/",
@@ -144,7 +158,7 @@
           "excerpt": "난방을 켜면 방 안 습도는 조용히 30% 아래로 떨어진다. 40~60%를 지키는 방법, 가습기 세 방식의 차이, 핫팩을 쓸 때 지켜야 할 선을 정리했다."
         }
       ],
-      "count": 19,
+      "count": 21,
       "categories": [
         "생활 정보",
         "크리에이터 장비",
@@ -161,6 +175,13 @@
       "blurb": "Field notes on AI short-form series, music-video pipelines, speech audio and single-file tools. The order of operations, the levels in dB, and the stage that broke first.",
       "blurb_ko": "AI 숏폼 시리즈와 뮤직비디오 파이프라인, 음성 오디오, 단일 파일 도구에 대한 영문 실무 기록.",
       "posts": [
+        {
+          "title": "One Vertical Ad, Two Languages: Localising Captions and Voiceover Without Re-Cutting the Picture",
+          "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/localise-vertical-ad-captions-voiceover/",
+          "date": "2026-11-24",
+          "category": "Short-Form Production",
+          "excerpt": "A client approves the Korean cut and then asks for English. The picture should not move. A per-line sheet, a reading-speed budget for each language and a delivery package built around a silent master keep it that way."
+        },
         {
           "title": "Activation in Seven Days: The One Event, the Funnel Maths and the Churn Interview",
           "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/saas-first-seven-days-activation/",
@@ -260,10 +281,10 @@
           "excerpt": "One HTML file, no build step, no server, no login. For a solo creator selling small tools, that constraint is not a limitation — it is the whole product advantage."
         }
       ],
-      "count": 14,
+      "count": 15,
       "categories": [
-        "Product",
         "Short-Form Production",
+        "Product",
         "Automation",
         "Music Video",
         "Audio",
