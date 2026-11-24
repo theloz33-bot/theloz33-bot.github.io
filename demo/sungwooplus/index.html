@@ -1,0 +1,1907 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<!--
+  ================================================================
+  성우플러스 공통 레이아웃  |  /layout/basic/layout.html
+  ----------------------------------------------------------------
+  [붙여넣기 전 꼭 확인]
+  1) 기존 layout.html의 head 안에 있던 "css·js 불러오기 선언 줄"은
+     지우지 말고 이 주석 바로 아래로 옮겨 두세요.
+     (상품목록·상세·장바구니 같은 하위 페이지 기능이 그 파일을 씁니다)
+  2) 성우플러스 커스텀 파일(custom.css / custom.js)은 맨 마지막에
+     불러와야 기본 스타일보다 우선 적용됩니다. 아래 두 줄은 그대로 두세요.
+  3) 모든 커스텀 클래스는 swp- 로 시작해서 카페24 기본 클래스
+     (xans-, ec-, displaynone 등)와 겹치지 않습니다.
+  ================================================================
+-->
+<title>성우플러스 스킨 미리보기</title>
+<style>
+@charset "utf-8";
+/* ==================================================================
+   성우플러스 custom.css  |  /css/custom.css
+   ------------------------------------------------------------------
+   · 모든 선택자는 swp- 접두사로 범위를 묶어 카페24 기본 CSS와 겹치지 않게 작성
+   · 색·간격은 아래 변수만 바꾸면 전체에 반영됩니다
+   · 브레이크포인트: 모바일 기본 → 768px(태블릿) → 1024px(PC)
+   ================================================================== */
+
+/* ---------- 1. 디자인 토큰 ---------- */
+.swp {
+  --swp-ink: #0D5446;        /* 박스 인쇄 잉크 그린 — 메인 */
+  --swp-ink-deep: #083A30;
+  --swp-ink-soft: #E4F0EC;
+  --swp-kraft: #C89B66;      /* 크라프트 골판지 — 보조 */
+  --swp-kraft-pale: #F4EADC;
+  --swp-kraft-deep: #74502B;
+  --swp-signal: #D63A24;     /* 특가·할인 */
+  --swp-signal-soft: #FCEBE7;
+  --swp-paper: #FFFFFF;
+  --swp-surface: #F2F4F2;
+  --swp-line: #DCE2DF;
+  --swp-line-strong: #C3CCC7;
+  --swp-text: #17201D;
+  --swp-sub: #56625D;
+  --swp-mute: #85908B;
+
+  --swp-r-lg: 18px;
+  --swp-r-md: 12px;
+  --swp-r-sm: 8px;
+  --swp-r-xs: 4px;
+
+  --swp-wrap: 1280px;
+  --swp-gutter: 16px;
+  --swp-head-h: 56px;
+
+  --swp-font: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont,
+              "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "맑은 고딕", sans-serif;
+}
+@media (min-width: 768px)  { .swp { --swp-gutter: 24px; } }
+@media (min-width: 1024px) { .swp { --swp-gutter: 32px; --swp-head-h: 76px; } }
+
+/* ---------- 2. 기본 (swp 요소에만 적용) ---------- */
+body.swp-body {
+  margin: 0;
+  background: var(--swp-paper);
+  font-family: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont,
+               "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "맑은 고딕", sans-serif;
+  -webkit-text-size-adjust: 100%;
+  word-break: keep-all;
+}
+html.swp-lock, html.swp-lock body { overflow: hidden; }
+
+.swp { color: var(--swp-text); font-family: var(--swp-font); font-size: 14px; line-height: 1.5; }
+.swp [class*="swp-"],
+.swp [class*="swp-"]::before,
+.swp [class*="swp-"]::after { box-sizing: border-box; }
+
+/* 리셋은 :where()로 점수를 낮춰, 아래 컴포넌트 규칙이 항상 이기도록 함
+   (카페24 모듈 요소는 class 앞에 xans- 클래스가 붙을 수 있어 *= 로 매칭) */
+:where(.swp) ul[class*="swp-"], :where(.swp) ol[class*="swp-"], .swp .swp-drawer__cate ul { list-style: none; margin: 0; padding: 0; }
+:where(.swp) a[class*="swp-"], :where(.swp) [class*="swp-"] a { color: inherit; text-decoration: none; }
+:where(.swp) button[class*="swp-"] { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+:where(.swp) [class*="swp-"] svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+:where(.swp) [class*="swp-"] img { max-width: 100%; border: 0; vertical-align: top; }
+/* 기존 스킨의 메인진열 CSS(float, width 등)가 남아 있어도 카드 배치가 깨지지 않게 */
+.swp .swp-module li.swp-card { float: none; width: auto; height: auto; margin: 0; border: 0; background: none; }
+.swp .swp-module li.swp-spec { float: none; width: auto; margin: 0; padding: 0; border: 0; background: none; }
+.swp .swp-module ul.swp-grid, .swp .swp-module ul.swp-track, .swp .swp-module ul.swp-card__spec { width: auto; margin-top: 0; margin-bottom: 0; }
+.swp [hidden] { display: none !important; }
+
+.swp .swp-inner { width: 100%; max-width: var(--swp-wrap); margin: 0 auto; padding-left: var(--swp-gutter); padding-right: var(--swp-gutter); }
+.swp .swp-sr { position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.swp .swp-num { font-variant-numeric: tabular-nums; }
+.swp .swp-center { margin-top: 24px; text-align: center; }
+
+.swp :focus-visible { outline: 2px solid var(--swp-ink); outline-offset: 2px; }
+.swp .swp-strip :focus-visible, .swp .swp-hero__main :focus-visible { outline-color: #fff; }
+
+.swp .swp-skip { position: absolute; left: 8px; top: -60px; z-index: 2000; padding: 10px 14px; background: var(--swp-ink-deep); color: #fff; border-radius: var(--swp-r-sm); font-weight: 700; }
+.swp .swp-skip:focus { top: 8px; }
+
+/* 메인 페이지에서만 기존 스킨의 #contents 폭 제한 해제 */
+#container:has(.swp-home), #contents:has(.swp-home) { width: auto !important; max-width: none !important; margin: 0 !important; padding: 0 !important; float: none !important; }
+#swpMain:focus { outline: none; }
+
+@media (max-width: 767px) { .swp .swp-hide-mo { display: none !important; } }
+
+/* ---------- 3. 버튼 ---------- */
+.swp .swp-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 44px; padding: 0 18px; border-radius: var(--swp-r-sm);
+  font-size: 14px; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap;
+  border: 1px solid transparent; transition: background-color .15s, border-color .15s, color .15s;
+}
+.swp .swp-btn--sm { min-height: 34px; padding: 0 12px; font-size: 13px; }
+.swp .swp-btn--block { display: flex; width: 100%; }
+.swp .swp-btn--ink { background: var(--swp-ink); color: #fff; }
+.swp .swp-btn--ink:hover { background: var(--swp-ink-deep); }
+.swp .swp-btn--line { background: #fff; color: var(--swp-text); border-color: var(--swp-line-strong); }
+.swp .swp-btn--line:hover { border-color: var(--swp-ink); color: var(--swp-ink); }
+.swp .swp-btn--kraft { background: var(--swp-kraft); color: #2B1C0C; }
+.swp .swp-btn--kraft:hover { background: #D6AC79; }
+.swp .swp-btn--ghost { background: transparent; color: #fff; border-color: rgba(255,255,255,.45); }
+.swp .swp-btn--ghost:hover { border-color: #fff; }
+
+.swp .swp-iconbtn { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: var(--swp-r-sm); }
+.swp .swp-iconbtn svg { width: 24px; height: 24px; }
+
+/* ---------- 4. 띠배너 ---------- */
+.swp .swp-strip { background: var(--swp-ink-deep); color: #EAF3EF; font-size: 13px; }
+.swp .swp-strip__inner { display: flex; align-items: center; height: 38px; gap: 8px; }
+.swp .swp-strip__msg { position: relative; flex: 1; height: 100%; margin: 0; overflow: hidden; text-align: center; }
+.swp .swp-strip__item { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateY(8px); transition: opacity .35s, transform .35s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.swp .swp-strip__item.is-on { opacity: 1; transform: none; }
+.swp .swp-strip__close { flex: 0 0 auto; width: 28px; height: 28px; padding: 6px; border-radius: 6px; opacity: .8; }
+.swp .swp-strip__close:hover { opacity: 1; background: rgba(255,255,255,.08); }
+
+/* ---------- 5. 유틸 (PC) ---------- */
+.swp .swp-util { display: none; }
+@media (min-width: 1024px) {
+  .swp .swp-util { display: block; border-bottom: 1px solid var(--swp-line); font-size: 12px; color: var(--swp-sub); }
+  .swp .swp-util__list { display: flex; justify-content: flex-end; gap: 18px; height: 34px; align-items: center; }
+  .swp .swp-util__list a:hover { color: var(--swp-ink); }
+}
+
+/* ---------- 6. 헤더 ---------- */
+.swp .swp-header { position: sticky; top: 0; z-index: 900; background: #fff; border-bottom: 1px solid var(--swp-line); }
+.swp .swp-header.is-scrolled { box-shadow: 0 1px 0 var(--swp-line), 0 6px 16px rgba(8,58,48,.06); }
+
+.swp .swp-head__inner {
+  display: grid; align-items: center; column-gap: 8px; row-gap: 8px;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: "menu logo account" "search search search";
+  padding-top: 8px; padding-bottom: 10px;
+}
+.swp .swp-head__menu { grid-area: menu; margin-left: -8px; }
+.swp .swp-logo { grid-area: logo; margin: 0; font-size: inherit; line-height: 1; }
+.swp .swp-head__search { grid-area: search; }
+.swp .swp-account { grid-area: account; }
+
+.swp .swp-header.is-compact .swp-head__search { display: none; }
+
+@media (min-width: 1024px) {
+  .swp .swp-head__inner { grid-template-columns: auto minmax(0, 560px) 1fr; grid-template-areas: "logo search account"; column-gap: 40px; height: var(--swp-head-h); padding-top: 0; padding-bottom: 0; }
+  .swp .swp-head__menu { display: none; }
+  .swp .swp-header.is-compact .swp-head__search { display: flex; }
+}
+
+/* 로고 */
+.swp .swp-logo a { display: inline-flex; align-items: center; gap: 8px; }
+.swp .swp-logo__mark { width: 30px; height: 30px; flex: 0 0 auto; }
+.swp .swp-logo__mark svg rect { fill: var(--swp-ink); stroke: none; }
+.swp .swp-logo__mark svg path { stroke: #fff; stroke-width: 3.4; stroke-linecap: butt; }
+.swp .swp-logo__word { font-size: 20px; font-weight: 800; letter-spacing: -0.045em; color: var(--swp-ink-deep); }
+@media (min-width: 1024px) { .swp .swp-logo__mark { width: 34px; height: 34px; } .swp .swp-logo__word { font-size: 23px; } }
+
+/* 검색 */
+.swp .swp-search { display: flex; align-items: stretch; height: 44px; border: 2px solid var(--swp-ink); border-radius: var(--swp-r-md); background: #fff; overflow: hidden; }
+.swp .swp-search .swp-search__input {
+  flex: 1; min-width: 0; height: auto; margin: 0; padding: 0 14px; border: 0; outline: 0; background: transparent;
+  font: inherit; font-size: 15px; color: var(--swp-text); -webkit-appearance: none; appearance: none; box-shadow: none;
+}
+.swp .swp-search .swp-search__input::placeholder { color: var(--swp-mute); }
+.swp .swp-search .swp-search__input::-webkit-search-cancel-button { -webkit-appearance: none; }
+.swp .swp-search:focus-within { box-shadow: 0 0 0 3px var(--swp-ink-soft); }
+.swp .swp-search__btn { width: 48px; padding: 0 12px !important; color: var(--swp-ink) !important; }
+@media (min-width: 1024px) { .swp .swp-search { height: 48px; } }
+
+/* 계정·장바구니 */
+.swp .swp-account { display: flex; align-items: center; justify-content: flex-end; gap: 2px; }
+.swp .swp-account__state { display: flex; align-items: center; gap: 2px; }
+.swp .swp-account__link { position: relative; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; min-width: 40px; height: 44px; padding: 0 4px; color: var(--swp-text); }
+.swp .swp-account__link svg { width: 24px; height: 24px; }
+.swp .swp-account__label { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.swp .swp-account__link:hover { color: var(--swp-ink); }
+@media (min-width: 1024px) {
+  .swp .swp-account { gap: 10px; }
+  .swp .swp-account__link { min-width: 52px; height: 52px; gap: 3px; }
+  .swp .swp-account__label { position: static !important; width: auto; height: auto; clip: auto; font-size: 11.5px; color: var(--swp-sub); }
+}
+.swp .swp-cart__count {
+  position: absolute; top: 3px; right: 0; min-width: 18px; height: 18px; padding: 0 5px;
+  border-radius: 9px; background: var(--swp-signal); color: #fff;
+  font-size: 11px; font-weight: 800; font-style: normal; line-height: 18px; text-align: center; font-variant-numeric: tabular-nums;
+}
+.swp .swp-cart__count.is-zero { display: none; }
+@media (min-width: 1024px) { .swp .swp-cart__count { top: 2px; right: 6px; } }
+
+/* 카테고리 바 */
+.swp .swp-gnb { border-top: 1px solid var(--swp-line); }
+.swp .swp-gnb__inner { display: flex; align-items: center; gap: 4px; height: 46px; }
+.swp .swp-gnb__all { display: none; }
+.swp .swp-gnb__list { display: flex; align-items: center; gap: 2px; height: 100%; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; margin: 0 calc(var(--swp-gutter) * -1); padding: 0 var(--swp-gutter); }
+.swp .swp-gnb__list::-webkit-scrollbar { display: none; }
+.swp .swp-gnb__list li { flex: 0 0 auto; height: 100%; }
+.swp .swp-gnb__list a { position: relative; display: flex; align-items: center; height: 100%; padding: 0 10px; font-size: 15px; font-weight: 600; letter-spacing: -0.02em; color: var(--swp-text); white-space: nowrap; }
+.swp .swp-gnb__list a::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 3px; border-radius: 3px 3px 0 0; background: var(--swp-ink); transform: scaleX(0); transition: transform .2s; }
+.swp .swp-gnb__list a:hover, .swp .swp-gnb__list a.is-current { color: var(--swp-ink); }
+.swp .swp-gnb__list a:hover::after, .swp .swp-gnb__list a.is-current::after { transform: scaleX(1); }
+.swp .swp-gnb__new { color: var(--swp-signal) !important; }
+.swp .swp-gnb__new::before { content: ""; width: 5px; height: 5px; margin-right: 5px; border-radius: 50%; background: var(--swp-signal); }
+.swp .swp-gnb__new::after { background: var(--swp-signal) !important; }
+@media (min-width: 1024px) {
+  .swp .swp-gnb__inner { height: 52px; gap: 18px; }
+  .swp .swp-gnb__all { display: inline-flex; align-items: center; gap: 8px; height: 100%; padding-right: 22px; border-right: 1px solid var(--swp-line); font-size: 15px; font-weight: 800; color: var(--swp-ink-deep); }
+  .swp .swp-gnb__all svg { width: 22px; height: 22px; }
+  .swp .swp-gnb__list { gap: 10px; margin: 0; padding: 0; overflow: visible; }
+  .swp .swp-gnb__list a { font-size: 16px; padding: 0 12px; }
+}
+
+/* ---------- 7. 레이어 공통 (드로어·옵션 시트) ---------- */
+.swp .swp-layer { position: fixed; inset: 0; z-index: 1200; visibility: hidden; transition: visibility 0s linear .3s; }
+.swp .swp-layer.is-open { visibility: visible; transition-delay: 0s; }
+.swp .swp-layer__dim { position: absolute; inset: 0; background: rgba(6,28,23,.5); opacity: 0; transition: opacity .3s; }
+.swp .swp-layer.is-open .swp-layer__dim { opacity: 1; }
+
+/* 드로어 */
+.swp .swp-drawer__panel { position: absolute; top: 0; bottom: 0; left: 0; width: min(86vw, 360px); display: flex; flex-direction: column; background: #fff; transform: translateX(-100%); transition: transform .3s cubic-bezier(.2,.7,.2,1); overflow-y: auto; }
+.swp .swp-drawer.is-open .swp-drawer__panel { transform: none; }
+.swp .swp-drawer__top { display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 8px 0 20px; border-bottom: 1px solid var(--swp-line); font-size: 17px; font-weight: 800; }
+.swp .swp-drawer__auth { padding: 16px 20px; background: var(--swp-surface); }
+.swp .swp-drawer__authrow { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.swp .swp-drawer__cate { padding: 8px 0; }
+.swp .swp-drawer__cate li a { display: flex; align-items: center; justify-content: space-between; min-height: 52px; padding: 0 20px; font-size: 16px; font-weight: 600; border-bottom: 1px solid var(--swp-surface); color: var(--swp-text); }
+.swp .swp-drawer__cate li a::after { content: ""; width: 8px; height: 8px; border-top: 1.8px solid var(--swp-mute); border-right: 1.8px solid var(--swp-mute); transform: rotate(45deg); }
+.swp .swp-drawer__cate li a:hover { color: var(--swp-ink); background: var(--swp-ink-soft); }
+.swp .swp-drawer__cs { margin-top: auto; padding: 18px 20px 28px; font-size: 13px; color: var(--swp-sub); }
+.swp .swp-drawer__cs p { margin: 0 0 4px; }
+.swp .swp-drawer__cs a { color: var(--swp-ink); font-weight: 800; }
+
+/* 옵션 미리보기 시트 */
+.swp .swp-sheet__panel { position: absolute; left: 0; right: 0; bottom: 0; max-height: 82vh; display: flex; flex-direction: column; background: #fff; border-radius: var(--swp-r-lg) var(--swp-r-lg) 0 0; transform: translateY(100%); transition: transform .3s cubic-bezier(.2,.7,.2,1); padding-bottom: env(safe-area-inset-bottom); }
+.swp .swp-sheet.is-open .swp-sheet__panel { transform: none; }
+@media (min-width: 768px) {
+  .swp .swp-sheet__panel { left: 50%; top: 50%; bottom: auto; width: 460px; max-height: 80vh; border-radius: var(--swp-r-lg); transform: translate(-50%, -46%); opacity: 0; transition: transform .25s, opacity .25s; }
+  .swp .swp-sheet.is-open .swp-sheet__panel { transform: translate(-50%, -50%); opacity: 1; }
+}
+.swp .swp-sheet__head { display: flex; align-items: center; justify-content: space-between; padding: 14px 10px 10px 20px; font-size: 17px; font-weight: 800; }
+.swp .swp-sheet__body { flex: 1; overflow-y: auto; padding: 0 20px 16px; }
+.swp .swp-sheet__foot { padding: 12px 20px 16px; border-top: 1px solid var(--swp-line); }
+.swp .swp-sheet__name { margin: 0 0 14px; font-size: 15px; font-weight: 700; line-height: 1.45; }
+.swp .swp-sheet__facts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 0 18px; }
+.swp .swp-sheet__facts div { padding: 10px 12px; border-radius: var(--swp-r-sm); background: var(--swp-surface); }
+.swp .swp-sheet__facts dt { font-size: 12px; color: var(--swp-sub); }
+.swp .swp-sheet__facts dd { margin: 2px 0 0; font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.swp .swp-sheet__group { margin-bottom: 14px; }
+.swp .swp-sheet__gt { margin: 0 0 8px; font-size: 13px; font-weight: 700; color: var(--swp-sub); }
+.swp .swp-sheet__opts { display: flex; flex-wrap: wrap; gap: 6px; }
+.swp .swp-sheet__opts li { padding: 8px 12px; border: 1px solid var(--swp-line-strong); border-radius: var(--swp-r-sm); font-size: 14px; background: #fff; }
+.swp .swp-sheet__msg { margin: 0; padding: 14px; border-radius: var(--swp-r-sm); background: var(--swp-surface); font-size: 13px; color: var(--swp-sub); }
+.swp .swp-sheet__loading { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--swp-sub); }
+.swp .swp-sheet__loading::before { content: ""; width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--swp-line); border-top-color: var(--swp-ink); animation: swp-spin .8s linear infinite; }
+@keyframes swp-spin { to { transform: rotate(360deg); } }
+
+/* 토스트 */
+.swp .swp-toast { position: fixed; left: 50%; bottom: 96px; z-index: 1300; max-width: calc(100vw - 32px); padding: 12px 18px; border-radius: var(--swp-r-md); background: var(--swp-ink-deep); color: #fff; font-size: 14px; font-weight: 600; transform: translate(-50%, 12px); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; }
+.swp .swp-toast.is-on { opacity: 1; transform: translate(-50%, 0); }
+
+/* ---------- 8. 히어로 ---------- */
+.swp .swp-hero { padding: 14px 0 8px; }
+.swp .swp-hero__grid { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
+.swp .swp-hero__main { grid-column: 1 / -1; position: relative; display: grid; min-height: 420px; border-radius: var(--swp-r-lg); background: var(--swp-ink); color: #fff; overflow: hidden; isolation: isolate; }
+.swp .swp-hero__main::before { /* 골판지 결 */
+  content: ""; position: absolute; inset: 0; z-index: -1; opacity: .07;
+  background: repeating-linear-gradient(90deg, #fff 0 1px, transparent 1px 7px);
+}
+.swp .swp-hero__slide { grid-area: 1 / 1; display: flex; flex-direction: column; padding: 26px 22px 24px; opacity: 0; visibility: hidden; transition: opacity .5s, visibility 0s linear .5s; }
+.swp .swp-hero__slide.is-on { opacity: 1; visibility: visible; transition-delay: 0s; }
+.swp .swp-hero__copy { position: relative; z-index: 2; max-width: 30em; }
+.swp .swp-hero__chip { display: inline-block; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.12); font-size: 12.5px; font-weight: 700; color: #DDEDE7; }
+.swp .swp-hero__title { margin: 14px 0 10px; font-size: 32px; font-weight: 800; line-height: 1.16; letter-spacing: -0.05em; color: #fff; }
+.swp .swp-hero__desc { margin: 0; max-width: 26em; font-size: 14.5px; line-height: 1.6; color: #CFE3DC; }
+.swp .swp-hero__cta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.swp .swp-hero__art { position: relative; z-index: 1; flex: 1; min-height: 150px; margin-top: 8px; }
+
+/* 1번 슬라이드: 박스 3개 — "3박스부터" */
+.swp .swp-hero__floor { position: absolute; left: 6%; right: 6%; bottom: 0; height: 2px; background: rgba(255,255,255,.25); border-radius: 2px; }
+.swp .swp-box { position: absolute; bottom: 2px; width: 104px; height: 76px; border-radius: 6px; background: var(--swp-kraft); box-shadow: inset 0 -8px 0 rgba(84,52,20,.18), inset 0 0 0 1px rgba(84,52,20,.2); }
+.swp .swp-box::before { /* 테이프 */ content: ""; position: absolute; left: 50%; top: 0; width: 22px; height: 46%; transform: translateX(-50%); background: #E6C9A0; box-shadow: inset 0 0 0 1px rgba(84,52,20,.12); }
+.swp .swp-box i { position: absolute; left: 10px; bottom: 14px; display: flex; align-items: center; justify-content: center; width: 26px; height: 22px; border-radius: 3px; background: #fff; color: var(--swp-ink-deep); font-size: 14px; font-weight: 800; font-style: normal; }
+.swp .swp-box--1 { right: calc(50% + 2px); }
+.swp .swp-box--2 { left: calc(50% - 0px); }
+.swp .swp-box--3 { bottom: 80px; left: calc(50% - 50px); transform: rotate(-5deg); }
+.swp .swp-hero__slide.is-on .swp-box { animation: swp-drop .55s cubic-bezier(.3,1.4,.5,1) both; }
+.swp .swp-hero__slide.is-on .swp-box--2 { animation-delay: .12s; }
+.swp .swp-hero__slide.is-on .swp-box--3 { animation-name: swp-drop-tilt; animation-delay: .26s; }
+@keyframes swp-drop { from { transform: translateY(-40px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes swp-drop-tilt { from { transform: translateY(-50px) rotate(-12deg); opacity: 0; } to { transform: rotate(-5deg); opacity: 1; } }
+
+/* 2번 슬라이드: 송장 붙은 박스 */
+.swp .swp-parcel { position: absolute; bottom: 2px; left: 50%; width: 170px; height: 118px; margin-left: -85px; border-radius: 7px; background: var(--swp-kraft); box-shadow: inset 0 -10px 0 rgba(84,52,20,.18), inset 0 0 0 1px rgba(84,52,20,.2); }
+.swp .swp-parcel::before { content: ""; position: absolute; left: 0; right: 0; top: 34px; height: 18px; background: #E6C9A0; }
+.swp .swp-parcel__label { position: absolute; right: 14px; bottom: 18px; width: 82px; height: 58px; padding: 8px; border-radius: 3px; background: #fff; transform: rotate(3deg); display: flex; flex-direction: column; gap: 5px; }
+.swp .swp-parcel__label b { display: block; height: 4px; border-radius: 2px; background: #C9D3CF; }
+.swp .swp-parcel__label b:nth-child(1) { width: 70%; background: var(--swp-ink); }
+.swp .swp-parcel__label b:nth-child(3) { width: 55%; }
+.swp .swp-parcel__label s { display: block; height: 12px; margin-top: auto; background: repeating-linear-gradient(90deg, #17201D 0 2px, transparent 2px 4px, #17201D 4px 5px, transparent 5px 8px); }
+
+.swp .swp-hero__dots { position: absolute; left: 22px; bottom: 18px; z-index: 3; display: flex; gap: 6px; }
+.swp .swp-hero__dot { width: 8px; height: 8px; border-radius: 4px; background: rgba(255,255,255,.35) !important; transition: width .25s, background-color .25s; }
+.swp .swp-hero__dot[aria-current="true"] { width: 24px; background: #fff !important; }
+
+.swp .swp-hero__side { display: flex; flex-direction: column; gap: 6px; padding: 16px; border-radius: var(--swp-r-lg); min-height: 168px; transition: transform .2s; }
+.swp .swp-hero__side:hover { transform: translateY(-2px); }
+.swp .swp-hero__side--join { background: var(--swp-kraft-pale); color: #3A2812; box-shadow: inset 0 0 0 1px #E8D6BE; }
+.swp .swp-hero__side--quote { background: var(--swp-surface); box-shadow: inset 0 0 0 1px var(--swp-line); }
+.swp .swp-hero__side-t { font-size: 12.5px; font-weight: 700; color: var(--swp-kraft-deep); }
+.swp .swp-hero__side--quote .swp-hero__side-t { color: var(--swp-ink); }
+.swp .swp-hero__side-h { font-size: 16px; font-weight: 800; line-height: 1.35; letter-spacing: -0.03em; }
+.swp .swp-hero__side-d { display: none; font-size: 13px; line-height: 1.55; color: var(--swp-sub); }
+.swp .swp-hero__side--join .swp-hero__side-d { color: #6B5638; }
+.swp .swp-hero__side-cta { margin-top: auto; align-self: flex-start; padding: 6px 12px; border-radius: 999px; background: #fff; font-size: 12.5px; font-weight: 800; box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); }
+
+@media (min-width: 768px) {
+  .swp .swp-hero__main { min-height: 380px; }
+  .swp .swp-hero__slide { flex-direction: row; align-items: center; padding: 40px; }
+  .swp .swp-hero__title { font-size: 40px; }
+  .swp .swp-hero__art { align-self: stretch; margin: 0 0 -40px; min-height: 0; }
+  .swp .swp-hero__dots { left: 40px; bottom: 26px; }
+  .swp .swp-hero__side { padding: 22px; }
+  .swp .swp-hero__side-d { display: block; }
+}
+@media (min-width: 1024px) {
+  .swp .swp-hero { padding-top: 20px; }
+  .swp .swp-hero__grid { grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr); grid-template-rows: 1fr 1fr; gap: 14px; }
+  .swp .swp-hero__main { grid-column: 1; grid-row: 1 / span 2; min-height: 440px; }
+  .swp .swp-hero__slide { padding: 52px 56px; }
+  .swp .swp-hero__title { font-size: 50px; }
+  .swp .swp-hero__desc { font-size: 16px; }
+  .swp .swp-hero__art { margin-bottom: -52px; }
+  .swp .swp-hero__dots { left: 56px; bottom: 34px; }
+  .swp .swp-box { width: 132px; height: 96px; }
+  .swp .swp-box--3 { bottom: 100px; left: calc(50% - 64px); }
+  .swp .swp-box i { width: 30px; height: 26px; font-size: 16px; }
+  .swp .swp-parcel { width: 220px; height: 150px; margin-left: -110px; }
+  .swp .swp-parcel::before { top: 44px; height: 22px; }
+  .swp .swp-parcel__label { width: 104px; height: 72px; }
+  .swp .swp-hero__side { min-height: 0; padding: 24px 26px; }
+  .swp .swp-hero__side-h { font-size: 19px; }
+}
+
+/* 주문 순서 */
+.swp .swp-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 10px; border-radius: var(--swp-r-md); background: var(--swp-line); overflow: hidden; box-shadow: 0 0 0 1px var(--swp-line); counter-reset: none; }
+.swp .swp-steps__item { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 10px; align-items: center; padding: 12px 14px; background: #fff; }
+.swp .swp-steps__no { grid-row: 1 / span 2; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--swp-ink-soft); color: var(--swp-ink); font-size: 13px; font-weight: 800; }
+.swp .swp-steps__t { font-size: 14px; font-weight: 700; letter-spacing: -0.02em; }
+.swp .swp-steps__d { font-size: 12px; color: var(--swp-sub); }
+@media (min-width: 1024px) {
+  .swp .swp-steps { grid-template-columns: repeat(4, 1fr); margin-top: 14px; }
+  .swp .swp-steps__item { padding: 16px 22px; }
+}
+
+/* ---------- 9. 섹션 공통 ---------- */
+.swp .swp-sec { padding: 36px 0 8px; }
+.swp .swp-sec__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.swp .swp-sec__title { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.25; color: var(--swp-text); }
+.swp .swp-sec__sub { margin: 4px 0 0; font-size: 13px; color: var(--swp-sub); }
+.swp .swp-sec__more { flex: 0 0 auto; font-size: 13px; font-weight: 700; color: var(--swp-ink); border-bottom: 1px solid currentColor; padding-bottom: 1px; }
+@media (min-width: 1024px) {
+  .swp .swp-sec { padding-top: 64px; }
+  .swp .swp-sec__head { margin-bottom: 22px; }
+  .swp .swp-sec__title { font-size: 28px; }
+  .swp .swp-sec__sub { font-size: 14.5px; }
+}
+
+/* ---------- 10. 상품 카드 ---------- */
+.swp .swp-card { position: relative; display: flex; flex-direction: column; min-width: 0; }
+.swp .swp-card__thumb { position: relative; aspect-ratio: 1 / 1; border-radius: var(--swp-r-md); background: var(--swp-surface); overflow: hidden; }
+.swp .swp-card__thumb::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(23,32,29,.06); pointer-events: none; }
+.swp .swp-card__img, .swp .swp-card__img img { display: block; width: 100%; height: 100%; }
+.swp .swp-card__img img { object-fit: cover; transition: transform .35s; }
+.swp .swp-card:hover .swp-card__img img { transform: scale(1.03); }
+.swp .swp-card__icons { position: absolute; top: 8px; left: 8px; z-index: 2; display: flex; flex-wrap: wrap; gap: 3px; pointer-events: none; }
+.swp .swp-card__icons img { height: 18px; width: auto; }
+.swp .swp-card__native { position: absolute; top: 6px; right: 6px; z-index: 2; display: flex; gap: 4px; }
+.swp .swp-card__native img { width: 30px; height: 30px; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.12); cursor: pointer; }
+
+/* 박스 라벨 태그 (custom.js가 생성) — 행택 모양
+   기본: 본문 안 한 줄 / 최신 브라우저: 썸네일 왼쪽 아래에 겹쳐 표시 */
+.swp .swp-tag {
+  position: relative; align-self: flex-start; display: inline-flex; align-items: stretch; max-width: 100%; margin: 3px 0 1px;
+  padding-left: 13px; border-radius: 3px; background: var(--swp-kraft-pale); color: var(--swp-kraft-deep);
+  box-shadow: 0 0 0 1px var(--swp-kraft); font-size: 11.5px; font-weight: 800; letter-spacing: -0.02em; line-height: 1;
+}
+.swp .swp-tag::before { content: ""; position: absolute; left: 4px; top: 50%; width: 5px; height: 5px; margin-top: -2.5px; border-radius: 50%; background: #fff; box-shadow: inset 0 0 0 1px var(--swp-kraft); }
+.swp .swp-tag__part { display: flex; align-items: center; padding: 6px 7px 6px 0; white-space: nowrap; }
+.swp .swp-tag__part + .swp-tag__part { padding-left: 7px; border-left: 1px dashed var(--swp-kraft); }
+@supports (width: 1cqw) {
+  .swp .swp-card { container-type: inline-size; }
+  .swp .swp-card .swp-tag { position: absolute; z-index: 2; left: 8px; top: calc(100cqw - 8px); max-width: calc(100cqw - 16px); margin: 0; transform: translateY(-100%); }
+  /* 카드가 좁으면 라벨을 두 줄로 */
+  @container (max-width: 180px) {
+    .swp .swp-tag { flex-direction: column; }
+    .swp .swp-tag__part { padding: 5px 8px 5px 0; }
+    .swp .swp-tag__part + .swp-tag__part { padding-left: 0; border-left: 0; border-top: 1px dashed var(--swp-kraft); }
+  }
+}
+
+.swp .swp-card__body { display: flex; flex-direction: column; gap: 4px; padding: 10px 2px 0; min-width: 0; }
+.swp .swp-card__name { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 14px; font-weight: 600; line-height: 1.42; letter-spacing: -0.02em; color: var(--swp-text); }
+.swp .swp-card__name * { font-size: inherit !important; color: inherit !important; font-weight: inherit !important; line-height: inherit !important; }
+.swp .swp-card__name a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* 카페24 '상품 정보 표시 설정' 항목 (product_ListItem) — 관리자 인라인 스타일 무시 */
+.swp .swp-card__spec { display: flex; flex-direction: column; gap: 1px; margin-top: 2px !important; }
+.swp .swp-spec { display: flex; align-items: baseline; gap: 6px; font-size: 12.5px; color: var(--swp-sub); min-width: 0; }
+.swp .swp-spec * { font-size: inherit !important; color: inherit !important; font-weight: inherit !important; text-decoration: inherit !important; font-family: inherit !important; }
+.swp .swp-spec__t { flex: 0 0 auto; font-weight: 500; color: var(--swp-mute); }
+.swp .swp-spec__v { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.swp .swp-spec.is-used { display: none; }
+.swp .swp-spec.is-price { order: -1; font-size: 17px; font-weight: 800; color: var(--swp-text); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.swp .swp-spec.is-price .swp-spec__t { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.swp .swp-spec.is-consumer { order: -2; font-size: 12px; color: var(--swp-mute); }
+.swp .swp-spec.is-consumer .swp-spec__t { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.swp .swp-spec.is-consumer .swp-spec__v { text-decoration: line-through !important; }
+.swp .swp-rate { flex: 0 0 auto; color: var(--swp-signal); font-style: normal; font-weight: 800; }
+
+.swp .swp-unit { align-self: flex-start; display: inline-block; margin: 2px 0 0; padding: 3px 7px; border-radius: var(--swp-r-xs); background: var(--swp-ink-soft); color: var(--swp-ink); font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.swp .swp-opt { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-top: 4px; }
+.swp .swp-opt__chip { padding: 2px 6px; border-radius: var(--swp-r-xs); box-shadow: inset 0 0 0 1px var(--swp-line-strong); font-size: 11.5px; color: var(--swp-sub); white-space: nowrap; }
+.swp .swp-opt__btn { margin-left: 2px; padding: 4px 0 !important; font-size: 12px !important; font-weight: 700; color: var(--swp-ink) !important; text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- 11. MD's PICK 가로 슬라이드 ---------- */
+.swp .swp-arrows { display: none; gap: 6px; }
+.swp .swp-arrow { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 9px !important; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--swp-line-strong); background: #fff !important; transition: box-shadow .15s, opacity .15s; }
+.swp .swp-arrow:hover:not(:disabled) { box-shadow: inset 0 0 0 1.5px var(--swp-ink); color: var(--swp-ink) !important; }
+.swp .swp-arrow:disabled { opacity: .35; cursor: default; }
+@media (hover: hover) and (min-width: 768px) { .swp .swp-arrows { display: flex; } }
+.swp [data-swp-slider].is-static .swp-arrows, .swp [data-swp-slider].is-static .swp-progress { visibility: hidden; }
+
+.swp .swp-track {
+  display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 2 * 12px) / 2.25); gap: 12px;
+  overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 var(--swp-gutter); overscroll-behavior-x: contain;
+  margin: 0 calc(var(--swp-gutter) * -1) !important; padding: 0 var(--swp-gutter) 4px !important;
+  scrollbar-width: none; -webkit-overflow-scrolling: touch;
+}
+.swp .swp-track::-webkit-scrollbar { display: none; }
+.swp .swp-track > li { scroll-snap-align: start; }
+@media (min-width: 768px) { .swp .swp-track { grid-auto-columns: calc((100% - 3 * 14px) / 3.4); gap: 14px; } }
+@media (min-width: 1024px) { .swp .swp-track { grid-auto-columns: calc((100% - 4 * 18px) / 5); gap: 18px; margin: 0 !important; padding: 0 0 4px !important; scroll-padding: 0; } }
+
+.swp .swp-progress { position: relative; height: 3px; margin-top: 18px; border-radius: 3px; background: var(--swp-line); overflow: hidden; }
+.swp .swp-progress span { position: absolute; left: 0; top: 0; bottom: 0; width: 30%; border-radius: 3px; background: var(--swp-ink); transition: width .15s; }
+
+/* ---------- 12. 초특가 탭 ---------- */
+.swp .swp-deal .swp-sec__head { align-items: center; }
+.swp .swp-countdown { display: inline-flex; align-items: center; gap: 8px; margin: 0; padding: 7px 10px; border-radius: var(--swp-r-sm); background: var(--swp-signal-soft); color: var(--swp-signal); white-space: nowrap; }
+.swp .swp-countdown__t { font-size: 12px; font-weight: 700; }
+.swp .swp-countdown__v { font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.swp .swp-countdown__v b { font-weight: 800; }
+
+.swp .swp-tabs__list { display: flex; margin-bottom: 18px; border-bottom: 1px solid var(--swp-line); }
+.swp .swp-tabs__tab { position: relative; flex: 1; height: 48px; font-size: 15px !important; font-weight: 700 !important; color: var(--swp-mute) !important; letter-spacing: -0.02em; }
+.swp .swp-tabs__tab::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; background: var(--swp-text); transform: scaleX(0); transition: transform .2s; }
+.swp .swp-tabs__tab[aria-selected="true"] { color: var(--swp-text) !important; }
+.swp .swp-tabs__tab[aria-selected="true"]::after { transform: scaleX(1); }
+@media (min-width: 768px) { .swp .swp-tabs__tab { flex: 0 0 auto; padding: 0 22px !important; font-size: 16px !important; } }
+
+/* ---------- 13. 상품 그리드 + 1~4단 전환 ---------- */
+.swp .swp-grid { display: grid; grid-template-columns: repeat(var(--swp-cols, 2), minmax(0, 1fr)); gap: 22px 12px; }
+.swp .swp-grid[data-cols="1"] { --swp-cols: 1; gap: 0; }
+.swp .swp-grid[data-cols="2"] { --swp-cols: 2; }
+.swp .swp-grid[data-cols="3"] { --swp-cols: 3; gap: 20px 10px; }
+.swp .swp-grid[data-cols="4"] { --swp-cols: 4; }
+.swp .swp-grid--deal { --swp-cols: 2; }
+@media (min-width: 768px) {
+  .swp .swp-grid { gap: 28px 16px; }
+  .swp .swp-grid--deal { --swp-cols: 3; }
+}
+@media (min-width: 1024px) {
+  .swp .swp-grid { gap: 36px 20px; }
+  .swp .swp-grid--deal { --swp-cols: 4; }
+}
+@media (max-width: 767px) {
+  .swp .swp-grid[data-cols="3"], .swp .swp-grid[data-cols="4"] { --swp-cols: 2; }
+}
+
+/* 1단 목록형 */
+.swp .swp-grid[data-cols="1"] .swp-card { flex-direction: row; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--swp-line); }
+.swp .swp-grid[data-cols="1"] .swp-card:first-child { padding-top: 0; }
+.swp .swp-grid[data-cols="1"] .swp-card__thumb { flex: 0 0 112px; width: 112px; }
+.swp .swp-grid[data-cols="1"] .swp-card__body { flex: 1; padding-top: 2px; }
+.swp .swp-grid[data-cols="1"] .swp-card .swp-tag { position: relative; left: auto; top: auto; max-width: 100%; margin: 3px 0 1px; transform: none; }
+.swp .swp-grid[data-cols="1"] .swp-card__native { display: none; }
+@media (min-width: 768px) {
+  .swp .swp-grid[data-cols="1"] { grid-template-columns: 1fr 1fr; column-gap: 32px; }
+  .swp .swp-grid[data-cols="1"] .swp-card:nth-child(2) { padding-top: 0; }
+  .swp .swp-grid[data-cols="1"] .swp-card__thumb { flex-basis: 140px; width: 140px; }
+}
+
+/* 4단/3단 모바일 글자 조정 */
+@media (min-width: 1024px) {
+  .swp .swp-grid[data-cols="2"] .swp-card { flex-direction: row; gap: 20px; }
+  .swp .swp-grid[data-cols="2"] .swp-card__thumb { flex: 0 0 46%; }
+  .swp .swp-grid[data-cols="2"] .swp-card__body { padding-top: 8px; }
+  .swp .swp-grid[data-cols="2"] .swp-card__name { font-size: 16px; }
+  .swp .swp-grid[data-cols="2"] .swp-card .swp-tag { top: calc(46cqw - 8px); max-width: calc(46cqw - 16px); }
+}
+
+/* 진열 전환 버튼 */
+.swp .swp-view { display: flex; gap: 2px; padding: 3px; border-radius: var(--swp-r-sm); background: var(--swp-surface); }
+.swp .swp-view__btn { width: 34px; height: 32px; padding: 6px 7px !important; border-radius: 6px; color: var(--swp-mute) !important; }
+.swp .swp-view__btn[aria-pressed="true"] { background: #fff !important; color: var(--swp-ink) !important; box-shadow: 0 1px 3px rgba(8,58,48,.15); }
+.swp .swp-view__btn[data-cols="3"], .swp .swp-view__btn[data-cols="4"] { display: none; }
+@media (min-width: 768px)  { .swp .swp-view__btn[data-cols="3"] { display: block; } }
+@media (min-width: 1024px) { .swp .swp-view__btn[data-cols="4"] { display: block; } }
+
+/* ---------- 14. 포토후기 ---------- */
+.swp .swp-review { padding-bottom: 56px; }
+.swp .swp-review__list {
+  display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 12px) / 1.7); gap: 12px;
+  overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+  margin: 0 calc(var(--swp-gutter) * -1) !important; padding: 0 var(--swp-gutter) !important; scroll-padding: 0 var(--swp-gutter);
+}
+.swp .swp-review__list::-webkit-scrollbar { display: none; }
+.swp .swp-rv { scroll-snap-align: start; }
+.swp .swp-rv__link { display: flex; flex-direction: column; gap: 6px; height: 100%; }
+.swp .swp-rv__img { position: relative; display: block; aspect-ratio: 4 / 5; border-radius: var(--swp-r-md); background: var(--swp-surface); overflow: hidden; }
+.swp .swp-rv__img img { width: 100%; height: 100%; object-fit: cover; }
+.swp .swp-rv__stars { margin-top: 4px; font-size: 13px; letter-spacing: 1px; color: var(--swp-kraft); }
+.swp .swp-rv__text { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 13.5px; line-height: 1.5; color: var(--swp-text); }
+.swp .swp-rv__prd { font-size: 12px; color: var(--swp-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (min-width: 768px)  { .swp .swp-review__list { grid-auto-columns: calc((100% - 3 * 14px) / 3.3); gap: 14px; } }
+@media (min-width: 1024px) {
+  .swp .swp-review__list { grid-auto-flow: row; grid-template-columns: repeat(4, 1fr); gap: 20px; overflow: visible; margin: 0 !important; padding: 0 !important; }
+}
+.swp .swp-review__empty { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 24px; border-radius: var(--swp-r-lg); background: var(--swp-kraft-pale); box-shadow: inset 0 0 0 1px #E8D6BE; }
+.swp .swp-review__empty p { margin: 0; font-size: 15px; font-weight: 600; color: #3A2812; }
+@media (min-width: 768px) { .swp .swp-review__empty { flex-direction: row; align-items: center; justify-content: space-between; padding: 28px 32px; } }
+
+/* ---------- 15. 푸터 ---------- */
+.swp .swp-footer { margin-top: 24px; padding: 28px 0 120px; background: var(--swp-surface); border-top: 1px solid var(--swp-line); font-size: 13px; color: var(--swp-sub); }
+.swp .swp-footer__links { display: flex; flex-wrap: wrap; gap: 6px 18px; padding-bottom: 18px; margin-bottom: 22px; border-bottom: 1px solid var(--swp-line); }
+.swp .swp-footer__links a { color: var(--swp-text); font-size: 13px; }
+.swp .swp-footer__links strong { font-weight: 800; }
+.swp .swp-footer__grid { display: grid; gap: 26px; }
+.swp .swp-footer__title { margin: 0 0 8px; font-size: 14px; font-weight: 800; color: var(--swp-text); }
+.swp .swp-footer__tel { display: inline-block; margin-bottom: 8px; font-size: 26px; font-weight: 800; letter-spacing: -0.02em; color: var(--swp-ink) !important; font-variant-numeric: tabular-nums; }
+.swp .swp-footer__dl { display: grid; gap: 3px; margin: 0; }
+.swp .swp-footer__dl div { display: flex; gap: 10px; }
+.swp .swp-footer__dl dt { flex: 0 0 auto; min-width: 34px; color: var(--swp-mute); }
+.swp .swp-footer__dl dd { margin: 0; color: var(--swp-sub); }
+.swp .swp-footer__dl--biz dt { min-width: 112px; }
+.swp .swp-footer__bank { margin: 0 0 2px; font-size: 17px; font-weight: 800; color: var(--swp-text); }
+.swp .swp-footer__sub { margin: 0 0 12px; }
+.swp .swp-footer__copy { margin: 28px 0 0; font-size: 12px; color: var(--swp-mute); }
+@media (min-width: 1024px) {
+  .swp .swp-footer { padding: 40px 0 56px; }
+  .swp .swp-footer__grid { grid-template-columns: 1fr 1fr 1.6fr; gap: 40px; }
+}
+
+/* ---------- 16. 플로팅 버튼 ---------- */
+.swp .swp-float { position: fixed; right: 14px; bottom: calc(16px + env(safe-area-inset-bottom)); z-index: 950; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.swp .swp-float__btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 52px; height: 52px; border-radius: 26px; box-shadow: 0 6px 18px rgba(8,30,24,.18); font-size: 13.5px; font-weight: 800; transition: transform .15s; }
+.swp .swp-float__btn:hover { transform: translateY(-2px); }
+.swp .swp-float__btn svg { width: 24px; height: 24px; flex: 0 0 auto; }
+.swp .swp-float__btn--talk { background: #03C75A; color: #05210F !important; }
+.swp .swp-float__btn--kakao { background: #FEE500; color: #191919 !important; }
+.swp .swp-float__btn--kakao .swp-fill { fill: currentColor; stroke: none; }
+.swp .swp-float__label { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.swp .swp-float__top { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-right: 4px; padding: 11px !important; border-radius: 50%; background: #fff !important; box-shadow: 0 0 0 1px var(--swp-line), 0 4px 12px rgba(8,30,24,.1); opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity .2s, transform .2s, visibility 0s linear .2s; }
+.swp .swp-float__top.is-on { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+@media (min-width: 1024px) {
+  .swp .swp-float { right: 24px; bottom: 28px; }
+  .swp .swp-float__btn { width: auto; padding: 0 18px 0 14px; }
+  .swp .swp-float__label { position: static !important; width: auto; height: auto; clip: auto; }
+}
+
+/* ---------- 17. 움직임 줄이기 설정 존중 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .swp *, .swp *::before, .swp *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+</style>
+<script>window.SWP_CONFIG={dealEnd:'daily'};</script>
+<script>
+/* ==================================================================
+   성우플러스 custom.js  |  /js/custom.js
+   ------------------------------------------------------------------
+   · 순수 자바스크립트(ES5) — jQuery 등 다른 라이브러리 필요 없음
+     (카페24 JS 묶음 처리와 충돌하지 않도록 화살표 함수·let/const 미사용)
+   · 전역 변수는 window.SWP 하나만 사용
+   · 아래 CONFIG 값만 바꾸면 대부분 조정됩니다
+   ================================================================== */
+(function (window, document) {
+  'use strict';
+
+  /* ---------------- 설정 ---------------- */
+  var CONFIG = {
+    minBox: 3,                 // 쇼핑몰 공통 최소 주문 박스 수 (상품별 값이 없을 때 표시)
+    talktalkUrl: '',           // 네이버 톡톡 상담 주소 (예: 톡톡 파트너센터에서 받은 링크)
+    kakaoUrl: '',              // 카카오톡 채널 채팅 주소
+    stripInterval: 4000,       // 띠배너 문구 전환 간격(ms)
+    heroInterval: 6000,        // 히어로 슬라이드 전환 간격(ms)
+    dealEnd: '',               // 초특가 마감: '' = 타이머 숨김, 'daily' = 매일 자정,
+                               //              '2026-12-31T23:59:59' = 특정 시각
+    fetchOptions: true,        // 옵션 정보가 없을 때 상세페이지에서 옵션을 읽어와 보여줄지
+    optionChipMax: 3,          // 카드에 바로 보여줄 옵션 개수
+    defaultCols: { mobile: 2, tablet: 3, pc: 4 },
+    /* 관리자 > 상품 정보 표시 설정 에서 쓰는 항목명과 맞춰 주세요 */
+    field: {
+      price:    /^(판매가|할인판매가|회원가|도매가)/,
+      consumer: /^(소비자가|정가)/,
+      option:   /^옵션/,
+      min:      /(최소|MOQ)/i,
+      box:      /(박스당|입수|박스\s*수량|1\s*박스)/
+    }
+  };
+  if (window.SWP_CONFIG) { for (var k in window.SWP_CONFIG) { if (Object.prototype.hasOwnProperty.call(window.SWP_CONFIG, k)) CONFIG[k] = window.SWP_CONFIG[k]; } }
+
+  /* ---------------- 도우미 ---------------- */
+  function $(sel, ctx) { return (ctx || document).querySelector(sel); }
+  function $$(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
+  function each(list, fn) { for (var i = 0; i < list.length; i++) fn(list[i], i); }
+  function txt(el) { return el ? (el.textContent || '').replace(/\s+/g, ' ').replace(/^\s+|\s+$/g, '') : ''; }
+  function num(str) { var m = String(str || '').replace(/,/g, '').match(/\d+(\.\d+)?/); return m ? parseFloat(m[0]) : null; }
+  function won(n) { return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+  function debounce(fn, ms) { var t; return function () { clearTimeout(t); t = setTimeout(fn, ms); }; }
+  var store = {
+    get: function (k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } },
+    set: function (k, v) { try { window.localStorage.setItem(k, v); } catch (e) {} }
+  };
+  var reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  function bp() { var w = window.innerWidth; return w < 768 ? 'mobile' : (w < 1024 ? 'tablet' : 'pc'); }
+
+  /* 토스트 메시지 */
+  var toastTimer;
+  function toast(msg) {
+    var t = $('#swpToast'); if (!t) return;
+    t.textContent = msg; t.classList.add('is-on');
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.classList.remove('is-on'); }, 2400);
+  }
+
+  /* 레이어(드로어·시트) 공통: 열기/닫기, ESC, 포커스 복귀 */
+  function makeLayer(layer) {
+    var lastFocus = null;
+    function open() {
+      lastFocus = document.activeElement;
+      layer.classList.add('is-open'); layer.setAttribute('aria-hidden', 'false');
+      document.documentElement.classList.add('swp-lock');
+      var f = $('[data-swp-close].swp-iconbtn', layer) || $('a,button', layer);
+      setTimeout(function () { if (f) f.focus(); }, 30);
+    }
+    function close() {
+      layer.classList.remove('is-open'); layer.setAttribute('aria-hidden', 'true');
+      if (!$('.swp-layer.is-open')) document.documentElement.classList.remove('swp-lock');
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    each($$('[data-swp-close]', layer), function (b) { b.addEventListener('click', close); });
+    layer.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' || e.keyCode === 27) { close(); return; }
+      if (e.key === 'Tab') { // 레이어 안에서만 포커스 순환
+        var f = $$('a[href],button:not([disabled]),input,select,[tabindex]:not([tabindex="-1"])', layer).filter(function (n) { return n.offsetParent !== null; });
+        if (!f.length) return;
+        if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+        else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+      }
+    });
+    return { open: open, close: close, el: layer };
+  }
+
+  /* ---------------- 1. 띠배너 ---------------- */
+  function initStrip() {
+    var strip = $('#swpStrip'); if (!strip) return;
+    var KEY = 'swp_strip_hide_until';
+    var until = parseInt(store.get(KEY), 10);
+    if (until && until > Date.now()) { strip.hidden = true; return; }
+    var items = $$('.swp-strip__item', strip), i = 0;
+    each(items, function (it, idx) { it.setAttribute('aria-hidden', idx === 0 ? 'false' : 'true'); });
+    if (items.length > 1) {
+      setInterval(function () {
+        items[i].classList.remove('is-on'); items[i].setAttribute('aria-hidden', 'true');
+        i = (i + 1) % items.length;
+        items[i].classList.add('is-on'); items[i].setAttribute('aria-hidden', 'false');
+      }, CONFIG.stripInterval);
+    }
+    var btn = $('[data-swp-strip-close]', strip);
+    if (btn) btn.addEventListener('click', function () { store.set(KEY, String(Date.now() + 864e5)); strip.hidden = true; });
+  }
+
+  /* ---------------- 2. 헤더·드로어·검색 ---------------- */
+  function initHeader() {
+    var header = $('#swpHeader');
+    var drawerEl = $('#swpDrawer');
+    if (drawerEl) {
+      var drawer = makeLayer(drawerEl);
+      var openers = $$('[data-swp-drawer-open]');
+      each(openers, function (b) {
+        b.addEventListener('click', function (e) { e.preventDefault(); drawer.open(); each(openers, function (o) { o.setAttribute('aria-expanded', 'true'); }); });
+      });
+      drawerEl.addEventListener('transitionend', function () { if (!drawerEl.classList.contains('is-open')) each(openers, function (o) { o.setAttribute('aria-expanded', 'false'); }); });
+    }
+
+    // 현재 카테고리 강조
+    var q = window.location.search.match(/cate_no=(\d+)/);
+    if (q) each($$('.swp-gnb__list a'), function (a) { if ((a.getAttribute('href') || '').indexOf('cate_no=' + q[1]) > -1) a.classList.add('is-current'); });
+
+    // 빈 검색어 막기
+    each($$('.swp-search'), function (f) {
+      f.addEventListener('submit', function (e) {
+        var inp = f.querySelector('input[name="keyword"]');
+        if (inp && !inp.value.replace(/\s/g, '')) { e.preventDefault(); inp.focus(); toast('검색어를 입력해 주세요.'); }
+      });
+    });
+
+    // 장바구니 숫자 0이면 배지 숨김
+    each($$('.swp-cart__count'), function (c) {
+      function sync() { c.classList.toggle('is-zero', !num(txt(c))); }
+      sync();
+      if (window.MutationObserver) new MutationObserver(sync).observe(c, { childList: true, subtree: true, characterData: true });
+    });
+
+    // 스크롤: 그림자 + 모바일에서 아래로 내릴 때 검색줄 접기
+    if (!header) return;
+    var last = 0, ticking = false;
+    window.addEventListener('scroll', function () {
+      if (ticking) return; ticking = true;
+      window.requestAnimationFrame(function () {
+        var y = window.pageYOffset || document.documentElement.scrollTop;
+        header.classList.toggle('is-scrolled', y > 8);
+        if (y > 180 && y > last + 6) header.classList.add('is-compact');
+        else if (y < last - 6 || y < 180) header.classList.remove('is-compact');
+        last = y; ticking = false;
+      });
+    }, { passive: true });
+  }
+
+  /* ---------------- 3. 히어로 슬라이드 ---------------- */
+  function initHero() {
+    each($$('[data-swp-hero]'), function (root) {
+      var slides = $$('.swp-hero__slide', root), dots = $$('.swp-hero__dot', root);
+      if (slides.length < 2) { each(dots, function (d) { d.hidden = true; }); return; }
+      var cur = 0, timer = null;
+      function go(n) {
+        slides[cur].classList.remove('is-on'); slides[cur].setAttribute('aria-hidden', 'true');
+        if (dots[cur]) dots[cur].setAttribute('aria-current', 'false');
+        cur = (n + slides.length) % slides.length;
+        slides[cur].classList.add('is-on'); slides[cur].setAttribute('aria-hidden', 'false');
+        if (dots[cur]) dots[cur].setAttribute('aria-current', 'true');
+      }
+      function stop() { if (timer) clearInterval(timer); timer = null; }
+      function play() { if (reduceMotion) return; stop(); timer = setInterval(function () { go(cur + 1); }, CONFIG.heroInterval); }
+      each(slides, function (s, i) { s.setAttribute('aria-hidden', i === 0 ? 'false' : 'true'); });
+      each(dots, function (d, i) { d.addEventListener('click', function () { go(i); play(); }); });
+      root.addEventListener('mouseenter', stop); root.addEventListener('mouseleave', play);
+      root.addEventListener('focusin', stop); root.addEventListener('focusout', play);
+      // 터치 스와이프
+      var sx = null;
+      root.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; stop(); }, { passive: true });
+      root.addEventListener('touchend', function (e) {
+        if (sx === null) return; var dx = e.changedTouches[0].clientX - sx; sx = null;
+        if (Math.abs(dx) > 40) go(cur + (dx < 0 ? 1 : -1)); play();
+      });
+      play();
+    });
+  }
+
+  /* ---------------- 4. 가로 슬라이드 (MD's PICK) ---------------- */
+  function initSliders() {
+    each($$('[data-swp-slider]'), function (root) {
+      var track = $('[data-swp-track]', root); if (!track) return;
+      var prev = $('[data-swp-prev]', root), next = $('[data-swp-next]', root), bar = $('[data-swp-progress] span', root);
+      function step() {
+        var item = track.firstElementChild; if (!item) return track.clientWidth;
+        var gap = parseFloat(window.getComputedStyle(track).columnGap) || 0;
+        var w = item.getBoundingClientRect().width + gap;
+        return w * Math.max(1, Math.floor((track.clientWidth + gap) / w));
+      }
+      function update() {
+        var max = track.scrollWidth - track.clientWidth;
+        if (bar) {
+          var vis = track.scrollWidth ? track.clientWidth / track.scrollWidth : 1;
+          var p = max > 0 ? track.scrollLeft / max : 1;
+          bar.style.width = Math.min(100, (vis + (1 - vis) * p) * 100) + '%';
+        }
+        if (prev) prev.disabled = track.scrollLeft <= 2;
+        if (next) next.disabled = track.scrollLeft >= max - 2;
+        root.classList.toggle('is-static', max <= 2);
+      }
+      function move(dir) {
+        var opt = { left: dir * step(), behavior: reduceMotion ? 'auto' : 'smooth' };
+        if (track.scrollBy) track.scrollBy(opt); else track.scrollLeft += opt.left;
+      }
+      if (prev) prev.addEventListener('click', function () { move(-1); });
+      if (next) next.addEventListener('click', function () { move(1); });
+      var raf = null;
+      track.addEventListener('scroll', function () { if (raf) return; raf = window.requestAnimationFrame(function () { raf = null; update(); }); }, { passive: true });
+      window.addEventListener('resize', debounce(update, 120));
+      update();
+    });
+  }
+
+  /* ---------------- 5. 탭 (초특가) ---------------- */
+  function initTabs() {
+    each($$('[data-swp-tabs]'), function (root) {
+      var tabs = $$('[role="tab"]', root);
+      function select(tab, focus) {
+        each(tabs, function (t) {
+          var on = t === tab;
+          t.setAttribute('aria-selected', on ? 'true' : 'false');
+          t.tabIndex = on ? 0 : -1;
+          var p = document.getElementById(t.getAttribute('aria-controls'));
+          if (p) p.hidden = !on;
+        });
+        if (focus) tab.focus();
+      }
+      each(tabs, function (t, i) {
+        t.addEventListener('click', function () { select(t); });
+        t.addEventListener('keydown', function (e) {
+          var n = null;
+          if (e.key === 'ArrowRight') n = tabs[(i + 1) % tabs.length];
+          else if (e.key === 'ArrowLeft') n = tabs[(i - 1 + tabs.length) % tabs.length];
+          else if (e.key === 'Home') n = tabs[0];
+          else if (e.key === 'End') n = tabs[tabs.length - 1];
+          if (n) { e.preventDefault(); select(n, true); }
+        });
+      });
+      var first = tabs.filter(function (t) { return t.getAttribute('aria-selected') === 'true'; })[0] || tabs[0];
+      if (first) select(first);
+    });
+  }
+
+  /* ---------------- 6. 초특가 마감 타이머 ---------------- */
+  function initCountdown() {
+    if (!CONFIG.dealEnd) return; // 실제 마감 시각이 있을 때만 표시
+    each($$('[data-swp-countdown]'), function (box) {
+      var h = $('[data-h]', box), m = $('[data-m]', box), s = $('[data-s]', box);
+      function endAt() {
+        if (CONFIG.dealEnd === 'daily') { var d = new Date(); return new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1, 0, 0, 0); }
+        return new Date(CONFIG.dealEnd);
+      }
+      function pad(n) { return (n < 10 ? '0' : '') + n; }
+      var end = endAt();
+      if (isNaN(end.getTime())) return;
+      box.hidden = false;
+      var timer = setInterval(tick, 1000);
+      function tick() {
+        var left = Math.floor((end - new Date()) / 1000);
+        if (left <= 0) {
+          if (CONFIG.dealEnd === 'daily') { end = endAt(); left = Math.floor((end - new Date()) / 1000); }
+          else { clearInterval(timer); box.hidden = true; return; }
+        }
+        var hh = Math.floor(left / 3600);
+        h.textContent = hh > 99 ? hh : pad(hh); m.textContent = pad(Math.floor(left % 3600 / 60)); s.textContent = pad(left % 60);
+      }
+      tick();
+    });
+  }
+
+  /* ---------------- 7. 상품 카드: 박스 라벨·개당 단가·할인율·옵션 ---------------- */
+  var UNIT_RE = /(개|매|장|ea|EA|세트|롤|팩|봉)/;
+
+  function parseBox(v) {
+    var s = String(v || '').replace(/,/g, '');
+    var nums = s.match(/\d+(\.\d+)?/g); if (!nums) return null;
+    var qty = parseFloat(nums[0]);
+    if (nums.length > 1 && /[x×*]/i.test(s)) qty = parseFloat(nums[0]) * parseFloat(nums[1]); // 50개 x 20줄
+    var u = s.match(UNIT_RE);
+    return { qty: qty, unit: u ? u[1].replace(/ea/i, '개') : '개' };
+  }
+  function boxFromName(name) {
+    var s = String(name || '').replace(/,/g, ''), m;
+    m = s.match(/(?:1\s*박스|박스당|BOX)\s*[:\s(]*\s*(\d+)\s*(개|매|장|ea|EA|세트|롤|팩|봉)/i) ||
+        s.match(/(\d+)\s*(개|매|장|EA|ea)\s*(?:입|\/\s*(?:박스|BOX))/i);
+    return m ? { qty: parseFloat(m[1]), unit: m[2].replace(/ea/i, '개') } : null;
+  }
+  function minFromName(name) { var m = String(name || '').match(/(\d+)\s*박스\s*(?:부터|이상)/); return m ? parseInt(m[1], 10) : null; }
+  function splitOpts(v) { return String(v || '').split(/\s*[\/|,]\s*/).map(function (x) { return x.replace(/^\s+|\s+$/g, ''); }).filter(function (x) { return x; }); }
+  function unitText(unit) { return { '개': '개당', '매': '매당', '장': '장당', '세트': '세트당', '롤': '롤당', '팩': '팩당', '봉': '봉당' }[unit] || '개당'; }
+  function fmtUnit(n) { return n >= 100 ? won(n) : String(Math.round(n * 10) / 10); }
+
+  function enhanceCard(card) {
+    if (card.getAttribute('data-swp-done')) return;
+    card.setAttribute('data-swp-done', '1');
+    var F = CONFIG.field;
+    var nameEl = $('.swp-card__name', card);
+    var link = nameEl ? $('a', nameEl) : null;
+    var name = txt(nameEl);
+    var info = { price: null, consumer: null, box: null, min: null, options: [] };
+    var priceRow = null, spec = $('.swp-card__spec', card);
+
+    each($$('.swp-spec', card), function (li) {
+      var t = txt($('.swp-spec__t', li)).replace(/\s*[:：]\s*$/, '');
+      var v = txt($('.swp-spec__v', li));
+      if (!t && !v) { li.classList.add('is-used'); return; }
+      if (F.price.test(t)) { if (info.price === null) { info.price = num(v); priceRow = li; li.classList.add('is-price'); } }
+      else if (F.consumer.test(t)) { info.consumer = num(v); li.classList.add('is-consumer'); }
+      else if (F.option.test(t)) { info.options = splitOpts(v); li.classList.add('is-used'); }
+      else if (F.min.test(t)) { info.min = num(v); li.classList.add('is-used'); }
+      else if (F.box.test(t)) { info.box = parseBox(v); li.classList.add('is-used'); }
+    });
+
+    // 항목이 없으면 상품명이나 data-* 속성에서 읽기 (예: "탕용기 1000ml 1박스 200개", "3박스부터")
+    if (!info.box) info.box = card.getAttribute('data-box') ? parseBox(card.getAttribute('data-box')) : boxFromName(name);
+    if (!info.min) info.min = num(card.getAttribute('data-min')) || minFromName(name) || CONFIG.minBox;
+    if (!info.options.length && card.getAttribute('data-options')) info.options = splitOpts(card.getAttribute('data-options'));
+
+    // 할인율
+    if (priceRow && info.consumer && info.price && info.consumer > info.price) {
+      var rate = Math.round((1 - info.price / info.consumer) * 100);
+      if (rate > 0) { var r = el('em', 'swp-rate', rate + '%'); priceRow.insertBefore(r, priceRow.firstChild); }
+    }
+
+    var body = $('.swp-card__body', card);
+    // 박스 라벨 (CSS가 최신 브라우저에서는 썸네일 위로 올려 표시)
+    var parts = [];
+    if (info.box && info.box.qty) parts.push('1박스 ' + won(info.box.qty) + info.box.unit);
+    if (info.min) parts.push('최소 ' + info.min + '박스');
+    if (parts.length && body) {
+      var tag = el('span', 'swp-tag');
+      tag.innerHTML = parts.map(function (p) { return '<span class="swp-tag__part">' + esc(p) + '</span>'; }).join('');
+      if (spec && spec.nextSibling) body.insertBefore(tag, spec.nextSibling); else body.appendChild(tag);
+    }
+    // 개당 단가
+    if (body && info.price && info.box && info.box.qty) {
+      var unit = el('p', 'swp-unit', esc(unitText(info.box.unit)) + ' <b>' + fmtUnit(info.price / info.box.qty) + '</b>원');
+      body.appendChild(unit);
+    }
+
+    // 옵션 칩 + 미리보기 버튼
+    if (body && (info.options.length || (CONFIG.fetchOptions && link))) {
+      var wrap = el('div', 'swp-opt');
+      var show = info.options.slice(0, CONFIG.optionChipMax);
+      each(show, function (o) { wrap.appendChild(el('span', 'swp-opt__chip', esc(o))); });
+      if (info.options.length > show.length) wrap.appendChild(el('span', 'swp-opt__chip', '+' + (info.options.length - show.length)));
+      var btn = el('button', 'swp-opt__btn', '옵션 미리보기');
+      btn.type = 'button';
+      btn.setAttribute('aria-haspopup', 'dialog');
+      btn.addEventListener('click', function () { openSheet(card, info, name, link ? link.getAttribute('href') : null); });
+      wrap.appendChild(btn);
+      body.appendChild(wrap);
+    }
+  }
+
+  function initCards() {
+    each($$('.swp-card'), enhanceCard);
+    // 카페24 '더보기' 등으로 상품이 나중에 추가돼도 처리
+    if (window.MutationObserver) {
+      each($$('.swp-grid, .swp-track'), function (g) {
+        new MutationObserver(function () { each($$('.swp-card', g), enhanceCard); }).observe(g, { childList: true });
+      });
+    }
+  }
+
+  /* ---------------- 8. 옵션 미리보기 시트 ---------------- */
+  var sheet = null, optCache = {};
+
+  function fetchOptions(url) {
+    if (optCache[url]) return optCache[url];
+    if (!window.fetch || !window.DOMParser) return Promise.resolve([]);
+    optCache[url] = window.fetch(url, { credentials: 'same-origin' }).then(function (res) {
+      if (!res.ok) throw new Error(res.status);
+      return res.text();
+    }).then(function (html) {
+      var doc = new window.DOMParser().parseFromString(html, 'text/html');
+      var groups = [];
+      // 셀렉트형 옵션 (카페24 기본)
+      each($$('select[id^="product_option_id"]', doc), function (sel) {
+        var vals = [];
+        each($$('option', sel), function (o) { var v = o.value; if (!v || v === '*' || v === '**') return; vals.push(txt(o)); });
+        if (vals.length) groups.push({ title: sel.getAttribute('option_title') || '', values: vals });
+      });
+      // 버튼형 옵션
+      if (!groups.length) {
+        each($$('[option_title]', doc), function (box) {
+          if (box.tagName === 'SELECT') return;
+          var vals = [];
+          each($$('[option_value]', box), function (o) { var v = o.getAttribute('title') || txt(o); if (v) vals.push(v); });
+          if (vals.length) groups.push({ title: box.getAttribute('option_title') || '', values: vals });
+        });
+      }
+      return groups;
+    })['catch'](function () { delete optCache[url]; return null; });
+    return optCache[url];
+  }
+
+  function renderSheet(card, info, name, groups, loading) {
+    var body = $('#swpSheetBody'); if (!body) return;
+    var html = '<p class="swp-sheet__name">' + esc(name) + '</p><dl class="swp-sheet__facts">';
+    if (info.box && info.box.qty) html += '<div><dt>박스당 수량</dt><dd>' + won(info.box.qty) + esc(info.box.unit) + '</dd></div>';
+    html += '<div><dt>최소 주문</dt><dd>' + (info.min || CONFIG.minBox) + '박스</dd></div>';
+    if (info.price) html += '<div><dt>박스 가격</dt><dd>' + won(info.price) + '원</dd></div>';
+    if (info.price && info.box && info.box.qty) html += '<div><dt>' + esc(unitText(info.box.unit)) + ' 단가</dt><dd>' + fmtUnit(info.price / info.box.qty) + '원</dd></div>';
+    html += '</dl>';
+    if (loading) {
+      html += '<p class="swp-sheet__loading">옵션을 불러오는 중이에요</p>';
+    } else if (groups && groups.length) {
+      each(groups, function (g) {
+        html += '<div class="swp-sheet__group">' + (g.title ? '<p class="swp-sheet__gt">' + esc(g.title) + '</p>' : '') + '<ul class="swp-sheet__opts">';
+        each(g.values, function (v) { html += '<li>' + esc(v) + '</li>'; });
+        html += '</ul></div>';
+      });
+    } else if (groups === null) {
+      html += '<p class="swp-sheet__msg">옵션 정보를 불러오지 못했어요. 상세페이지에서 확인해 주세요.</p>';
+    } else {
+      html += '<p class="swp-sheet__msg">선택 옵션이 없는 단일 상품이에요.</p>';
+    }
+    body.innerHTML = html;
+  }
+
+  function openSheet(card, info, name, url) {
+    if (!sheet) { var s = $('#swpSheet'); if (!s) return; sheet = makeLayer(s); }
+    var a = $('#swpSheetLink'); if (a && url) a.setAttribute('href', url);
+    if (info.options.length) {
+      renderSheet(card, info, name, [{ title: '', values: info.options }]);
+    } else if (CONFIG.fetchOptions && url && url.charAt(0) !== '#') {
+      renderSheet(card, info, name, null, true);
+      fetchOptions(url).then(function (g) { renderSheet(card, info, name, g); });
+    } else {
+      renderSheet(card, info, name, null);
+    }
+    sheet.open();
+  }
+
+  /* ---------------- 9. 1~4단 진열 전환 ---------------- */
+  function initViewToggle() {
+    each($$('[data-swp-view]'), function (group) {
+      var sec = group.closest ? group.closest('section') : document;
+      var grid = $('[data-swp-grid]', sec || document); if (!grid) return;
+      var btns = $$('[data-cols]', group).filter(function (b) { return b.tagName === 'BUTTON'; });
+      var KEY = 'swp_cols_' + (grid.id || 'grid') + '_';
+      function maxCols() { var b = bp(); return b === 'mobile' ? 2 : (b === 'tablet' ? 3 : 4); }
+      function apply(c, save) {
+        c = parseInt(c, 10);
+        if (!c || c > maxCols()) c = CONFIG.defaultCols[bp()];
+        grid.setAttribute('data-cols', String(c));
+        each(btns, function (b) { b.setAttribute('aria-pressed', String(parseInt(b.getAttribute('data-cols'), 10) === c)); });
+        if (save) store.set(KEY + bp(), String(c));
+      }
+      each(btns, function (b) { b.addEventListener('click', function () { apply(b.getAttribute('data-cols'), true); }); });
+      function restore() { apply(store.get(KEY + bp()), false); }
+      restore();
+      var lastBp = bp();
+      window.addEventListener('resize', debounce(function () { if (bp() !== lastBp) { lastBp = bp(); restore(); } }, 150));
+    });
+  }
+
+  /* ---------------- 10. 포토후기 빈 상태 ---------------- */
+  function initReviews() {
+    each($$('[data-swp-review]'), function (area) {
+      var empty = area.parentNode.querySelector('[data-swp-review-empty]');
+      if (!empty) return;
+      function filled() { return !!(area.querySelector('img, iframe, li, [class]') || txt(area)); }
+      function check() { empty.hidden = filled(); }
+      // 리뷰 앱은 늦게 그려지므로 잠시 기다렸다가 판단
+      setTimeout(check, 2500);
+      if (window.MutationObserver) new MutationObserver(function () { if (filled()) empty.hidden = true; }).observe(area, { childList: true, subtree: true });
+    });
+  }
+
+  /* ---------------- 11. 플로팅 버튼·복사 ---------------- */
+  function initFloat() {
+    each($$('[data-swp-chat]'), function (a) {
+      var type = a.getAttribute('data-swp-chat');
+      var url = type === 'kakao' ? CONFIG.kakaoUrl : CONFIG.talktalkUrl;
+      var href = a.getAttribute('href') || '';
+      if (url) { a.setAttribute('href', url); a.setAttribute('target', '_blank'); a.setAttribute('rel', 'noopener'); }
+      else if (href === '#none' || href === '#' || !href) {
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          toast('채팅 상담을 준비 중이에요. 고객센터로 전화 주세요.');
+          if (window.console) console.warn('[성우플러스] custom.js CONFIG.' + (type === 'kakao' ? 'kakaoUrl' : 'talktalkUrl') + ' 에 상담 주소를 넣어 주세요.');
+        });
+      }
+    });
+
+    var top = $('[data-swp-top]');
+    if (top) {
+      top.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }); var m = $('#swpMain'); if (m) m.focus({ preventScroll: true }); });
+      var on = false;
+      window.addEventListener('scroll', function () {
+        var y = window.pageYOffset > 600;
+        if (y !== on) { on = y; top.classList.toggle('is-on', on); }
+      }, { passive: true });
+    }
+
+    each($$('[data-swp-copy]'), function (b) {
+      b.addEventListener('click', function () {
+        var v = b.getAttribute('data-swp-copy');
+        function done() { toast('계좌번호를 복사했어요.'); }
+        if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(v).then(done, fallback); } else fallback();
+        function fallback() {
+          var t = document.createElement('textarea'); t.value = v; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
+          document.body.appendChild(t); t.select();
+          try { document.execCommand('copy'); done(); } catch (e) { toast('복사하지 못했어요. 길게 눌러 복사해 주세요.'); }
+          document.body.removeChild(t);
+        }
+      });
+    });
+  }
+
+  /* ---------------- 실행 ---------------- */
+  function init() {
+    var steps = [initStrip, initHeader, initHero, initSliders, initTabs, initCountdown, initCards, initViewToggle, initReviews, initFloat];
+    each(steps, function (fn) { try { fn(); } catch (e) { if (window.console) console.error('[성우플러스]', fn.name || '', e); } });
+  }
+  window.SWP = { config: CONFIG, toast: toast, refreshCards: function () { each($$('.swp-card'), enhanceCard); } };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})(window, document);
+
+</script>
+</head>
+<body class="swp-body">
+<div class="swp" id="swp">
+<div style="background:#17201D;color:#fff;font:600 12px/1.5 -apple-system,sans-serif;padding:8px 16px;text-align:center">미리보기 화면이에요. 상품·후기는 샘플이고, 실제 쇼핑몰에서는 카페24 메인진열 상품과 실제 후기가 들어가요.</div>
+<a class="swp-skip" href="#swpMain">본문 바로가기</a>
+<!-- ───────── 띠배너 (문구는 자유롭게 수정, 줄 추가 가능) ───────── -->
+<div aria-label="쇼핑몰 안내" class="swp-strip" id="swpStrip" role="region">
+<div class="swp-inner swp-strip__inner">
+<p class="swp-strip__msg">
+<span class="swp-strip__item is-on">다양한 일회용 생활잡화 최저가 보장! 사장님 매장의 원가 절감 파트너 성우플러스</span>
+<span class="swp-strip__item">평일 오후 2시 전 결제 건은 당일 출고해요.</span>
+<span class="swp-strip__item">회원가입하면 첫 주문 할인 쿠폰을 드려요.</span>
+</p>
+<button aria-label="안내 띠배너 오늘 하루 닫기" class="swp-strip__close" data-swp-strip-close="" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+</button>
+</div>
+</div>
+<!-- ───────── 유틸 메뉴 (PC에서만 보임) ───────── -->
+<div class="swp-util">
+<div class="swp-inner swp-util__inner">
+<ul class="swp-util__list">
+<li><a href="/shopinfo/guide.html">이용안내</a></li>
+<li><a href="/myshop/order/list.html">주문조회</a></li>
+<li><a href="/board/product/list.html?board_no=4">상품후기</a></li>
+<li><a href="/board/product/list.html?board_no=6">상품문의</a></li>
+<li><a href="tel:0000-0000">고객센터 0000-0000</a></li>
+</ul>
+</div>
+</div>
+<!-- ───────── 헤더 (스크롤 시 상단 고정) ───────── -->
+<header class="swp-header" id="swpHeader">
+<div class="swp-head">
+<div class="swp-inner swp-head__inner">
+<button aria-controls="swpDrawer" aria-expanded="false" class="swp-iconbtn swp-head__menu" data-swp-drawer-open="" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+<span class="swp-sr">전체 카테고리 열기</span>
+</button>
+<!-- 로고: 이미지 로고로 바꾸려면 swp-logo__mark·swp-logo__word 대신 img 태그를 넣으세요 -->
+<h1 class="swp-logo">
+        <a href="/index.html" aria-label="성우플러스 홈">
+          <img src="sungwooplus_logo.png" alt="성우플러스" style="height:36px;width:auto;display:block;object-fit:contain;" />
+        </a>
+      </h1>
+<!-- 통합 검색: 카페24 기본 검색 주소(/product/search.html, keyword)를 그대로 사용 -->
+<form action="/product/search.html" class="swp-search swp-head__search" method="get" role="search">
+<label class="swp-sr" for="swpKeyword">상품 검색</label>
+<input autocomplete="off" class="swp-search__input" id="swpKeyword" name="keyword" placeholder="상품명이나 규격으로 검색 (예: 탕용기 1000)" type="search"/>
+<button class="swp-search__btn" type="submit">
+<svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4 4"></path></svg>
+<span class="swp-sr">검색</span>
+</button>
+</form>
+<nav aria-label="내 계정" class="swp-account">
+<!-- 카페24 모듈: 로그아웃 상태일 때만 출력 -->
+<div class="swp-account__state" module="Layout_statelogoff">
+<a class="swp-account__link" href="/member/login.html">
+<svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"></circle><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"></path></svg>
+<span class="swp-account__label">로그인</span>
+</a>
+<a class="swp-account__link swp-hide-mo" href="/member/agreement.html">
+<svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="10" cy="8.5" r="3.5"></circle><path d="M3.5 20c1.1-3.4 3.7-5.5 6.5-5.5 1.6 0 3.1.6 4.3 1.7M18.5 9v6M15.5 12h6"></path></svg>
+<span class="swp-account__label">회원가입</span>
+</a>
+</div>
+<!-- 카페24 모듈: 로그인 상태일 때만 출력 -->
+
+<!-- 장바구니 수량: 카페24 공통 스크립트가 EC-Layout-Basket-count 요소에 숫자를 채웁니다.
+             숫자가 안 나오면 기존 스킨 헤더의 장바구니 수량 코드를 swp-cart__count 안으로 옮기세요. -->
+<a class="swp-account__link swp-cart" href="/order/basket.html">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M3 4h2.2l2.2 10.2a1.5 1.5 0 0 0 1.5 1.2h8.4a1.5 1.5 0 0 0 1.5-1.1L20.5 8H6.1"></path><circle cx="9.5" cy="19.5" r="1.3"></circle><circle cx="17" cy="19.5" r="1.3"></circle></svg>
+<span class="swp-account__label">장바구니</span>
+<em class="swp-cart__count"><span class="EC-Layout-Basket-count">2</span></em>
+</a>
+</nav>
+</div>
+</div>
+<!-- 1차 카테고리 바
+       cate_no 숫자는 관리자 > 상품 > 상품 분류 관리에서 각 분류 번호를 확인해 바꾸세요. -->
+<nav aria-label="상품 카테고리" class="swp-gnb">
+<div class="swp-inner swp-gnb__inner">
+<button aria-controls="swpDrawer" aria-expanded="false" class="swp-gnb__all" data-swp-drawer-open="" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+<span>전체</span>
+</button>
+<ul class="swp-gnb__list">
+<li><a href="/product/list.html?cate_no=24">플라스틱용기</a></li>
+<li><a href="/product/list.html?cate_no=25">종이용기/박스</a></li>
+<li><a href="/product/list.html?cate_no=26">종이/비닐봉투</a></li>
+<li><a href="/product/list.html?cate_no=27">카페/디저트</a></li>
+<li><a href="/product/list.html?cate_no=28">수저/젓가락</a></li>
+<li><a class="swp-gnb__new" href="/product/list.html?cate_no=29">신상품</a></li>
+</ul>
+</div>
+</nav>
+</header>
+<!-- ───────── 본문: 각 페이지 내용이 들어가는 자리 (지우지 마세요) ───────── -->
+<!-- 하위 페이지(상품목록·상세 등) 스타일 보호를 위해 이 3개 요소에는 swp- 클래스를 붙이지 않습니다 -->
+<div id="container">
+<div id="contents">
+<main id="swpMain" tabindex="-1">
+
+<!--
+  ================================================================
+  성우플러스 메인  |  카페24 메인 파일 = /index.html  (요청하신 main.html)
+  ----------------------------------------------------------------
+  · 맨 첫 줄(레이아웃 지정 줄)은 공통 레이아웃 경로입니다. 기존 index.html 첫 줄이
+    /layout/basic/main.html 을 가리키고 있었다면, 이 줄을 그대로 쓰거나
+    layout.html 내용을 main.html 에도 똑같이 붙여넣으세요.
+  · 상품 진열 번호(product_listmain_숫자)는 관리자 > 상품 > 메인진열의
+    분류 번호와 맞춰야 합니다. (적용 가이드의 번호표 참고)
+  · 상품 카드 li 가 2개씩 있는 건 카페24 반복 틀(홀수/짝수)이라 그대로 두세요.
+  ================================================================
+-->
+<div class="swp-home">
+<!-- ═════════ 1. B2B 대량구매 안내 히어로 ═════════ -->
+<section aria-label="대량구매 안내" class="swp-hero">
+<div class="swp-inner swp-hero__grid">
+<div aria-label="주요 안내" aria-roledescription="carousel" class="swp-hero__main" data-swp-hero="">
+<div aria-label="1 / 2" aria-roledescription="slide" class="swp-hero__slide is-on">
+<div class="swp-hero__copy">
+<span class="swp-hero__chip">도매 대량구매 전용몰</span>
+<h2 class="swp-hero__title">필요한 만큼,<br/>박스 단위로.</h2>
+<p class="swp-hero__desc">다양한 일회용 생활잡화 최저가 보장! 사장님 매장의 원가 절감 파트너 성우플러스 박스당 입수량과 개당 단가를 상품마다 바로 확인하세요.</p>
+<div class="swp-hero__cta">
+<a class="swp-btn swp-btn--kraft" href="/product/list.html?cate_no=24">많이 찾는 용기 보기</a>
+<a class="swp-btn swp-btn--ghost" href="/shopinfo/guide.html">주문 방법 안내</a>
+</div>
+</div>
+<div aria-hidden="true" class="swp-hero__art swp-hero__art--boxes">
+<span class="swp-box swp-box--1"><i>1</i></span>
+<span class="swp-box swp-box--2"><i>2</i></span>
+<span class="swp-box swp-box--3"><i>3</i></span>
+<span class="swp-hero__floor"></span>
+</div>
+</div>
+<div aria-label="2 / 2" aria-roledescription="slide" class="swp-hero__slide">
+<div class="swp-hero__copy">
+<span class="swp-hero__chip">평일 당일 출고</span>
+<h2 class="swp-hero__title">가게 문 열기 전에<br/>도착하도록.</h2>
+<p class="swp-hero__desc">평일 오후 2시 전 결제 건은 당일 출고해요. 자주 쓰는 용기는 마이페이지 주문내역에서 다시 담을 수 있어요.</p>
+<div class="swp-hero__cta">
+<a class="swp-btn swp-btn--kraft" href="/myshop/order/list.html">주문내역에서 다시 담기</a>
+<a class="swp-btn swp-btn--ghost" href="/shopinfo/guide.html">배송 안내</a>
+</div>
+</div>
+<div aria-hidden="true" class="swp-hero__art swp-hero__art--label">
+<span class="swp-parcel">
+<span class="swp-parcel__label"><b></b><b></b><b></b><s></s></span>
+</span>
+<span class="swp-hero__floor"></span>
+</div>
+</div>
+<div aria-label="안내 슬라이드 선택" class="swp-hero__dots" role="group">
+<button aria-current="true" aria-label="1번 안내 보기" class="swp-hero__dot" type="button"></button>
+<button aria-current="false" aria-label="2번 안내 보기" class="swp-hero__dot" type="button"></button>
+</div>
+</div>
+<a class="swp-hero__side swp-hero__side--join" href="/member/agreement.html">
+<span class="swp-hero__side-t">회원가입 혜택</span>
+<strong class="swp-hero__side-h">첫 주문 3,000원 할인 쿠폰</strong>
+<span class="swp-hero__side-d">사업자 정보를 등록하면 세금계산서 발행까지 한 번에 처리돼요.</span>
+<span class="swp-hero__side-cta">회원가입하기</span>
+</a>
+<!-- [링크 수정] 견적 문의 게시판 주소로 바꾸세요 -->
+<a class="swp-hero__side swp-hero__side--quote" href="#none">
+<span class="swp-hero__side-t">대량 견적</span>
+<strong class="swp-hero__side-h">50박스 이상은 견적으로 받아보세요</strong>
+<span class="swp-hero__side-d">품목과 수량을 남기면 영업일 기준 하루 안에 단가를 안내해 드려요.</span>
+<span class="swp-hero__side-cta">견적 문의하기</span>
+</a>
+</div>
+<div class="swp-inner">
+<ol aria-label="주문 순서" class="swp-steps">
+<li class="swp-steps__item"><b class="swp-steps__no">1</b><span class="swp-steps__t">회원가입</span><span class="swp-steps__d">사업자 정보 등록</span></li>
+<li class="swp-steps__item"><b class="swp-steps__no">2</b><span class="swp-steps__t">박스 단위로 담기</span><span class="swp-steps__d">입수량 확인</span></li>
+<li class="swp-steps__item"><b class="swp-steps__no">3</b><span class="swp-steps__t">3박스 이상 결제</span><span class="swp-steps__d">카드, 무통장입금</span></li>
+<li class="swp-steps__item"><b class="swp-steps__no">4</b><span class="swp-steps__t">출고</span><span class="swp-steps__d">평일 14시 전 당일</span></li>
+</ol>
+</div>
+</section>
+<!-- ═════════ 2. MD's PICK (가로 슬라이드) — 메인진열 1번 ═════════ -->
+<section aria-labelledby="swpMdTitle" class="swp-sec swp-md">
+<div class="swp-inner" data-swp-slider="">
+<div class="swp-sec__head">
+<div>
+<h2 class="swp-sec__title" id="swpMdTitle">MD's PICK</h2>
+<p class="swp-sec__sub">사장님들이 가장 많이 다시 주문한 상품</p>
+</div>
+<div class="swp-arrows">
+<button aria-label="이전 상품" class="swp-arrow" data-swp-prev="" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="m14.5 6-6 6 6 6"></path></svg>
+</button>
+<button aria-label="다음 상품" class="swp-arrow" data-swp-next="" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="m9.5 6 6 6-6 6"></path></svg>
+</button>
+</div>
+</div>
+<div class="swp-module" module="product_listmain_1">
+<!--
+          $count = 12
+          $basket_result = /product/add_basket.html
+          $basket_option = /product/basket_option.html
+      -->
+<ul class="swp-track" data-swp-track="">
+
+
+<li class="swp-card" id="anchorBoxId_100">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E9ECEA%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22150%22%20rx%3D%2262%22%20ry%3D%229%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M38%2092%20Q42%20148%20100%20150%20Q158%20148%20162%2092%20Z%22%20fill%3D%22%232B302E%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2262%22%20ry%3D%2215%22%20fill%3D%22%232B302E%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2252%22%20ry%3D%2210%22%20fill%3D%22rgba%28255%2C255%2C255%2C.18%29%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> <img alt="BEST" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2744%27%20height%3D%2718%27%3E%3Crect%20width%3D%2744%27%20height%3D%2718%27%20rx%3D%273%27%20fill%3D%27%230D5446%27/%3E%3Ctext%20x%3D%2722%27%20y%3D%2713%27%20font-family%3D%27Arial%27%20font-size%3D%2710.5%27%20font-weight%3D%27700%27%20fill%3D%27%23fff%27%20text-anchor%3D%27middle%27%3EBEST%3C/text%3E%3C/svg%3E"/> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">원형 탕용기 1000ml 블랙 (뚜껑 포함)</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">46,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">39,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">200개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">옵션</span></strong> <span class="swp-spec__v">850ml/1000ml/1300ml</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_101">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E3ECEF%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22148%22%20rx%3D%2270%22%20ry%3D%228%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M36%2082%20L164%2082%20L154%20142%20L46%20142%20Z%22%20fill%3D%22%23D7E9F0%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M30%2076%20H170%20V86%20H30%20Z%22%20fill%3D%22%23D7E9F0%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M100%2088%20V138%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M34%2078%20H166%22%20stroke%3D%22rgba%28255%2C255%2C255%2C.7%29%22%20stroke-width%3D%222%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">사각 실링용기 1803 투명 1칸</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">58,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">52,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">800개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_102">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23EFE7DC%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22160%22%20rx%3D%2240%22%20ry%3D%227%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M62%2062%20L138%2062%20L128%20158%20L72%20158%20Z%22%20fill%3D%22%23C89B66%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Crect%20x%3D%2256%22%20y%3D%2250%22%20width%3D%2288%22%20height%3D%2214%22%20rx%3D%225%22%20fill%3D%22%23C89B66%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M100%2050%20Q102%2034%20116%2028%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%223%22%20fill%3D%22none%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> <img alt="BEST" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2744%27%20height%3D%2718%27%3E%3Crect%20width%3D%2744%27%20height%3D%2718%27%20rx%3D%273%27%20fill%3D%27%230D5446%27/%3E%3Ctext%20x%3D%2722%27%20y%3D%2713%27%20font-family%3D%27Arial%27%20font-size%3D%2710.5%27%20font-weight%3D%27700%27%20fill%3D%27%23fff%27%20text-anchor%3D%27middle%27%3EBEST%3C/text%3E%3C/svg%3E"/> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">크라프트 종이컵 13oz 무지</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">33,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">1,000개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">옵션</span></strong> <span class="swp-spec__v">8oz/10oz/13oz/16oz</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_103">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E3ECEF%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22160%22%20rx%3D%2240%22%20ry%3D%227%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M62%2062%20L138%2062%20L128%20158%20L72%20158%20Z%22%20fill%3D%22%23D7E9F0%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Crect%20x%3D%2256%22%20y%3D%2250%22%20width%3D%2288%22%20height%3D%2214%22%20rx%3D%225%22%20fill%3D%22%23D7E9F0%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M100%2050%20Q102%2034%20116%2028%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%223%22%20fill%3D%22none%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">PET 아이스컵 16oz 92파이</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">52,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">48,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">1,000개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">옵션</span></strong> <span class="swp-spec__v">12oz/14oz/16oz/20oz/24oz</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_104">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23EFE7DC%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22166%22%20rx%3D%2256%22%20ry%3D%227%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M78%2070%20Q78%2040%20100%2040%20Q122%2040%20122%2070%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%225%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M50%2066%20H150%20L144%20164%20H56%20Z%22%20fill%3D%22%23C89B66%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M50%2066%20H150%20V78%20H50%20Z%22%20fill%3D%22rgba%280%2C0%2C0%2C.06%29%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> <img alt="NEW" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2736%27%20height%3D%2718%27%3E%3Crect%20width%3D%2736%27%20height%3D%2718%27%20rx%3D%273%27%20fill%3D%27%23D63A24%27/%3E%3Ctext%20x%3D%2718%27%20y%3D%2713%27%20font-family%3D%27Arial%27%20font-size%3D%2710.5%27%20font-weight%3D%27700%27%20fill%3D%27%23fff%27%20text-anchor%3D%27middle%27%3ENEW%3C/text%3E%3C/svg%3E"/> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">크라프트 쇼핑백 중 손잡이형 1박스 250매</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">41,000원</span></span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_105">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E4EAE7%22/%3E%3Crect%20x%3D%2254%22%20y%3D%2240%22%20width%3D%2210%22%20height%3D%22130%22%20rx%3D%225%22%20transform%3D%22rotate%28-14%2059%20105%29%22%20fill%3D%22%23D9B98F%22/%3E%3Crect%20x%3D%2280%22%20y%3D%2240%22%20width%3D%2210%22%20height%3D%22130%22%20rx%3D%225%22%20transform%3D%22rotate%28-14%2085%20105%29%22%20fill%3D%22%23D2AF82%22/%3E%3Crect%20x%3D%22108%22%20y%3D%2260%22%20width%3D%2254%22%20height%3D%2296%22%20rx%3D%226%22%20fill%3D%22%23FBFBF9%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22%20transform%3D%22rotate%288%20135%20108%29%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">개별포장 나무젓가락 소독 1박스 2,000개</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">33,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">29,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">5박스</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_106">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E4EAE7%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22150%22%20rx%3D%2262%22%20ry%3D%229%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M38%2092%20Q42%20148%20100%20150%20Q158%20148%20162%2092%20Z%22%20fill%3D%22%23FBFBF9%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2262%22%20ry%3D%2215%22%20fill%3D%22%23FBFBF9%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2252%22%20ry%3D%2210%22%20fill%3D%22rgba%28255%2C255%2C255%2C.18%29%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">원형 죽용기 750ml 화이트</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">36,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">300개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">옵션</span></strong> <span class="swp-spec__v">600ml/750ml/900ml</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_107">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E3ECEF%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22158%22%20rx%3D%2244%22%20ry%3D%227%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M66%2096%20L134%2096%20L126%20156%20L74%20156%20Z%22%20fill%3D%22%23D7E9F0%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M60%2096%20Q100%2040%20140%2096%20Z%22%20fill%3D%22rgba%28255%2C255%2C255%2C.55%29%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Crect%20x%3D%2270%22%20y%3D%22118%22%20width%3D%2260%22%20height%3D%2226%22%20rx%3D%224%22%20fill%3D%22%23E9B4A6%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> <img alt="NEW" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2736%27%20height%3D%2718%27%3E%3Crect%20width%3D%2736%27%20height%3D%2718%27%20rx%3D%273%27%20fill%3D%27%23D63A24%27/%3E%3Ctext%20x%3D%2718%27%20y%3D%2713%27%20font-family%3D%27Arial%27%20font-size%3D%2710.5%27%20font-weight%3D%27700%27%20fill%3D%27%23fff%27%20text-anchor%3D%27middle%27%3ENEW%3C/text%3E%3C/svg%3E"/> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">PET 디저트컵 9oz 돔뚜껑 세트</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">69,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">61,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">1,000개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_108">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E4EAE7%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22148%22%20rx%3D%2270%22%20ry%3D%228%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M36%2082%20L164%2082%20L154%20142%20L46%20142%20Z%22%20fill%3D%22%23FBFBF9%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M30%2076%20H170%20V86%20H30%20Z%22%20fill%3D%22%23FBFBF9%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M100%2088%20V138%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M34%2078%20H166%22%20stroke%3D%22rgba%28255%2C255%2C255%2C.7%29%22%20stroke-width%3D%222%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">사각 반찬용기 소 투명 (뚜껑 일체형)</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">44,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">1,200개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">옵션</span></strong> <span class="swp-spec__v">소/중/대</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_109">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E4EAE7%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22166%22%20rx%3D%2256%22%20ry%3D%227%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M78%2070%20Q78%2040%20100%2040%20Q122%2040%20122%2070%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%225%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M50%2066%20H150%20L144%20164%20H56%20Z%22%20fill%3D%22%23FBFBF9%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M50%2066%20H150%20V78%20H50%20Z%22%20fill%3D%22rgba%280%2C0%2C0%2C.06%29%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">무지 비닐봉투 중 손잡이 1박스 1,000매</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">30,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">27,000원</span></span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_110">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E4EAE7%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%2224%22%20ry%3D%2232%22%20fill%3D%22%23FBFBF9%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Crect%20x%3D%2294%22%20y%3D%2294%22%20width%3D%2212%22%20height%3D%2276%22%20rx%3D%226%22%20fill%3D%22%23FBFBF9%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">개별포장 스푼 화이트 PS</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">24,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">2,000개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_111">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23EFE7DC%22/%3E%3Cpath%20d%3D%22M62%2062%20L138%2062%20L128%20158%20L72%20158%20Z%22%20fill%3D%22%23FBFBF9%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M58%2092%20L142%2092%20L136%20132%20L64%20132%20Z%22%20fill%3D%22%23C89B66%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">크라프트 컵홀더 13~16oz 겸용</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">34,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">30,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">1,000개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li></ul>
+</div>
+</li></ul>
+</div>
+<div aria-hidden="true" class="swp-progress" data-swp-progress=""><span></span></div>
+</div>
+</section>
+<!-- ═════════ 3. 오늘의 초특가 3탭 — 메인진열 2·3·4번 ═════════ -->
+<section aria-labelledby="swpDealTitle" class="swp-sec swp-deal">
+<div class="swp-inner">
+<div class="swp-sec__head">
+<div>
+<h2 class="swp-sec__title" id="swpDealTitle">오늘의 초특가</h2>
+<p class="swp-sec__sub">용기 종류별로 골라 보세요</p>
+</div>
+<!-- 마감 타이머: custom.js CONFIG.dealEnd 를 설정했을 때만 보입니다 -->
+<p class="swp-countdown" data-swp-countdown="" hidden="">
+<span class="swp-countdown__t">특가 마감까지</span>
+<span class="swp-countdown__v"><b data-h="">00</b>:<b data-m="">00</b>:<b data-s="">00</b></span>
+</p>
+</div>
+<div class="swp-tabs" data-swp-tabs="">
+<div aria-label="초특가 용기 종류" class="swp-tabs__list" role="tablist">
+<button aria-controls="swpDealPanel1" aria-selected="true" class="swp-tabs__tab" id="swpDealTab1" role="tab" type="button">탕용기</button>
+<button aria-controls="swpDealPanel2" aria-selected="false" class="swp-tabs__tab" id="swpDealTab2" role="tab" tabindex="-1" type="button">실링용기</button>
+<button aria-controls="swpDealPanel3" aria-selected="false" class="swp-tabs__tab" id="swpDealTab3" role="tab" tabindex="-1" type="button">죽용기</button>
+</div>
+<!-- 탭 1: 탕용기 -->
+<div aria-labelledby="swpDealTab1" class="swp-tabs__panel" id="swpDealPanel1" role="tabpanel">
+<div class="swp-module" module="product_listmain_2">
+<!--
+              $count = 8
+              $basket_result = /product/add_basket.html
+              $basket_option = /product/basket_option.html
+          -->
+<ul class="swp-grid swp-grid--deal">
+
+
+<li class="swp-card" id="anchorBoxId_150">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E9ECEA%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22150%22%20rx%3D%2262%22%20ry%3D%229%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M38%2092%20Q42%20148%20100%20150%20Q158%20148%20162%2092%20Z%22%20fill%3D%22%232B302E%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2262%22%20ry%3D%2215%22%20fill%3D%22%232B302E%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2252%22%20ry%3D%2210%22%20fill%3D%22rgba%28255%2C255%2C255%2C.18%29%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> <img alt="BEST" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2744%27%20height%3D%2718%27%3E%3Crect%20width%3D%2744%27%20height%3D%2718%27%20rx%3D%273%27%20fill%3D%27%230D5446%27/%3E%3Ctext%20x%3D%2722%27%20y%3D%2713%27%20font-family%3D%27Arial%27%20font-size%3D%2710.5%27%20font-weight%3D%27700%27%20fill%3D%27%23fff%27%20text-anchor%3D%27middle%27%3EBEST%3C/text%3E%3C/svg%3E"/> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">탕용기 대 1300ml 블랙 내열</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">52,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">42,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">200개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">옵션</span></strong> <span class="swp-spec__v">본품/뚜껑 포함</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_151">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E4EAE7%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22150%22%20rx%3D%2262%22%20ry%3D%229%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M38%2092%20Q42%20148%20100%20150%20Q158%20148%20162%2092%20Z%22%20fill%3D%22%23FBFBF9%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2262%22%20ry%3D%2215%22%20fill%3D%22%23FBFBF9%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2252%22%20ry%3D%2210%22%20fill%3D%22rgba%28255%2C255%2C255%2C.18%29%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">탕용기 중 1000ml 화이트</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">47,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">38,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">200개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_152">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E9ECEA%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22150%22%20rx%3D%2262%22%20ry%3D%229%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M38%2092%20Q42%20148%20100%20150%20Q158%20148%20162%2092%20Z%22%20fill%3D%22%232B302E%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2262%22%20ry%3D%2215%22%20fill%3D%22%232B302E%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2252%22%20ry%3D%2210%22%20fill%3D%22rgba%28255%2C255%2C255%2C.18%29%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">원형 PP 탕용기 950ml 전자레인지용</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">44,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">35,500원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">250개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_153">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E3ECEF%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22150%22%20rx%3D%2262%22%20ry%3D%229%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M38%2092%20Q42%20148%20100%20150%20Q158%20148%20162%2092%20Z%22%20fill%3D%22%23D7E9F0%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2262%22%20ry%3D%2215%22%20fill%3D%22%23D7E9F0%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2252%22%20ry%3D%2210%22%20fill%3D%22rgba%28255%2C255%2C255%2C.18%29%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">탕용기 전용 뚜껑 195파이 투명</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">26,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">21,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">300개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li></ul>
+</div>
+</li></ul>
+</div>
+<div class="swp-center"><a class="swp-btn swp-btn--line" href="/product/list.html?cate_no=30">탕용기 전체보기</a></div>
+</div>
+<!-- 탭 2: 실링용기 -->
+<div aria-labelledby="swpDealTab2" class="swp-tabs__panel" hidden="" id="swpDealPanel2" role="tabpanel">
+<div class="swp-module" module="product_listmain_3">
+<!--
+              $count = 8
+              $basket_result = /product/add_basket.html
+              $basket_option = /product/basket_option.html
+          -->
+<ul class="swp-grid swp-grid--deal">
+
+
+<li class="swp-card" id="anchorBoxId_200">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E9ECEA%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22148%22%20rx%3D%2270%22%20ry%3D%228%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M36%2082%20L164%2082%20L154%20142%20L46%20142%20Z%22%20fill%3D%22%232B302E%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M30%2076%20H170%20V86%20H30%20Z%22%20fill%3D%22%232B302E%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M100%2088%20V138%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M34%2078%20H166%22%20stroke%3D%22rgba%28255%2C255%2C255%2C.7%29%22%20stroke-width%3D%222%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> <img alt="BEST" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2744%27%20height%3D%2718%27%3E%3Crect%20width%3D%2744%27%20height%3D%2718%27%20rx%3D%273%27%20fill%3D%27%230D5446%27/%3E%3Ctext%20x%3D%2722%27%20y%3D%2713%27%20font-family%3D%27Arial%27%20font-size%3D%2710.5%27%20font-weight%3D%27700%27%20fill%3D%27%23fff%27%20text-anchor%3D%27middle%27%3EBEST%3C/text%3E%3C/svg%3E"/> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">실링용기 1615 2칸 블랙</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">61,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">49,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">800개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">옵션</span></strong> <span class="swp-spec__v">1칸/2칸/3칸</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_201">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E3ECEF%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22148%22%20rx%3D%2270%22%20ry%3D%228%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M36%2082%20L164%2082%20L154%20142%20L46%20142%20Z%22%20fill%3D%22%23D7E9F0%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M30%2076%20H170%20V86%20H30%20Z%22%20fill%3D%22%23D7E9F0%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M100%2088%20V138%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M34%2078%20H166%22%20stroke%3D%22rgba%28255%2C255%2C255%2C.7%29%22%20stroke-width%3D%222%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">실링용기 1820 1칸 투명</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">64,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">55,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">600개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_202">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23EFE7DC%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22160%22%20rx%3D%2264%22%20ry%3D%228%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M40%2074%20L100%2052%20L160%2074%20L160%20150%20L100%20160%20L40%20150%20Z%22%20fill%3D%22%23C89B66%22/%3E%3Cpath%20d%3D%22M40%2074%20L100%2094%20L160%2074%22%20stroke%3D%22rgba%280%2C0%2C0%2C.2%29%22%20stroke-width%3D%222%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M100%2094%20V160%22%20stroke%3D%22rgba%280%2C0%2C0%2C.2%29%22%20stroke-width%3D%222%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">실링필름 전용 롤 (1615·1820 겸용)</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">79,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">68,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">2박스</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_203">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E4EAE7%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22148%22%20rx%3D%2270%22%20ry%3D%228%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M36%2082%20L164%2082%20L154%20142%20L46%20142%20Z%22%20fill%3D%22%23FBFBF9%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M30%2076%20H170%20V86%20H30%20Z%22%20fill%3D%22%23FBFBF9%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M100%2088%20V138%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M34%2078%20H166%22%20stroke%3D%22rgba%28255%2C255%2C255%2C.7%29%22%20stroke-width%3D%222%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> <img alt="NEW" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2736%27%20height%3D%2718%27%3E%3Crect%20width%3D%2736%27%20height%3D%2718%27%20rx%3D%273%27%20fill%3D%27%23D63A24%27/%3E%3Ctext%20x%3D%2718%27%20y%3D%2713%27%20font-family%3D%27Arial%27%20font-size%3D%2710.5%27%20font-weight%3D%27700%27%20fill%3D%27%23fff%27%20text-anchor%3D%27middle%27%3ENEW%3C/text%3E%3C/svg%3E"/> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">반찬 실링용기 2구 소형</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">53,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">46,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">1,000개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li></ul>
+</div>
+</li></ul>
+</div>
+<div class="swp-center"><a class="swp-btn swp-btn--line" href="/product/list.html?cate_no=31">실링용기 전체보기</a></div>
+</div>
+<!-- 탭 3: 죽용기 -->
+<div aria-labelledby="swpDealTab3" class="swp-tabs__panel" hidden="" id="swpDealPanel3" role="tabpanel">
+<div class="swp-module" module="product_listmain_4">
+<!--
+              $count = 8
+              $basket_result = /product/add_basket.html
+              $basket_option = /product/basket_option.html
+          -->
+<ul class="swp-grid swp-grid--deal">
+
+
+<li class="swp-card" id="anchorBoxId_250">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E4EAE7%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22150%22%20rx%3D%2262%22%20ry%3D%229%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M38%2092%20Q42%20148%20100%20150%20Q158%20148%20162%2092%20Z%22%20fill%3D%22%23FBFBF9%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2262%22%20ry%3D%2215%22%20fill%3D%22%23FBFBF9%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2252%22%20ry%3D%2210%22%20fill%3D%22rgba%28255%2C255%2C255%2C.18%29%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">죽용기 600ml 화이트 뚜껑 포함</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">39,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">31,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">300개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_251">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23EFE7DC%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22150%22%20rx%3D%2262%22%20ry%3D%229%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M38%2092%20Q42%20148%20100%20150%20Q158%20148%20162%2092%20Z%22%20fill%3D%22%23C89B66%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2262%22%20ry%3D%2215%22%20fill%3D%22%23C89B66%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2252%22%20ry%3D%2210%22%20fill%3D%22rgba%28255%2C255%2C255%2C.18%29%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> <img alt="BEST" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2744%27%20height%3D%2718%27%3E%3Crect%20width%3D%2744%27%20height%3D%2718%27%20rx%3D%273%27%20fill%3D%27%230D5446%27/%3E%3Ctext%20x%3D%2722%27%20y%3D%2713%27%20font-family%3D%27Arial%27%20font-size%3D%2710.5%27%20font-weight%3D%27700%27%20fill%3D%27%23fff%27%20text-anchor%3D%27middle%27%3EBEST%3C/text%3E%3C/svg%3E"/> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">죽용기 750ml 크라프트</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">45,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">37,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">300개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_252">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E9ECEA%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22150%22%20rx%3D%2262%22%20ry%3D%229%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M38%2092%20Q42%20148%20100%20150%20Q158%20148%20162%2092%20Z%22%20fill%3D%22%232B302E%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2262%22%20ry%3D%2215%22%20fill%3D%22%232B302E%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2252%22%20ry%3D%2210%22%20fill%3D%22rgba%28255%2C255%2C255%2C.18%29%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">다용도 죽용기 900ml 블랙</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">47,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">39,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">250개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_253">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E4EAE7%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2266%22%20rx%3D%2224%22%20ry%3D%2232%22%20fill%3D%22%23FBFBF9%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Crect%20x%3D%2294%22%20y%3D%2294%22%20width%3D%2212%22%20height%3D%2276%22%20rx%3D%226%22%20fill%3D%22%23FBFBF9%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">죽 전용 스푼 개별포장 대</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">24,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">19,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">2,000개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li></ul>
+</div>
+</li></ul>
+</div>
+<div class="swp-center"><a class="swp-btn swp-btn--line" href="/product/list.html?cate_no=32">죽용기 전체보기</a></div>
+</div>
+</div>
+</div>
+</section>
+<!-- ═════════ 4. 추천상품 (1~4단 진열 전환) — 메인진열 5번 ═════════ -->
+<section aria-labelledby="swpRecoTitle" class="swp-sec swp-reco">
+<div class="swp-inner">
+<div class="swp-sec__head">
+<div>
+<h2 class="swp-sec__title" id="swpRecoTitle">추천상품</h2>
+<p class="swp-sec__sub">개당 단가와 최소 주문 수량을 한눈에 비교하세요</p>
+</div>
+<div aria-label="진열 방식" class="swp-view" data-swp-view="" role="group">
+<button aria-label="1단 목록형" aria-pressed="false" class="swp-view__btn" data-cols="1" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><rect height="6" rx="1.2" width="6" x="3.5" y="4.5"></rect><rect height="6" rx="1.2" width="6" x="3.5" y="13.5"></rect><path d="M12.5 7.5h8M12.5 16.5h8"></path></svg>
+</button>
+<button aria-label="2단" aria-pressed="false" class="swp-view__btn" data-cols="2" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><rect height="16" rx="1.5" width="7.5" x="3.5" y="4"></rect><rect height="16" rx="1.5" width="7.5" x="13" y="4"></rect></svg>
+</button>
+<button aria-label="3단" aria-pressed="false" class="swp-view__btn" data-cols="3" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><rect height="16" rx="1.2" width="4.8" x="3" y="4"></rect><rect height="16" rx="1.2" width="4.8" x="9.6" y="4"></rect><rect height="16" rx="1.2" width="4.8" x="16.2" y="4"></rect></svg>
+</button>
+<button aria-label="4단" aria-pressed="false" class="swp-view__btn" data-cols="4" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><rect height="16" rx="1" width="3.6" x="2.5" y="4"></rect><rect height="16" rx="1" width="3.6" x="7.6" y="4"></rect><rect height="16" rx="1" width="3.6" x="12.7" y="4"></rect><rect height="16" rx="1" width="3.6" x="17.8" y="4"></rect></svg>
+</button>
+</div>
+</div>
+<div class="swp-module" module="product_listmain_5">
+<!--
+          $count = 20
+          $basket_result = /product/add_basket.html
+          $basket_option = /product/basket_option.html
+      -->
+<ul class="swp-grid" data-cols="4" data-swp-grid="" id="swpRecoGrid">
+
+
+<li class="swp-card" id="anchorBoxId_300">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E9ECEA%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22150%22%20rx%3D%2262%22%20ry%3D%229%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M38%2092%20Q42%20148%20100%20150%20Q158%20148%20162%2092%20Z%22%20fill%3D%22%232B302E%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2262%22%20ry%3D%2215%22%20fill%3D%22%232B302E%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2252%22%20ry%3D%2210%22%20fill%3D%22rgba%28255%2C255%2C255%2C.18%29%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> <img alt="BEST" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2744%27%20height%3D%2718%27%3E%3Crect%20width%3D%2744%27%20height%3D%2718%27%20rx%3D%273%27%20fill%3D%27%230D5446%27/%3E%3Ctext%20x%3D%2722%27%20y%3D%2713%27%20font-family%3D%27Arial%27%20font-size%3D%2710.5%27%20font-weight%3D%27700%27%20fill%3D%27%23fff%27%20text-anchor%3D%27middle%27%3EBEST%3C/text%3E%3C/svg%3E"/> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">원형 탕용기 1000ml 블랙 (뚜껑 포함)</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">46,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">39,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">200개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">옵션</span></strong> <span class="swp-spec__v">850ml/1000ml/1300ml</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_301">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E4EAE7%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22150%22%20rx%3D%2262%22%20ry%3D%229%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M38%2092%20Q42%20148%20100%20150%20Q158%20148%20162%2092%20Z%22%20fill%3D%22%23FBFBF9%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2262%22%20ry%3D%2215%22%20fill%3D%22%23FBFBF9%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2252%22%20ry%3D%2210%22%20fill%3D%22rgba%28255%2C255%2C255%2C.18%29%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">탕용기 중 1000ml 화이트</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">47,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">38,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">200개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_302">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E9ECEA%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22148%22%20rx%3D%2270%22%20ry%3D%228%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M36%2082%20L164%2082%20L154%20142%20L46%20142%20Z%22%20fill%3D%22%232B302E%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M30%2076%20H170%20V86%20H30%20Z%22%20fill%3D%22%232B302E%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M100%2088%20V138%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M34%2078%20H166%22%20stroke%3D%22rgba%28255%2C255%2C255%2C.7%29%22%20stroke-width%3D%222%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> <img alt="BEST" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2744%27%20height%3D%2718%27%3E%3Crect%20width%3D%2744%27%20height%3D%2718%27%20rx%3D%273%27%20fill%3D%27%230D5446%27/%3E%3Ctext%20x%3D%2722%27%20y%3D%2713%27%20font-family%3D%27Arial%27%20font-size%3D%2710.5%27%20font-weight%3D%27700%27%20fill%3D%27%23fff%27%20text-anchor%3D%27middle%27%3EBEST%3C/text%3E%3C/svg%3E"/> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">실링용기 1615 2칸 블랙</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">61,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">49,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">800개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">옵션</span></strong> <span class="swp-spec__v">1칸/2칸/3칸</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_303">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23EFE7DC%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22160%22%20rx%3D%2240%22%20ry%3D%227%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M62%2062%20L138%2062%20L128%20158%20L72%20158%20Z%22%20fill%3D%22%23C89B66%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Crect%20x%3D%2256%22%20y%3D%2250%22%20width%3D%2288%22%20height%3D%2214%22%20rx%3D%225%22%20fill%3D%22%23C89B66%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M100%2050%20Q102%2034%20116%2028%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%223%22%20fill%3D%22none%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> <img alt="BEST" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2744%27%20height%3D%2718%27%3E%3Crect%20width%3D%2744%27%20height%3D%2718%27%20rx%3D%273%27%20fill%3D%27%230D5446%27/%3E%3Ctext%20x%3D%2722%27%20y%3D%2713%27%20font-family%3D%27Arial%27%20font-size%3D%2710.5%27%20font-weight%3D%27700%27%20fill%3D%27%23fff%27%20text-anchor%3D%27middle%27%3EBEST%3C/text%3E%3C/svg%3E"/> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">크라프트 종이컵 13oz 무지</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">33,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">1,000개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">옵션</span></strong> <span class="swp-spec__v">8oz/10oz/13oz/16oz</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_304">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23EFE7DC%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22150%22%20rx%3D%2262%22%20ry%3D%229%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M38%2092%20Q42%20148%20100%20150%20Q158%20148%20162%2092%20Z%22%20fill%3D%22%23C89B66%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2262%22%20ry%3D%2215%22%20fill%3D%22%23C89B66%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2252%22%20ry%3D%2210%22%20fill%3D%22rgba%28255%2C255%2C255%2C.18%29%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> <img alt="BEST" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2744%27%20height%3D%2718%27%3E%3Crect%20width%3D%2744%27%20height%3D%2718%27%20rx%3D%273%27%20fill%3D%27%230D5446%27/%3E%3Ctext%20x%3D%2722%27%20y%3D%2713%27%20font-family%3D%27Arial%27%20font-size%3D%2710.5%27%20font-weight%3D%27700%27%20fill%3D%27%23fff%27%20text-anchor%3D%27middle%27%3EBEST%3C/text%3E%3C/svg%3E"/> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">죽용기 750ml 크라프트</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">45,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">37,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">300개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_305">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E3ECEF%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22158%22%20rx%3D%2244%22%20ry%3D%227%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M66%2096%20L134%2096%20L126%20156%20L74%20156%20Z%22%20fill%3D%22%23D7E9F0%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M60%2096%20Q100%2040%20140%2096%20Z%22%20fill%3D%22rgba%28255%2C255%2C255%2C.55%29%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Crect%20x%3D%2270%22%20y%3D%22118%22%20width%3D%2260%22%20height%3D%2226%22%20rx%3D%224%22%20fill%3D%22%23E9B4A6%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> <img alt="NEW" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2736%27%20height%3D%2718%27%3E%3Crect%20width%3D%2736%27%20height%3D%2718%27%20rx%3D%273%27%20fill%3D%27%23D63A24%27/%3E%3Ctext%20x%3D%2718%27%20y%3D%2713%27%20font-family%3D%27Arial%27%20font-size%3D%2710.5%27%20font-weight%3D%27700%27%20fill%3D%27%23fff%27%20text-anchor%3D%27middle%27%3ENEW%3C/text%3E%3C/svg%3E"/> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">PET 디저트컵 9oz 돔뚜껑 세트</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">69,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">61,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">1,000개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_306">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23EFE7DC%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22166%22%20rx%3D%2256%22%20ry%3D%227%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M78%2070%20Q78%2040%20100%2040%20Q122%2040%20122%2070%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%225%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M50%2066%20H150%20L144%20164%20H56%20Z%22%20fill%3D%22%23C89B66%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M50%2066%20H150%20V78%20H50%20Z%22%20fill%3D%22rgba%280%2C0%2C0%2C.06%29%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> <img alt="NEW" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2736%27%20height%3D%2718%27%3E%3Crect%20width%3D%2736%27%20height%3D%2718%27%20rx%3D%273%27%20fill%3D%27%23D63A24%27/%3E%3Ctext%20x%3D%2718%27%20y%3D%2713%27%20font-family%3D%27Arial%27%20font-size%3D%2710.5%27%20font-weight%3D%27700%27%20fill%3D%27%23fff%27%20text-anchor%3D%27middle%27%3ENEW%3C/text%3E%3C/svg%3E"/> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">크라프트 쇼핑백 중 손잡이형 1박스 250매</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">41,000원</span></span></li></ul>
+</div>
+</li><li class="swp-card" id="anchorBoxId_307">
+<div class="swp-card__thumb">
+<a aria-hidden="true" class="swp-card__img" href="#none" tabindex="-1"><img alt="" loading="lazy" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23EFE7DC%22/%3E%3Cpath%20d%3D%22M62%2062%20L138%2062%20L128%20158%20L72%20158%20Z%22%20fill%3D%22%23FBFBF9%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M58%2092%20L142%2092%20L136%20132%20L64%20132%20Z%22%20fill%3D%22%23C89B66%22/%3E%3C/svg%3E"/></a>
+<div class="swp-card__icons"> </div>
+<div class="swp-card__native"> </div>
+</div>
+<div class="swp-card__body">
+<strong class="swp-card__name"><a href="#none"><span style="font-size:12px;color:#555555;">크라프트 컵홀더 13~16oz 겸용</span></a></strong>
+<ul class="swp-card__spec" module="product_ListItem"><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">소비자가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#555555;text-decoration:line-through;">34,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">판매가</span></strong> <span class="swp-spec__v"><span style="font-size:12px;color:#008BCC;font-weight:bold;">30,000원</span></span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">박스당 수량</span></strong> <span class="swp-spec__v">1,000개</span></li><li class="swp-spec"><strong class="swp-spec__t"><span style="font-size:12px;color:#555555;">최소주문</span></strong> <span class="swp-spec__v">3박스</span></li></ul>
+</div>
+</li></ul>
+</div>
+<div class="swp-center"><a class="swp-btn swp-btn--line" href="/product/list.html?cate_no=24">추천상품 더보기</a></div>
+</div>
+</section>
+<!-- ═════════ 5. 포토후기 ═════════ -->
+<section aria-labelledby="swpReviewTitle" class="swp-sec swp-review">
+<div class="swp-inner">
+<div class="swp-sec__head">
+<div>
+<h2 class="swp-sec__title" id="swpReviewTitle">포토후기</h2>
+<p class="swp-sec__sub">실제 사용 사진으로 크기와 쓰임새를 확인하세요</p>
+</div>
+<a class="swp-sec__more" href="/board/product/list.html?board_no=4">후기 전체보기</a>
+</div>
+<!--
+      [포토후기 넣는 방법 — 둘 중 하나]
+      A) 리뷰 앱(크리마, 브이리뷰, 알파리뷰 등)을 쓰면, 앱에서 받은 '메인 위젯 코드'를
+         아래 swp-review__area 안에 그대로 붙여넣으세요.
+      B) 직접 관리하려면 아래 틀을 복사해 swp-review__area 안에 넣고,
+         실제 고객 후기 사진과 글만 넣으세요. (사진은 관리자 파일 업로드 경로 사용)
+
+         <ul class="swp-review__list">
+           <li class="swp-rv">
+             <a class="swp-rv__link" href="상품 상세 주소">
+               <span class="swp-rv__img"><img src="/web/upload/review/파일명.jpg" alt="고객 후기 사진" loading="lazy"/></span>
+               <span class="swp-rv__stars" aria-label="별점 5점 만점에 5점">★★★★★</span>
+               <span class="swp-rv__text">후기 내용</span>
+               <span class="swp-rv__prd">상품명</span>
+             </a>
+           </li>
+         </ul>
+
+      아무것도 넣지 않으면 '후기 게시판으로 이동' 안내가 대신 보입니다.
+    -->
+<div class="swp-review__area" data-swp-review=""><ul class="swp-review__list"><li class="swp-rv"><a class="swp-rv__link" href="#none"><span class="swp-rv__img"><img alt="샘플 후기 이미지" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E9ECEA%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22150%22%20rx%3D%2262%22%20ry%3D%229%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M38%2092%20Q42%20148%20100%20150%20Q158%20148%20162%2092%20Z%22%20fill%3D%22%232B302E%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2262%22%20ry%3D%2215%22%20fill%3D%22%232B302E%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%2292%22%20rx%3D%2252%22%20ry%3D%2210%22%20fill%3D%22rgba%28255%2C255%2C255%2C.18%29%22/%3E%3C/svg%3E"/><span style="position:absolute;left:8px;top:8px;padding:3px 7px;border-radius:4px;background:rgba(23,32,29,.75);color:#fff;font-size:11px;font-weight:700">샘플</span></span><span aria-label="별점 예시" class="swp-rv__stars">★★★★★</span><span class="swp-rv__text">실제 고객 후기 내용이 이 자리에 두 줄까지 표시돼요. 길면 말줄임으로 잘립니다.</span><span class="swp-rv__prd">원형 탕용기 1000ml</span></a></li><li class="swp-rv"><a class="swp-rv__link" href="#none"><span class="swp-rv__img"><img alt="샘플 후기 이미지" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23EFE7DC%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22160%22%20rx%3D%2240%22%20ry%3D%227%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M62%2062%20L138%2062%20L128%20158%20L72%20158%20Z%22%20fill%3D%22%23C89B66%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Crect%20x%3D%2256%22%20y%3D%2250%22%20width%3D%2288%22%20height%3D%2214%22%20rx%3D%225%22%20fill%3D%22%23C89B66%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M100%2050%20Q102%2034%20116%2028%22%20stroke%3D%22rgba%280%2C0%2C0%2C.18%29%22%20stroke-width%3D%223%22%20fill%3D%22none%22/%3E%3C/svg%3E"/><span style="position:absolute;left:8px;top:8px;padding:3px 7px;border-radius:4px;background:rgba(23,32,29,.75);color:#fff;font-size:11px;font-weight:700">샘플</span></span><span aria-label="별점 예시" class="swp-rv__stars">★★★★★</span><span class="swp-rv__text">실제 고객 후기 내용이 이 자리에 두 줄까지 표시돼요. 길면 말줄임으로 잘립니다.</span><span class="swp-rv__prd">크라프트 종이컵 13oz</span></a></li><li class="swp-rv"><a class="swp-rv__link" href="#none"><span class="swp-rv__img"><img alt="샘플 후기 이미지" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E3ECEF%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22148%22%20rx%3D%2270%22%20ry%3D%228%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M36%2082%20L164%2082%20L154%20142%20L46%20142%20Z%22%20fill%3D%22%23D7E9F0%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M30%2076%20H170%20V86%20H30%20Z%22%20fill%3D%22%23D7E9F0%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M100%2088%20V138%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M34%2078%20H166%22%20stroke%3D%22rgba%28255%2C255%2C255%2C.7%29%22%20stroke-width%3D%222%22/%3E%3C/svg%3E"/><span style="position:absolute;left:8px;top:8px;padding:3px 7px;border-radius:4px;background:rgba(23,32,29,.75);color:#fff;font-size:11px;font-weight:700">샘플</span></span><span aria-label="별점 예시" class="swp-rv__stars">★★★★★</span><span class="swp-rv__text">실제 고객 후기 내용이 이 자리에 두 줄까지 표시돼요. 길면 말줄임으로 잘립니다.</span><span class="swp-rv__prd">실링용기 1803</span></a></li><li class="swp-rv"><a class="swp-rv__link" href="#none"><span class="swp-rv__img"><img alt="샘플 후기 이미지" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20fill%3D%22%23E3ECEF%22/%3E%3Cellipse%20cx%3D%22100%22%20cy%3D%22158%22%20rx%3D%2244%22%20ry%3D%227%22%20fill%3D%22rgba%280%2C0%2C0%2C.08%29%22/%3E%3Cpath%20d%3D%22M66%2096%20L134%2096%20L126%20156%20L74%20156%20Z%22%20fill%3D%22%23D7E9F0%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M60%2096%20Q100%2040%20140%2096%20Z%22%20fill%3D%22rgba%28255%2C255%2C255%2C.55%29%22%20stroke%3D%22%239AA7A1%22%20stroke-width%3D%222%22/%3E%3Crect%20x%3D%2270%22%20y%3D%22118%22%20width%3D%2260%22%20height%3D%2226%22%20rx%3D%224%22%20fill%3D%22%23E9B4A6%22/%3E%3C/svg%3E"/><span style="position:absolute;left:8px;top:8px;padding:3px 7px;border-radius:4px;background:rgba(23,32,29,.75);color:#fff;font-size:11px;font-weight:700">샘플</span></span><span aria-label="별점 예시" class="swp-rv__stars">★★★★★</span><span class="swp-rv__text">실제 고객 후기 내용이 이 자리에 두 줄까지 표시돼요. 길면 말줄임으로 잘립니다.</span><span class="swp-rv__prd">디저트컵 9oz 돔뚜껑</span></a></li></ul></div>
+<div class="swp-review__empty" data-swp-review-empty="" hidden="">
+<p>사진 후기를 남겨 주시면 다른 사장님들이 용기 크기를 고를 때 큰 도움이 돼요.</p>
+<a class="swp-btn swp-btn--line" href="/board/product/list.html?board_no=4">후기 게시판으로 이동</a>
+</div>
+</div>
+</section>
+</div>
+
+</main>
+</div>
+</div>
+<!-- ───────── 푸터 (○○○ 부분을 실제 정보로 바꾸세요) ───────── -->
+<footer class="swp-footer">
+<div class="swp-inner">
+<nav aria-label="쇼핑몰 정보" class="swp-footer__links">
+<a href="/shopinfo/company.html">회사소개</a>
+<a href="/member/agreement.html">이용약관</a>
+<a href="/member/privacy.html"><strong>개인정보처리방침</strong></a>
+<a href="/shopinfo/guide.html">이용안내</a>
+</nav>
+<div class="swp-footer__grid">
+<section aria-labelledby="swpFtCs" class="swp-footer__block">
+<h2 class="swp-footer__title" id="swpFtCs">고객센터</h2>
+<a class="swp-footer__tel" href="tel:0000-0000">0000-0000</a>
+<dl class="swp-footer__dl">
+<div><dt>평일</dt><dd>09:00 ~ 18:00</dd></div>
+<div><dt>점심</dt><dd>12:00 ~ 13:00</dd></div>
+<div><dt>휴무</dt><dd>토·일·공휴일</dd></div>
+</dl>
+</section>
+<section aria-labelledby="swpFtBank" class="swp-footer__block">
+<h2 class="swp-footer__title" id="swpFtBank">입금 계좌</h2>
+<p class="swp-footer__bank">○○은행 <span class="swp-num">000-000000-00-000</span></p>
+<p class="swp-footer__sub">예금주 성우플러스</p>
+<!-- data-swp-copy 값에 실제 계좌번호를 숫자만 넣으면 복사 버튼이 작동합니다 -->
+<button class="swp-btn swp-btn--line swp-btn--sm" data-swp-copy="000000000000" type="button">계좌번호 복사</button>
+</section>
+<section aria-labelledby="swpFtBiz" class="swp-footer__block swp-footer__block--biz">
+<h2 class="swp-footer__title" id="swpFtBiz">사업자 정보</h2>
+<dl class="swp-footer__dl swp-footer__dl--biz">
+<div><dt>상호</dt><dd>성우플러스</dd></div>
+<div><dt>대표</dt><dd>○○○</dd></div>
+<div><dt>사업자등록번호</dt><dd>000-00-00000</dd></div>
+<div><dt>통신판매업신고</dt><dd>제0000-○○○○-0000호</dd></div>
+<div><dt>주소</dt><dd>○○시 ○○구 ○○로 00</dd></div>
+<div><dt>개인정보보호책임자</dt><dd>○○○</dd></div>
+</dl>
+</section>
+</div>
+<p class="swp-footer__copy">© 성우플러스. All rights reserved.</p>
+</div>
+</footer>
+<!-- ───────── 우측 하단 플로팅 (상담 주소는 custom.js 맨 위 CONFIG에서 설정) ───────── -->
+<div aria-label="상담 바로가기" class="swp-float" role="complementary">
+<a class="swp-float__btn swp-float__btn--talk" data-swp-chat="talktalk" href="#none">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M12 4.5c-4.7 0-8.5 3-8.5 6.8 0 2.4 1.5 4.5 3.9 5.7l-.9 3.3 3.7-2.3c.6.1 1.2.1 1.8.1 4.7 0 8.5-3 8.5-6.8S16.7 4.5 12 4.5z"></path><path d="M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01"></path></svg>
+<span class="swp-float__label">톡톡 상담</span>
+</a>
+<a class="swp-float__btn swp-float__btn--kakao" data-swp-chat="kakao" href="#none">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path class="swp-fill" d="M12 4.5c-4.7 0-8.5 3-8.5 6.8 0 2.4 1.5 4.5 3.9 5.7l-.9 3.3 3.7-2.3c.6.1 1.2.1 1.8.1 4.7 0 8.5-3 8.5-6.8S16.7 4.5 12 4.5z"></path></svg>
+<span class="swp-float__label">카톡 상담</span>
+</a>
+<button aria-label="맨 위로" class="swp-float__top" data-swp-top="" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M12 19V6M6 11l6-6 6 6"></path></svg>
+</button>
+</div>
+<!-- ───────── 전체 카테고리 드로어 ───────── -->
+<div aria-hidden="true" aria-labelledby="swpDrawerTitle" aria-modal="true" class="swp-layer swp-drawer" id="swpDrawer" role="dialog">
+<div class="swp-layer__dim" data-swp-close=""></div>
+<div class="swp-drawer__panel">
+<div class="swp-drawer__top">
+<strong id="swpDrawerTitle">전체 카테고리</strong>
+<button aria-label="닫기" class="swp-iconbtn" data-swp-close="" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+</button>
+</div>
+<div class="swp-drawer__auth">
+<div class="swp-drawer__authrow" module="Layout_statelogoff">
+<a class="swp-btn swp-btn--ink" href="/member/login.html">로그인</a>
+<a class="swp-btn swp-btn--line" href="/member/agreement.html">회원가입</a>
+</div>
+
+</div>
+<!-- 카페24 모듈: 관리자에 등록한 1차 분류가 자동으로 나옵니다 (li 2개 = 홀수/짝수 반복 틀) -->
+<div class="swp-drawer__cate" module="Layout_category">
+<ul><li><a href="/product/list.html?cate_no=24">플라스틱용기</a></li><li><a href="/product/list.html?cate_no=25">종이용기/박스</a></li><li><a href="/product/list.html?cate_no=26">종이/비닐봉투</a></li><li><a href="/product/list.html?cate_no=27">카페/디저트</a></li><li><a href="/product/list.html?cate_no=28">수저/젓가락</a></li><li><a href="/product/list.html?cate_no=29">신상품</a></li></ul>
+</div>
+<div class="swp-drawer__cs">
+<p>고객센터 <a href="tel:0000-0000">0000-0000</a></p>
+<p>평일 09:00 ~ 18:00, 점심 12:00 ~ 13:00</p>
+</div>
+</div>
+</div>
+<!-- ───────── 옵션 미리보기 시트 (custom.js가 내용을 채움) ───────── -->
+<div aria-hidden="true" aria-labelledby="swpSheetTitle" aria-modal="true" class="swp-layer swp-sheet" id="swpSheet" role="dialog">
+<div class="swp-layer__dim" data-swp-close=""></div>
+<div class="swp-sheet__panel">
+<div class="swp-sheet__head">
+<strong id="swpSheetTitle">옵션 미리보기</strong>
+<button aria-label="닫기" class="swp-iconbtn" data-swp-close="" type="button">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+</button>
+</div>
+<div class="swp-sheet__body" id="swpSheetBody"></div>
+<div class="swp-sheet__foot">
+<a class="swp-btn swp-btn--ink swp-btn--block" href="#none" id="swpSheetLink">상세페이지에서 주문하기</a>
+</div>
+</div>
+</div>
+<div aria-live="polite" class="swp-toast" id="swpToast" role="status"></div>
+</div>
+</body>
+</html>
