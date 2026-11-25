@@ -18,6 +18,13 @@
           "excerpt": "수출은 1조달러를 넘었고 소비심리는 두 달째 내려갔다. 26일 금통위를 앞두고 기준금리 3.00%→3.25% 인상 전망이 나온다. 호황의 온기와 내 대출 이자 사이의 거리를 숫자로 정리했다."
         },
         {
+          "title": "겨울 정전기, 손끝보다 '습도와 옷 소재'부터 — 덜 튀게 만드는 생활 순서",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/winter-static-electricity-humidity-fabric/",
+          "date": "2026-11-25",
+          "category": "생활 정보",
+          "excerpt": "문고리만 잡아도 따끔하고 니트를 벗을 때마다 머리가 선다면, 손을 탓하기 전에 실내 습도와 겹쳐 입은 옷의 조합부터 본다. 정전기가 쌓이는 이유와 덜 튀게 만드는 순서를 정리했다."
+        },
+        {
           "title": "4,700을 지킨 건 지수뿐이었다",
           "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/kospi-4700-index-vs-my-account/",
           "date": "2026-11-24",
@@ -165,7 +172,7 @@
           "excerpt": "난방을 켜면 방 안 습도는 조용히 30% 아래로 떨어진다. 40~60%를 지키는 방법, 가습기 세 방식의 차이, 핫팩을 쓸 때 지켜야 할 선을 정리했다."
         }
       ],
-      "count": 22,
+      "count": 23,
       "categories": [
         "생활 정보",
         "크리에이터 장비",
@@ -182,6 +189,13 @@
       "blurb": "Field notes on AI short-form series, music-video pipelines, speech audio and single-file tools. The order of operations, the levels in dB, and the stage that broke first.",
       "blurb_ko": "AI 숏폼 시리즈와 뮤직비디오 파이프라인, 음성 오디오, 단일 파일 도구에 대한 영문 실무 기록.",
       "posts": [
+        {
+          "title": "Regenerating an AI Shot Six Months Later: A Generation Log, a Naming Rule and What to Record",
+          "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/ai-generation-log-regenerate-shots/",
+          "date": "2026-11-25",
+          "category": "Short-Form Production",
+          "excerpt": "A client asks for the same shot with a different product colour, and nobody knows which prompt, model or reference made it. A one-row-per-take generation log and a file name that points back to it turn that from a guessing game into a ten-minute job."
+        },
         {
           "title": "One Vertical Ad, Two Languages: Localising Captions and Voiceover Without Re-Cutting the Picture",
           "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/localise-vertical-ad-captions-voiceover/",
@@ -288,7 +302,7 @@
           "excerpt": "One HTML file, no build step, no server, no login. For a solo creator selling small tools, that constraint is not a limitation — it is the whole product advantage."
         }
       ],
-      "count": 15,
+      "count": 16,
       "categories": [
         "Short-Form Production",
         "Product",
