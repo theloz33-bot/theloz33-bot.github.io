@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-25",
+  "updated": "2026-11-26",
   "journals": {
     "kr": {
       "name": "오몽 라이프 & AI 연구소",
@@ -10,6 +10,20 @@
       "blurb": "생활 정보와 1인 제작, AI 영상 외주를 직접 해보고 남긴 기록. 겨울철 습도처럼 계절마다 반복되는 질문과, 스마트폰 하나로 찍고 편집하는 순서를 숫자와 기준으로 정리합니다.",
       "blurb_en": "A Korean-language journal on household decisions, one-person production and AI video commissions, written from work actually done.",
       "posts": [
+        {
+          "title": "햇볕이 23% 빠지자, 상추값이 121% 올랐다",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/lettuce-price-sunlight-deficit/",
+          "date": "2026-11-26",
+          "category": "시사 4컷",
+          "excerpt": "지난 한 달 일조시간은 평년보다 23% 부족했다. 그 사이 청상추 도매가는 121% 뛰었고, 소매 시금치는 11월 상순보다 30% 올랐다. 고점은 지났지만 여전히 평년보다 높은 값, 숫자로 정리했다."
+        },
+        {
+          "title": "전기장판·온수매트, 온도보다 '접힘과 시간'부터 — 저온화상 없이 쓰는 겨울 순서",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/winter-electric-blanket-safety/",
+          "date": "2026-11-26",
+          "category": "생활 정보",
+          "excerpt": "전기장판 사고는 뜨거워서보다 오래 닿아 있거나, 접힌 채 쓰거나, 낡은 선을 그대로 써서 생기는 경우가 많다. 꺼내기 전 점검부터 잠잘 때 설정, 보관까지 순서대로 정리했다."
+        },
         {
           "title": "경기가 너무 좋아서, 이자가 오릅니다",
           "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/bok-rate-hike-boom-interest-bill/",
@@ -172,7 +186,7 @@
           "excerpt": "난방을 켜면 방 안 습도는 조용히 30% 아래로 떨어진다. 40~60%를 지키는 방법, 가습기 세 방식의 차이, 핫팩을 쓸 때 지켜야 할 선을 정리했다."
         }
       ],
-      "count": 23,
+      "count": 25,
       "categories": [
         "생활 정보",
         "크리에이터 장비",
@@ -189,6 +203,13 @@
       "blurb": "Field notes on AI short-form series, music-video pipelines, speech audio and single-file tools. The order of operations, the levels in dB, and the stage that broke first.",
       "blurb_ko": "AI 숏폼 시리즈와 뮤직비디오 파이프라인, 음성 오디오, 단일 파일 도구에 대한 영문 실무 기록.",
       "posts": [
+        {
+          "title": "Two Revision Rounds, Not Ten: Scoping Client Feedback on AI Video Jobs",
+          "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/ai-video-revision-rounds-feedback/",
+          "date": "2026-11-26",
+          "category": "Short-Form Production",
+          "excerpt": "On an AI video job, every vague note costs a fresh batch of generations. A written revision scope, a timecoded feedback sheet and a clear line between a fix and a change keep a fifteen-second ad from turning into a month of rounds."
+        },
         {
           "title": "Regenerating an AI Shot Six Months Later: A Generation Log, a Naming Rule and What to Record",
           "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/ai-generation-log-regenerate-shots/",
@@ -302,7 +323,7 @@
           "excerpt": "One HTML file, no build step, no server, no login. For a solo creator selling small tools, that constraint is not a limitation — it is the whole product advantage."
         }
       ],
-      "count": 16,
+      "count": 17,
       "categories": [
         "Short-Form Production",
         "Product",
