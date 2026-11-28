@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-27",
+  "updated": "2026-11-28",
   "journals": {
     "kr": {
       "name": "오몽 라이프 & AI 연구소",
@@ -10,6 +10,20 @@
       "blurb": "생활 정보와 1인 제작, AI 영상 외주를 직접 해보고 남긴 기록. 겨울철 습도처럼 계절마다 반복되는 질문과, 스마트폰 하나로 찍고 편집하는 순서를 숫자와 기준으로 정리합니다.",
       "blurb_en": "A Korean-language journal on household decisions, one-person production and AI video commissions, written from work actually done.",
       "posts": [
+        {
+          "title": "배달지 바꾸는 창구에서 하루 11만 명 주소가 샜다",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/epost-delivery-address-leak/",
+          "date": "2026-11-28",
+          "category": "시사 4컷",
+          "excerpt": "인터넷우체국의 '수취인 배달장소 변경서비스'가 해외 IP 해킹을 당해 등기우편 수취인의 이름·주소·전화번호가 유출됐다. 분석이 끝난 하루치만 11만3,855명. 우체국이 당부한 건 '사칭 문자를 조심하라'는 한 문장이었다."
+        },
+        {
+          "title": "겨울 환기, 오래 열기보다 '짧게 맞바람'부터 — 추위 덜 타는 환기 순서",
+          "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/winter-ventilation-routine/",
+          "date": "2026-11-28",
+          "category": "생활 정보",
+          "excerpt": "겨울 환기는 창을 조금 오래 열어 두는 것보다, 마주 보는 창을 활짝 열어 짧게 바꾸는 쪽이 덜 춥다. 요리·샤워·빨래처럼 습기와 냄새가 생기는 때를 환기 타이밍으로 잡고, 창에 물방울이 맺히면 바로 신호로 보자."
+        },
         {
           "title": "정문에서 500m, 치킨이 식는 15분",
           "url": "https://theloz33-bot.github.io/omong-kr-lab/posts/cheongdam-delivery-walk-ban/",
@@ -200,7 +214,7 @@
           "excerpt": "난방을 켜면 방 안 습도는 조용히 30% 아래로 떨어진다. 40~60%를 지키는 방법, 가습기 세 방식의 차이, 핫팩을 쓸 때 지켜야 할 선을 정리했다."
         }
       ],
-      "count": 27,
+      "count": 29,
       "categories": [
         "생활 정보",
         "크리에이터 장비",
@@ -217,6 +231,13 @@
       "blurb": "Field notes on AI short-form series, music-video pipelines, speech audio and single-file tools. The order of operations, the levels in dB, and the stage that broke first.",
       "blurb_ko": "AI 숏폼 시리즈와 뮤직비디오 파이프라인, 음성 오디오, 단일 파일 도구에 대한 영문 실무 기록.",
       "posts": [
+        {
+          "title": "The Brief Before the First Generation: A One-Page Intake for AI Video Jobs",
+          "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/ai-video-client-brief-intake/",
+          "date": "2026-11-28",
+          "category": "Short-Form Production",
+          "excerpt": "Most wasted generations on an AI video job trace back to a question nobody asked before the first prompt. A one-page intake covering purpose, platform and format, must-show items, voice and music, references and approvals turns a loose request into something you can quote, prompt and deliver."
+        },
         {
           "title": "One Folder per Job: Project Structure, Backups and a Handover Archive for AI Video Work",
           "url": "https://theloz33-bot.github.io/omong-studio-journal/posts/ai-video-project-folder-backup-archive/",
@@ -344,7 +365,7 @@
           "excerpt": "One HTML file, no build step, no server, no login. For a solo creator selling small tools, that constraint is not a limitation — it is the whole product advantage."
         }
       ],
-      "count": 18,
+      "count": 19,
       "categories": [
         "Short-Form Production",
         "Product",
